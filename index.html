@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nha Khoa Lê Anh - Lâm Sàng, Kho, Labo & Quản Trị Vận Hành</title>
+  <title>Nha Khoa Lê Anh - Quản Trị Lâm Sàng & Vận Hành</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
@@ -19,6 +19,7 @@
 
     @media print {
       body * { visibility: hidden !important; }
+      
       body.print-mode-record #medicalRecordPrintPage, 
       body.print-mode-record #medicalRecordPrintPage * { visibility: visible !important; }
       body.print-mode-record #medicalRecordPrintPage {
@@ -67,29 +68,31 @@
 
   <div class="max-w-7xl mx-auto p-3 md:p-6 space-y-6">
     
-    <!-- Header & Menu Điều Hướng 8 Phân Hệ -->
+    <!-- Header -->
     <header class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
         <h1 class="text-2xl font-bold text-teal-800">Nha Khoa Lê Anh</h1>
         <p class="text-xs md:text-sm text-slate-500 mt-1">Phòng Khám Chuyên Khoa Răng Hàm Mặt • Lâm Sàng & Quản Trị Vận Hành</p>
       </div>
       
+      <!-- Menu 8 Phân Hệ -->
       <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
         <button type="button" onclick="switchTab('clinical')" id="tabBtnClinical" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all">
           🏥 Lâm Sàng & Thuốc
         </button>
         <button type="button" onclick="switchTab('labo')" id="tabBtnLabo" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1">
-          <span>🔬 Quản Lý Labo</span>
+          <span>🔬 Labo</span>
           <span id="laboBadgeCount" class="bg-amber-500 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full hidden">0</span>
         </button>
         <button type="button" onclick="switchTab('pricing')" id="tabBtnPricing" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
           📋 Bảng Giá
         </button>
-        <button type="button" onclick="switchTab('inventory')" id="tabBtnInventory" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
-          📦 Kho
+        <button type="button" onclick="switchTab('inventory')" id="tabBtnInventory" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1">
+          <span>📦 Kho</span>
+          <span id="inventoryAlertBadge" class="bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full hidden">0</span>
         </button>
         <button type="button" onclick="switchTab('schedule')" id="tabBtnSchedule" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
-          📅 Lịch Hẹn
+          📅 Lịch Hẹn & Trực
         </button>
         <button type="button" onclick="switchTab('crm')" id="tabBtnCrm" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
           🤝 CSKH
@@ -104,7 +107,7 @@
     </header>
 
     <!-- ============================================== -->
-    <!-- TAB 1: LÂM SÀNG & BỆNH ÁN                      -->
+    <!-- TAB 1: LÂM SÀNG & BỆNH ÁN & ĐƠN THUỐC         -->
     <!-- ============================================== -->
     <main id="clinicalTab" class="space-y-6">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -129,7 +132,7 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Cột Trái: Tiếp nhận hành chính & Danh sách bệnh nhân -->
+        <!-- Cột Trái -->
         <div class="lg:col-span-4 space-y-4">
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
             <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Tiếp Nhận Bệnh Nhân</h2>
@@ -190,7 +193,6 @@
 
         <!-- Cột Phải -->
         <div class="lg:col-span-8 space-y-6">
-          
           <!-- KHÁM LÂM SÀNG BYT -->
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Thông Tin Khám Ngoại Trú (Chuẩn BYT)</h2>
@@ -289,7 +291,7 @@
             </div>
           </div>
 
-          <!-- KÊ ĐƠN THUỐC -->
+          <!-- KHUNG KÊ ĐƠN THUỐC -->
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="border-b pb-3">
               <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Kê Đơn Thuốc & Hướng Dẫn Điều Trị</h2>
@@ -421,8 +423,6 @@
     <!-- TAB 2: QUẢN LÝ LABO (GIAO & NHẬN PHỤC HÌNH)    -->
     <!-- ============================================== -->
     <main id="laboTab" class="hidden space-y-6">
-      
-      <!-- Thẻ KPI Thống Kê Labo -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
           <span class="text-[11px] font-bold uppercase text-slate-400 block">Tổng Đơn Gửi Labo</span>
@@ -443,8 +443,6 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-        <!-- CỘT TRÁI: FORM TẠO ĐƠN GỬI LABO MỚI (4 Cột) -->
         <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
           <div class="border-b pb-3">
             <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Tạo Phiếu Gửi Labo Mới</h2>
@@ -471,23 +469,23 @@
               </div>
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Xưởng Labo gia công *</label>
-                <input type="text" id="laboName" required placeholder="Ví dụ: Labo Cercon, Labo Đại Nam..." class="w-full p-2 border rounded-lg bg-white font-medium" />
+                <input type="text" id="laboName" required placeholder="Labo Cercon, Đại Nam..." class="w-full p-2 border rounded-lg bg-white font-medium" />
               </div>
             </div>
 
             <div>
               <label class="block font-semibold text-slate-700 mb-1">Loại phục hình / Khí cụ *</label>
-              <input type="text" id="laboItemType" required placeholder="Ví dụ: Mão sứ Zirconia, Mão trên Implant, Máng tẩy..." class="w-full p-2 border rounded-lg bg-white font-medium" />
+              <input type="text" id="laboItemType" required placeholder="Mão sứ Zirconia, Mão Implant..." class="w-full p-2 border rounded-lg bg-white font-medium" />
             </div>
 
             <div class="grid grid-cols-2 gap-2">
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Vị trí răng</label>
-                <input type="text" id="laboTeethNum" placeholder="Ví dụ: R11, R21, R46..." class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800" />
+                <input type="text" id="laboTeethNum" placeholder="R11, R21, R46..." class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800" />
               </div>
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Mã so màu (Shade)</label>
-                <input type="text" id="laboShade" placeholder="A1, A2, 3M2, BLC..." class="w-full p-2 border rounded-lg bg-white font-semibold text-amber-700" />
+                <input type="text" id="laboShade" placeholder="A1, A2, 3M2..." class="w-full p-2 border rounded-lg bg-white font-semibold text-amber-700" />
               </div>
             </div>
 
@@ -504,12 +502,12 @@
 
             <div>
               <label class="block font-semibold text-slate-700 mb-1">Chi phí xưởng (VNĐ)</label>
-              <input type="number" id="laboCostPrice" min="0" step="10000" placeholder="Giá gia công Labo tính..." class="w-full p-2 border rounded-lg bg-white font-semibold" />
+              <input type="number" id="laboCostPrice" min="0" step="10000" placeholder="Giá gia công Labo..." class="w-full p-2 border rounded-lg bg-white font-semibold" />
             </div>
 
             <div>
               <label class="block font-semibold text-slate-700 mb-1">Ghi chú kỹ thuật cho KTV</label>
-              <textarea id="laboNotes" rows="2" placeholder="Hở tiếp xúc nhẹ, đắp sứ hở bờ nướu 0.5mm..." class="w-full p-2 border rounded-lg bg-white"></textarea>
+              <textarea id="laboNotes" rows="2" placeholder="Hở tiếp xúc nhẹ, đắp sứ bờ nướu..." class="w-full p-2 border rounded-lg bg-white"></textarea>
             </div>
 
             <button type="submit" id="btnSaveLaboOrder" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 rounded-lg text-xs transition-colors shadow">
@@ -518,7 +516,6 @@
           </form>
         </div>
 
-        <!-- CỘT PHẢI: BẢNG THEO DÕI ĐƠN LABO (8 Cột) -->
         <div class="lg:col-span-8 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3">
             <div>
@@ -554,7 +551,6 @@
             </table>
           </div>
         </div>
-
       </div>
     </main>
 
@@ -585,21 +581,54 @@
     <!-- TAB 4: KHO VẬT TƯ NHA KHOA                     -->
     <!-- ============================================== -->
     <main id="inventoryTab" class="hidden space-y-6">
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Danh Sách Tồn Kho & Vật Tư</h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
-              <tr>
-                <th class="py-2.5 px-3">Tên mặt hàng</th>
-                <th class="py-2.5 px-3">Phân loại</th>
-                <th class="py-2.5 px-3 text-center">Tồn kho</th>
-              </tr>
-            </thead>
-            <tbody id="inventoryTableBody" class="divide-y divide-slate-100">
-              <tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">Đang tải danh sách kho...</td></tr>
-            </tbody>
-          </table>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Khai Báo Mặt Hàng Mới</h2>
+          <form id="inventoryItemForm" class="space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tên mặt hàng *</label>
+              <input type="text" id="invItemName" required placeholder="Trụ Straumann BLT..." class="w-full p-2 border rounded-lg bg-white outline-none" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Phân loại *</label>
+              <select id="invItemCategory" required class="w-full p-2 border rounded-lg bg-white font-semibold text-teal-800">
+                <option value="Implant & Phẫu thuật">1. Trụ Implant & Phẫu thuật</option>
+                <option value="Vật tư tiêu hao">2. Vật tư tiêu hao</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Tồn kho ban đầu</label>
+                <input type="number" id="invItemStock" min="0" value="0" class="w-full p-2 border rounded-lg bg-white font-bold text-center" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Ngưỡng tối thiểu</label>
+                <input type="number" id="invItemMinStock" min="1" value="5" class="w-full p-2 border rounded-lg bg-white font-bold text-center text-rose-600" />
+              </div>
+            </div>
+            <button type="submit" id="btnSaveInventoryItem" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 rounded-lg text-xs transition-colors shadow">
+              + Khai Báo Mặt Hàng
+            </button>
+          </form>
+        </div>
+
+        <div class="lg:col-span-8 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Danh Sách Tồn Kho & Vật Tư</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
+                <tr>
+                  <th class="py-2.5 px-3">Tên mặt hàng</th>
+                  <th class="py-2.5 px-3">Phân loại</th>
+                  <th class="py-2.5 px-3 text-center">Tồn kho</th>
+                  <th class="py-2.5 px-3 text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryTableBody" class="divide-y divide-slate-100">
+                <tr><td colspan="4" class="text-center py-6 text-slate-400 text-xs">Đang tải danh sách kho...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
@@ -608,22 +637,130 @@
     <!-- TAB 5: LỊCH HẸN & CA TRỰC NHÂN SỰ              -->
     <!-- ============================================== -->
     <main id="scheduleTab" class="hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Đặt Lịch Hẹn Bệnh Nhân</h2>
+          <form id="appointmentForm" class="space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Bệnh nhân *</label>
+              <input type="text" id="apptPatientName" required placeholder="Họ tên bệnh nhân..." class="w-full p-2 border rounded-lg bg-white outline-none" />
+              <input type="hidden" id="apptPatientId" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Bác sĩ phụ trách *</label>
+              <select id="apptDoctor" required class="w-full p-2 border rounded-lg bg-white font-semibold">
+                <option value="BS. Nguyễn Thị Kim Oanh">BS. Nguyễn Thị Kim Oanh (Giám đốc - Chỉnh nha)</option>
+                <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh (CEO - Phẫu thuật)</option>
+                <option value="BS. Âu Hồng Linh Đa">BS. Âu Hồng Linh Đa (Tổng quát)</option>
+                <option value="BS. Lưu Minh Thanh">BS. Lưu Minh Thanh (Tổng quát)</option>
+                <option value="BS. Trương Ngọc Tuyền">BS. Trương Ngọc Tuyền (Tổng quát)</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Ngày hẹn *</label>
+                <input type="date" id="apptDate" required class="w-full p-2 border rounded-lg bg-white" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Giờ hẹn *</label>
+                <input type="time" id="apptTime" value="09:00" required class="w-full p-2 border rounded-lg bg-white" />
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nội dung khám / thủ thuật</label>
+              <input type="text" id="apptProcedure" placeholder="Cấy Implant, Chỉnh nha, Khám tổng quát..." class="w-full p-2 border rounded-lg bg-white" />
+            </div>
+            <button type="submit" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 rounded-lg text-xs transition-colors shadow">
+              + Xác Nhận Đặt Lịch
+            </button>
+          </form>
+        </div>
+
+        <div class="lg:col-span-7 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Lịch Khám & Hẹn Bệnh Nhân</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
+                <tr>
+                  <th class="py-2.5 px-3">Thời gian</th>
+                  <th class="py-2.5 px-3">Bệnh nhân</th>
+                  <th class="py-2.5 px-3">Nội dung</th>
+                  <th class="py-2.5 px-3">Bác sĩ</th>
+                </tr>
+              </thead>
+              <tbody id="appointmentTableBody" class="divide-y divide-slate-100">
+                <tr><td colspan="4" class="text-center py-6 text-slate-400 text-xs">Đang tải lịch hẹn...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ĐĂNG KÝ CA TRỰC & NGHỈ CHO TOÀN BỘ NHÂN SỰ -->
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Lịch Khám & Hẹn Bệnh Nhân</h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
-              <tr>
-                <th class="py-2.5 px-3">Thời gian</th>
-                <th class="py-2.5 px-3">Bệnh nhân</th>
-                <th class="py-2.5 px-3">Nội dung</th>
-                <th class="py-2.5 px-3">Bác sĩ</th>
-              </tr>
-            </thead>
-            <tbody id="appointmentTableBody" class="divide-y divide-slate-100">
-              <tr><td colspan="4" class="text-center py-6 text-slate-400 text-xs">Đang tải lịch hẹn...</td></tr>
-            </tbody>
-          </table>
+        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Lịch Trực & Đăng Ký Nghỉ Của Nhân Sự</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <form id="scheduleForm" class="lg:col-span-4 bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 text-xs">
+            <h3 class="font-bold text-slate-800 uppercase">Cập Nhật Ca Trực / Nghỉ</h3>
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Thành viên phòng khám *</label>
+              <select id="staffName" required class="w-full p-2 border rounded-lg bg-white font-semibold">
+                <optgroup label="1. Bác Sĩ">
+                  <option value="BS. Nguyễn Thị Kim Oanh">BS. Nguyễn Thị Kim Oanh (Giám đốc - Chỉnh nha)</option>
+                  <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh (CEO - Phẫu thuật)</option>
+                  <option value="BS. Âu Hồng Linh Đa">BS. Âu Hồng Linh Đa (Tổng quát)</option>
+                  <option value="BS. Lưu Minh Thanh">BS. Lưu Minh Thanh (Tổng quát)</option>
+                  <option value="BS. Trương Ngọc Tuyền">BS. Trương Ngọc Tuyền (Tổng quát)</option>
+                </optgroup>
+                <optgroup label="2. Trợ Thủ / Điều Dưỡng">
+                  <option value="Trợ thủ Lý Diệp Diễm Quỳnh">Lý Diệp Diễm Quỳnh</option>
+                  <option value="Trợ thủ Lý Phi Thương">Lý Phi Thương (Parttime)</option>
+                  <option value="Trợ thủ Phạm Gia Nguyễn Phúc">Phạm Gia Nguyễn Phúc (Parttime)</option>
+                </optgroup>
+                <optgroup label="3. Lễ Tân & CSKH">
+                  <option value="Nguyễn Hồng Nhi (Manager)">Nguyễn Hồng Nhi (Manager)</option>
+                  <option value="Nguyễn Lê Mẫn Thơ">Nguyễn Lê Mẫn Thơ</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Ngày áp dụng *</label>
+                <input type="date" id="scheduleDate" required class="w-full p-2 border rounded-lg bg-white" />
+              </div>
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Trạng thái *</label>
+                <select id="scheduleStatus" required class="w-full p-2 border rounded-lg bg-white font-bold text-rose-700">
+                  <option value="Nghỉ phép">Nghỉ phép (Chặn hẹn)</option>
+                  <option value="Làm việc">Làm việc (Trực khám)</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Ghi chú (Lý do)</label>
+              <input type="text" id="scheduleNotes" placeholder="Đi học, nghỉ phép cá nhân..." class="w-full p-2 border rounded-lg bg-white" />
+            </div>
+            <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-2 rounded-lg text-xs transition-colors">
+              + Lưu Lịch Trực / Nghỉ
+            </button>
+          </form>
+
+          <div class="lg:col-span-8 overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
+                <tr>
+                  <th class="py-2.5 px-3">Ngày</th>
+                  <th class="py-2.5 px-3">Nhân sự</th>
+                  <th class="py-2.5 px-3">Tình trạng</th>
+                  <th class="py-2.5 px-3">Lý do</th>
+                  <th class="py-2.5 px-3 text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="scheduleTableBody" class="divide-y divide-slate-100">
+                <tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Chưa có bản ghi nào.</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
@@ -632,22 +769,71 @@
     <!-- TAB 6: CHĂM SÓC KHÁCH HÀNG (CRM)              -->
     <!-- ============================================== -->
     <main id="crmTab" class="hidden space-y-6">
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Danh Sách Bệnh Nhân Cần Chăm Sóc & Follow-up</h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
-              <tr>
-                <th class="py-2.5 px-3">Ngày gọi</th>
-                <th class="py-2.5 px-3">Phân loại</th>
-                <th class="py-2.5 px-3">Bệnh nhân / SĐT</th>
-                <th class="py-2.5 px-3">Nội dung</th>
-              </tr>
-            </thead>
-            <tbody id="crmTableBody" class="divide-y divide-slate-100">
-              <tr><td colspan="4" class="text-center py-6 text-slate-400 text-xs">Đang tải danh sách chăm sóc...</td></tr>
-            </tbody>
-          </table>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Tạo Lịch Chăm Sóc / Follow-up</h2>
+          <form id="crmTaskForm" class="space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Bệnh nhân *</label>
+              <input type="text" id="crmPatientName" required placeholder="Tên bệnh nhân..." class="w-full p-2 border rounded-lg bg-white outline-none" />
+              <input type="hidden" id="crmPatientId" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Số điện thoại *</label>
+              <input type="tel" id="crmPatientPhone" required placeholder="0901234567" class="w-full p-2 border rounded-lg bg-white" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Phân loại chăm sóc *</label>
+              <select id="crmTaskType" required class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800">
+                <option value="Hậu phẫu 24h-48h">1. Hậu phẫu 24h-48h (Cấy Implant, Nhổ răng...)</option>
+                <option value="Chưa chốt phác đồ">2. Follow-up Chưa chốt phác đồ</option>
+                <option value="Chăm sóc 6 tháng">3. Nhắc tái khám định kỳ 6 tháng</option>
+                <option value="Khiếu nại/Phản hồi">4. Tiếp nhận Khiếu nại / Phản hồi</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Ngày cần gọi *</label>
+                <input type="date" id="crmDueDate" required class="w-full p-2 border rounded-lg bg-white font-semibold" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Người phụ trách</label>
+                <select id="crmAssignedTo" class="w-full p-2 border rounded-lg bg-white">
+                  <option value="Nguyễn Hồng Nhi (Manager)">Nguyễn Hồng Nhi (Manager)</option>
+                  <option value="Nguyễn Lê Mẫn Thơ">Nguyễn Lê Mẫn Thơ (Lễ tân/CSKH)</option>
+                  <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh</option>
+                  <option value="BS. Nguyễn Thị Kim Oanh">BS. Nguyễn Thị Kim Oanh</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nội dung chi tiết *</label>
+              <textarea id="crmContent" rows="3" required placeholder="Nội dung chăm sóc..." class="w-full p-2 border rounded-lg bg-white"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 rounded-lg text-xs transition-colors shadow">
+              + Thêm Vào Danh Sách Chăm Sóc
+            </button>
+          </form>
+        </div>
+
+        <div class="lg:col-span-8 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Danh Sách Bệnh Nhân Cần Chăm Sóc</h2>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
+                <tr>
+                  <th class="py-2.5 px-3">Ngày gọi</th>
+                  <th class="py-2.5 px-3">Phân loại</th>
+                  <th class="py-2.5 px-3">Bệnh nhân / SĐT</th>
+                  <th class="py-2.5 px-3">Nội dung</th>
+                  <th class="py-2.5 px-3 text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="crmTableBody" class="divide-y divide-slate-100">
+                <tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Đang tải danh sách chăm sóc...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
@@ -679,6 +865,10 @@
           <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
             <span class="text-[11px] font-bold uppercase text-emerald-700 block">Tổng Thu</span>
             <span id="kpiTotalRevenue" class="text-xl font-extrabold text-emerald-900">0 đ</span>
+          </div>
+          <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl">
+            <span class="text-[11px] font-bold uppercase text-rose-700 block">Tổng Chi</span>
+            <span id="kpiTotalExpense" class="text-xl font-extrabold text-rose-900">0 đ</span>
           </div>
         </div>
       </div>
@@ -773,10 +963,13 @@
       document.getElementById("quadrant2").innerHTML = q2.map(makeTooth).join('');
       document.getElementById("quadrant4").innerHTML = q4.map(makeTooth).join('');
       document.getElementById("quadrant3").innerHTML = q3.map(makeTooth).join('');
-      document.getElementById("payDate").valueAsDate = new Date();
-      document.getElementById("laboSentDate").valueAsDate = new Date();
-      const nextWeek = new Date(); nextWeek.setDate(nextWeek.getDate() + 5);
-      document.getElementById("laboDueDate").valueAsDate = nextWeek;
+      
+      if(document.getElementById("payDate")) document.getElementById("payDate").valueAsDate = new Date();
+      if(document.getElementById("laboSentDate")) document.getElementById("laboSentDate").valueAsDate = new Date();
+      if(document.getElementById("laboDueDate")) {
+        const nextWeek = new Date(); nextWeek.setDate(nextWeek.getDate() + 5);
+        document.getElementById("laboDueDate").valueAsDate = nextWeek;
+      }
     }
 
     // 2. TẢI BỆNH NHÂN (FALLBACK REST)
@@ -881,9 +1074,8 @@
         <span>Đang khám: <strong class="text-teal-800 uppercase">${patient.full_name}</strong> (${patient.phone})</span>
       `;
 
-      // Điền sẵn sang đơn Labo
-      document.getElementById("laboPatientName").value = patient.full_name;
-      document.getElementById("laboPatientId").value = patient.id;
+      if(document.getElementById("laboPatientName")) document.getElementById("laboPatientName").value = patient.full_name;
+      if(document.getElementById("laboPatientId")) document.getElementById("laboPatientId").value = patient.id;
 
       loadPatients(document.getElementById("searchInput")?.value || "");
       await loadDentalChart(patient.id);
@@ -994,9 +1186,7 @@
       await loadDentalChart(currentPatient.id);
     }
 
-    // ========================================================
-    // 6. PHÂN HỆ QUẢN LÝ LABO (GIAO - NHẬN PHỤC HÌNH) (MỚI)
-    // ========================================================
+    // 6. PHÂN HỆ QUẢN LÝ LABO
     function quickSendLaboFromClinical() {
       if (!currentPatient) {
         alert("Vui lòng chọn bệnh nhân ở danh sách bên trái trước khi gửi đơn Labo!");
@@ -1007,7 +1197,6 @@
       document.getElementById("laboPatientId").value = currentPatient.id;
       document.getElementById("laboDoctorName").value = document.getElementById("examDoctor")?.value || "BS. Nguyễn Thị Kim Oanh";
       
-      // Tự động tìm các răng có chỉ định Mão/Cầu/Implant
       const suggestedTeeth = Object.values(currentTeethData)
         .filter(t => t.condition.includes('Mão') || t.condition.includes('Implant') || t.treatment_plan.includes('sứ'))
         .map(t => 'R' + t.tooth_number)
@@ -1015,7 +1204,7 @@
       if (suggestedTeeth) document.getElementById("laboTeethNum").value = suggestedTeeth;
     }
 
-    document.getElementById("laboOrderForm").addEventListener("submit", async (e) => {
+    document.getElementById("laboOrderForm")?.addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("btnSaveLaboOrder");
       btn.disabled = true; btn.innerText = "Đang lưu...";
@@ -1078,23 +1267,24 @@
         }
       } catch(e){}
 
-      // Tính KPI Labo
       const allOrders = orders;
       const totalCount = allOrders.length;
       const pendingCount = allOrders.filter(o => o.status === 'Đang chế tác').length;
       const receivedCount = allOrders.filter(o => o.status === 'Đã về phòng khám').length;
       const totalCost = allOrders.reduce((sum, o) => sum + (Number(o.cost_price) || 0), 0);
 
-      document.getElementById("laboKpiTotal").innerText = totalCount;
-      document.getElementById("laboKpiPending").innerText = pendingCount;
-      document.getElementById("laboKpiReceived").innerText = receivedCount;
-      document.getElementById("laboKpiCost").innerText = totalCost.toLocaleString('vi-VN') + " đ";
+      if(document.getElementById("laboKpiTotal")) document.getElementById("laboKpiTotal").innerText = totalCount;
+      if(document.getElementById("laboKpiPending")) document.getElementById("laboKpiPending").innerText = pendingCount;
+      if(document.getElementById("laboKpiReceived")) document.getElementById("laboKpiReceived").innerText = receivedCount;
+      if(document.getElementById("laboKpiCost")) document.getElementById("laboKpiCost").innerText = totalCost.toLocaleString('vi-VN') + " đ";
 
       const badge = document.getElementById("laboBadgeCount");
-      if (pendingCount > 0) {
-        badge.innerText = pendingCount;
-        badge.classList.remove('hidden');
-      } else badge.classList.add('hidden');
+      if (badge) {
+        if (pendingCount > 0) {
+          badge.innerText = pendingCount;
+          badge.classList.remove('hidden');
+        } else badge.classList.add('hidden');
+      }
 
       if (orders.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Chưa có đơn Labo nào trong danh mục này.</td></tr>`;
@@ -1292,7 +1482,7 @@
       if (tab === 'labo') loadLaboOrders();
       else if (tab === 'pricing') loadServiceCatalog();
       else if (tab === 'inventory') loadInventoryItems();
-      else if (tab === 'schedule') loadAppointments();
+      else if (tab === 'schedule') { loadAppointments(); loadStaffSchedules(); }
       else if (tab === 'crm') loadCrmTasks();
       else if (tab === 'finance') loadFinancialData();
     }
@@ -1350,6 +1540,7 @@
 
     async function loadAppointments() {
       const tbody = document.getElementById("appointmentTableBody");
+      if (!tbody) return;
       let data = [];
       try {
         if (supabaseClient) {
@@ -1374,8 +1565,46 @@
       }
     }
 
+    async function loadStaffSchedules() {
+      const tbody = document.getElementById("scheduleTableBody");
+      if (!tbody) return;
+      let data = [];
+      try {
+        if (supabaseClient) {
+          const res = await supabaseClient.from('staff_schedules').select('*').order('work_date', { ascending: false }).limit(20);
+          if (res.data) data = res.data;
+        } else {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/staff_schedules?select=*&order=work_date.desc&limit=20`, { headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
+          if (res.ok) data = await res.json();
+        }
+      } catch(e){}
+      if (tbody) {
+        tbody.innerHTML = (!data || data.length === 0)
+          ? `<tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Chưa có lịch trực/nghỉ nào.</td></tr>`
+          : data.map(s => `
+            <tr class="hover:bg-slate-50">
+              <td class="py-2.5 px-3 font-semibold">${s.work_date}</td>
+              <td class="py-2.5 px-3 font-bold">${s.staff_name}</td>
+              <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.status === 'Nghỉ phép' ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'}">${s.status}</span></td>
+              <td class="py-2.5 px-3 text-slate-600">${s.notes || '—'}</td>
+              <td class="py-2.5 px-3 text-right"><button onclick="deleteSchedule('${s.id}')" class="text-rose-600 hover:underline">Xóa</button></td>
+            </tr>
+          `).join('');
+      }
+    }
+
+    async function deleteSchedule(id) {
+      if (!confirm("Xóa bản ghi này?")) return;
+      if (supabaseClient) await supabaseClient.from('staff_schedules').delete().eq('id', id);
+      else {
+        await fetch(`${SUPABASE_URL}/rest/v1/staff_schedules?id=eq.${id}`, { method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
+      }
+      loadStaffSchedules();
+    }
+
     async function loadCrmTasks() {
       const tbody = document.getElementById("crmTableBody");
+      if (!tbody) return;
       let data = [];
       try {
         if (supabaseClient) {
@@ -1412,7 +1641,7 @@
         }
       } catch(e){}
       const totalRev = pays.reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
-      document.getElementById("kpiTotalRevenue").innerText = totalRev.toLocaleString('vi-VN') + " đ";
+      if(document.getElementById("kpiTotalRevenue")) document.getElementById("kpiTotalRevenue").innerText = totalRev.toLocaleString('vi-VN') + " đ";
     }
 
     // XUẤT CSV CHO KẾ TOÁN

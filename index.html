@@ -3,201 +3,413 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quản Lý Phòng Khám Nha Khoa</title>
-  <!-- Tailwind CSS CDN -->
+  <title>Nha Khoa - Quản Lý Bệnh Án & Sơ Đồ Răng</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Supabase JS Client CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .tooth-box {
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    .tooth-box:hover {
+      transform: scale(1.08);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .tooth-implant { background-color: #0284c7 !important; color: white !important; border-color: #0369a1 !important; }
+    .tooth-decay { background-color: #e11d48 !important; color: white !important; border-color: #be123c !important; }
+    .tooth-missing { background-color: #cbd5e1 !important; color: #94a3b8 !important; text-decoration: line-through; border-color: #94a3b8 !important; }
+    .tooth-crown { background-color: #f59e0b !important; color: white !important; border-color: #d97706 !important; }
+    .tooth-done { background-color: #10b981 !important; color: white !important; border-color: #059669 !important; }
+  </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen">
 
-  <div class="max-w-6xl mx-auto p-4 md:p-8">
+  <div class="max-w-7xl mx-auto p-3 md:p-6 space-y-6">
+    
     <!-- Header -->
-    <header class="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 border-b border-slate-200 mb-8">
+    <header class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
       <div>
-        <h1 class="text-2xl md:text-3xl font-bold text-teal-800">Nha Khoa - Quản Lý Bệnh Án</h1>
-        <p class="text-sm text-slate-500 mt-1">Hệ thống hồ sơ bệnh nhân & lịch sử điều trị</p>
+        <h1 class="text-2xl font-bold text-teal-800">Hệ Thống Lâm Sàng Nha Khoa</h1>
+        <p class="text-xs md:text-sm text-slate-500 mt-1">Hồ sơ bệnh nhân & Sơ đồ răng tương tác (Odontogram FDI)</p>
       </div>
-      <div class="mt-4 md:mt-0 flex items-center space-x-2">
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-          ● Kết nối máy chủ trực tuyến
-        </span>
+      <div id="activePatientBanner" class="mt-3 md:mt-0 px-4 py-2 bg-slate-100 rounded-xl text-xs md:text-sm text-slate-600 font-medium">
+        Chưa chọn bệnh nhân nào
       </div>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      
-      <!-- Cột Trái: Form tiếp nhận bệnh nhân mới -->
-      <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 h-fit">
-        <h2 class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b">Tiếp Nhận Bệnh Nhân Mới</h2>
-        
-        <form id="patientForm" class="space-y-4">
-          <div>
-            <label class="block text-xs font-medium text-slate-700 mb-1">Họ và tên *</label>
-            <input type="text" id="fullName" required placeholder="Nguyễn Văn A" 
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm" />
-          </div>
+    <!-- Khu vực làm việc: 2 Cột -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <!-- CỘT TRÁI: DANH SÁCH BỆNH NHÂN & TẠO MỚI (4 cột) -->
+      <div class="lg:col-span-4 space-y-4">
+        
+        <!-- Form thêm nhanh -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+          <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Tiếp Nhận Bệnh Nhân</h2>
+          <form id="patientForm" class="space-y-3">
             <div>
-              <label class="block text-xs font-medium text-slate-700 mb-1">Số điện thoại *</label>
-              <input type="tel" id="phone" required placeholder="0901234567" 
-                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm" />
+              <label class="block text-xs text-slate-600 mb-1">Họ tên *</label>
+              <input type="text" id="fullName" required placeholder="Nguyễn Văn A" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 outline-none" />
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs text-slate-600 mb-1">Số điện thoại *</label>
+                <input type="tel" id="phone" required placeholder="0901234567" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs text-slate-600 mb-1">Ngày sinh</label>
+                <input type="date" id="dob" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 outline-none" />
+              </div>
             </div>
             <div>
-              <label class="block text-xs font-medium text-slate-700 mb-1">Ngày sinh</label>
-              <input type="date" id="dob" 
-                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm" />
+              <label class="block text-xs text-slate-600 mb-1">Tiền sử toàn thân / Cảnh báo</label>
+              <input type="text" id="medicalHistory" placeholder="Tiểu đường, dị ứng, cao HA..." class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 outline-none" />
             </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-medium text-slate-700 mb-1">Tiền sử toàn thân & Cảnh báo</label>
-            <textarea id="medicalHistory" rows="3" placeholder="Ví dụ: Tim mạch, tiểu đường, dị ứng Penicillin..." 
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm"></textarea>
-          </div>
-
-          <button type="submit" id="btnSubmit"
-            class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors text-sm shadow">
-            Lưu Hồ Sơ Bệnh Nhân
-          </button>
-        </form>
-      </section>
-
-      <!-- Cột Phải: Danh sách bệnh nhân & Tìm kiếm -->
-      <section class="lg:col-span-2 space-y-4">
-        
-        <!-- Thanh tìm kiếm nhanh -->
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
-          <input type="text" id="searchInput" placeholder="Tìm theo tên hoặc số điện thoại..." 
-            class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm" />
-          <button id="btnSearch" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-slate-900 transition-colors">
-            Tìm kiếm
-          </button>
+            <button type="submit" id="btnSavePatient" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 rounded-lg text-sm transition-colors">
+              + Tạo Hồ Sơ
+            </button>
+          </form>
         </div>
 
-        <!-- Bảng danh sách -->
+        <!-- Danh sách bệnh nhân -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-slate-900">Danh Sách Hồ Sơ</h2>
-            <button onclick="fetchPatients()" class="text-xs text-teal-600 hover:underline">Làm mới dữ liệu</button>
+          <div class="p-3 border-b border-slate-100 bg-slate-50">
+            <input type="text" id="searchInput" placeholder="Tìm tên hoặc SĐT..." class="w-full px-3 py-1.5 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-teal-500" />
+          </div>
+          <div id="patientList" class="divide-y divide-slate-100 max-h-[460px] overflow-y-auto text-sm">
+            <div class="p-4 text-center text-slate-400 text-xs">Đang tải danh sách...</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CỘT PHẢI: SƠ ĐỒ RĂNG & KẾ HOẠCH ĐIỀU TRỊ (8 cột) -->
+      <div class="lg:col-span-8 space-y-6">
+
+        <!-- Khung Odontogram -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-100 mb-4 gap-2">
+            <div>
+              <h2 class="text-base font-bold text-slate-900">Sơ Đồ Răng FDI (32 Răng)</h2>
+              <p class="text-xs text-slate-400">Nhấp vào từng răng để cập nhật bệnh lý và kế hoạch điều trị</p>
+            </div>
+            <!-- Chú thích màu -->
+            <div class="flex flex-wrap gap-2 text-[11px]">
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span> Sâu/Tủy</span>
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-sky-600"></span> Implant</span>
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Mão/Cầu</span>
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span> Mất răng</span>
+              <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Đã xong</span>
+            </div>
           </div>
 
+          <!-- Bàn răng Hàm Trên -->
+          <div class="mb-4">
+            <div class="text-[11px] font-bold text-center text-slate-400 mb-1 uppercase tracking-wider">Hàm Trên (Maxilla)</div>
+            <div class="flex justify-center gap-1 sm:gap-1.5 overflow-x-auto py-1">
+              <!-- Cung 1: 18 -> 11 -->
+              <div class="flex gap-1 border-r-2 border-slate-300 pr-1.5" id="quadrant1"></div>
+              <!-- Cung 2: 21 -> 28 -->
+              <div class="flex gap-1 pl-1.5" id="quadrant2"></div>
+            </div>
+          </div>
+
+          <!-- Bàn răng Hàm Dưới -->
+          <div>
+            <div class="flex justify-center gap-1 sm:gap-1.5 overflow-x-auto py-1">
+              <!-- Cung 4: 48 -> 41 -->
+              <div class="flex gap-1 border-r-2 border-slate-300 pr-1.5" id="quadrant4"></div>
+              <!-- Cung 3: 31 -> 38 -->
+              <div class="flex gap-1 pl-1.5" id="quadrant3"></div>
+            </div>
+            <div class="text-[11px] font-bold text-center text-slate-400 mt-1 uppercase tracking-wider">Hàm Dưới (Mandible)</div>
+          </div>
+        </div>
+
+        <!-- Bảng Kế Hoạch Điều Trị Chi Tiết Của Răng Đang Chọn / Tổng Thể -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+          <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Kế Hoạch & Tiến Trình Điều Trị Theo Răng</h2>
           <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-sm">
-              <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-medium">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-50 text-slate-500 uppercase text-[11px]">
                 <tr>
-                  <th class="py-3 px-4">Bệnh nhân</th>
-                  <th class="py-3 px-4">Số điện thoại</th>
-                  <th class="py-3 px-4">Tiền sử cảnh báo</th>
-                  <th class="py-3 px-4">Ngày tạo</th>
+                  <th class="py-2.5 px-3">Răng</th>
+                  <th class="py-2.5 px-3">Tình trạng / Chẩn đoán</th>
+                  <th class="py-2.5 px-3">Chỉ định điều trị</th>
+                  <th class="py-2.5 px-3">Trạng thái</th>
+                  <th class="py-2.5 px-3 text-right">Thao tác</th>
                 </tr>
               </thead>
-              <tbody id="patientTableBody" class="divide-y divide-slate-100">
+              <tbody id="treatmentPlanBody" class="divide-y divide-slate-100">
                 <tr>
-                  <td colspan="4" class="text-center py-8 text-slate-400">Đang tải dữ liệu...</td>
+                  <td colspan="5" class="text-center py-6 text-slate-400 text-xs">Vui lòng chọn một bệnh nhân để xem kế hoạch điều trị.</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-      </section>
+      </div>
 
     </div>
   </div>
 
+  <!-- MODAL: CẬP NHẬT RĂNG -->
+  <div id="toothModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-base font-bold text-slate-900">Chi Tiết Răng <span id="modalToothNumber" class="text-teal-600 text-lg">--</span></h3>
+        <button onclick="closeToothModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+      </div>
+      
+      <div class="space-y-3 text-xs sm:text-sm">
+        <div>
+          <label class="block text-slate-600 mb-1">Chẩn đoán / Tình trạng</label>
+          <select id="modalCondition" class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-teal-500">
+            <option value="Bình thường">Bình thường</option>
+            <option value="Sâu răng / Viêm tủy">Sâu răng / Viêm tủy</option>
+            <option value="Cấy Implant">Chỉ định Cấy Implant</option>
+            <option value="Mão sứ / Cầu răng">Mão sứ / Cầu răng</option>
+            <option value="Mất răng">Mất răng</option>
+            <option value="Răng khôn ngầm / lệch">Răng khôn ngầm / lệch</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-600 mb-1">Kế hoạch điều trị cụ thể</label>
+          <input type="text" id="modalPlan" placeholder="Ví dụ: Cấy trụ Straumann + Ghép xương..." class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+
+        <div>
+          <label class="block text-slate-600 mb-1">Trạng thái tiến độ</label>
+          <select id="modalStatus" class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-teal-500">
+            <option value="Chưa làm">Chưa làm</option>
+            <option value="Đang điều trị">Đang điều trị</option>
+            <option value="Đã hoàn thành">Đã hoàn thành</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t">
+        <button onclick="closeToothModal()" class="px-3 py-1.5 rounded-lg border text-slate-600 hover:bg-slate-50 text-xs">Hủy</button>
+        <button onclick="saveToothData()" class="px-4 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-medium text-xs">Lưu Dữ Liệu</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // 1. CẤU HÌNH KẾT NỐI SUPABASE
+    // 1. KẾT NỐI SUPABASE
     const SUPABASE_URL = "https://eqifvioqxgvnwhmxqtnx.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxaWZ2aW9xeGd2bndobXhxdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5MTA5NjksImV4cCI6MjEwNjQ4Njk2OX0.24tg4fbKNxeJ1kYSa1R8YcL27hKK0ga-dyEnP759aV8";
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // 2. HÀM TẢI DANH SÁCH BỆNH NHÂN
-    async function fetchPatients(keyword = "") {
-      const tbody = document.getElementById("patientTableBody");
-      
-      let query = supabaseClient
-        .from('patients')
-        .select('*')
-        .order('created_at', { ascending: false });
+    let currentPatient = null;
+    let currentTeethData = {};
 
-      if (keyword.trim()) {
-        query = query.or(`full_name.ilike.%${keyword}%,phone.ilike.%${keyword}%`);
+    // Định danh 32 răng FDI
+    const q1 = [18, 17, 16, 15, 14, 13, 12, 11];
+    const q2 = [21, 22, 23, 24, 25, 26, 27, 28];
+    const q4 = [48, 47, 46, 45, 44, 43, 42, 41];
+    const q3 = [31, 32, 33, 34, 35, 36, 37, 38];
+
+    // Vẽ giao diện răng
+    function renderOdontogramUI() {
+      const makeTooth = (num) => `
+        <div onclick="openToothModal(${num})" id="tooth-${num}" 
+             class="tooth-box w-8 h-10 sm:w-10 sm:h-12 border-2 border-slate-200 rounded-lg flex flex-col items-center justify-center bg-white text-slate-700 font-semibold text-xs shadow-xs">
+          <span>${num}</span>
+        </div>
+      `;
+      document.getElementById("quadrant1").innerHTML = q1.map(makeTooth).join('');
+      document.getElementById("quadrant2").innerHTML = q2.map(makeTooth).join('');
+      document.getElementById("quadrant4").innerHTML = q4.map(makeTooth).join('');
+      document.getElementById("quadrant3").innerHTML = q3.map(makeTooth).join('');
+    }
+
+    // Tải danh sách bệnh nhân
+    async function loadPatients(search = "") {
+      const listEl = document.getElementById("patientList");
+      let query = supabaseClient.from('patients').select('*').order('created_at', { ascending: false });
+      if (search.trim()) {
+        query = query.or(`full_name.ilike.%${search}%,phone.ilike.%${search}%`);
       }
-
       const { data, error } = await query;
+      if (error) {
+        listEl.innerHTML = `<div class="p-4 text-center text-rose-500 text-xs">Lỗi: ${error.message}</div>`;
+        return;
+      }
+      if (!data || data.length === 0) {
+        listEl.innerHTML = `<div class="p-4 text-center text-slate-400 text-xs">Không có bệnh nhân nào.</div>`;
+        return;
+      }
+      listEl.innerHTML = data.map(p => `
+        <div onclick="selectPatient('${p.id}', '${p.full_name}', '${p.phone}', '${p.medical_history || ''}')" 
+             class="p-3 hover:bg-teal-50 cursor-pointer transition-colors ${currentPatient?.id === p.id ? 'bg-teal-50 border-l-4 border-teal-600' : ''}">
+          <div class="font-semibold text-slate-800 text-xs sm:text-sm">${p.full_name}</div>
+          <div class="text-[11px] text-slate-500">${p.phone}</div>
+          ${p.medical_history ? `<div class="text-[10px] text-rose-600 mt-0.5 truncate">⚠️ ${p.medical_history}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Chọn 1 bệnh nhân để làm việc
+    async function selectPatient(id, name, phone, history) {
+      currentPatient = { id, name, phone, history };
+      document.getElementById("activePatientBanner").innerHTML = `
+        Đang khám: <strong class="text-teal-800">${name}</strong> (${phone}) 
+        ${history ? `<span class="text-rose-600 font-bold ml-1">[Cảnh báo: ${history}]</span>` : ''}
+      `;
+      loadPatients(document.getElementById("searchInput").value);
+      await loadDentalChart(id);
+    }
+
+    // Tải dữ liệu răng của bệnh nhân
+    async function loadDentalChart(patientId) {
+      // Reset giao diện răng về mặc định
+      document.querySelectorAll('.tooth-box').forEach(el => {
+        el.className = "tooth-box w-8 h-10 sm:w-10 sm:h-12 border-2 border-slate-200 rounded-lg flex flex-col items-center justify-center bg-white text-slate-700 font-semibold text-xs shadow-xs";
+      });
+
+      const { data, error } = await supabaseClient
+        .from('dental_chart')
+        .select('*')
+        .eq('patient_id', patientId);
+
+      currentTeethData = {};
+      const planBody = document.getElementById("treatmentPlanBody");
 
       if (error) {
-        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-rose-500">Lỗi: ${error.message}</td></tr>`;
+        planBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-rose-500">Lỗi: ${error.message}</td></tr>`;
         return;
       }
 
       if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-8 text-slate-400">Chưa có dữ liệu bệnh nhân nào.</td></tr>`;
+        planBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Tất cả 32 răng bình thường hoặc chưa lập kế hoạch.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = data.map(pt => `
-        <tr class="hover:bg-slate-50 transition-colors">
-          <td class="py-3 px-4 font-medium text-slate-900">
-            ${pt.full_name}
-            ${pt.dob ? `<div class="text-xs text-slate-400 font-normal">NS: ${pt.dob}</div>` : ''}
-          </td>
-          <td class="py-3 px-4 text-slate-600">${pt.phone}</td>
-          <td class="py-3 px-4">
-            ${pt.medical_history 
-              ? `<span class="inline-block bg-amber-50 text-amber-700 px-2 py-0.5 rounded text-xs border border-amber-200">${pt.medical_history}</span>` 
-              : '<span class="text-slate-400 text-xs">Không</span>'}
-          </td>
-          <td class="py-3 px-4 text-slate-400 text-xs">
-            ${new Date(pt.created_at).toLocaleDateString('vi-VN')}
-          </td>
-        </tr>
-      `).join('');
+      // Tô màu răng & hiển thị bảng kế hoạch
+      let planRows = "";
+      data.forEach(item => {
+        currentTeethData[item.tooth_number] = item;
+        const toothEl = document.getElementById(`tooth-${item.tooth_number}`);
+        if (toothEl) {
+          if (item.status === 'Đã hoàn thành') toothEl.classList.add('tooth-done');
+          else if (item.condition.includes('Implant')) toothEl.classList.add('tooth-implant');
+          else if (item.condition.includes('Sâu') || item.condition.includes('tủy')) toothEl.classList.add('tooth-decay');
+          else if (item.condition.includes('Mất răng')) toothEl.classList.add('tooth-missing');
+          else if (item.condition.includes('Mão') || item.condition.includes('Cầu')) toothEl.classList.add('tooth-crown');
+          else toothEl.classList.add('bg-slate-100');
+        }
+
+        planRows += `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2.5 px-3 font-bold text-teal-700">Răng ${item.tooth_number}</td>
+            <td class="py-2.5 px-3">${item.condition}</td>
+            <td class="py-2.5 px-3 font-medium text-slate-800">${item.treatment_plan || '—'}</td>
+            <td class="py-2.5 px-3">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold 
+                ${item.status === 'Đã hoàn thành' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+                ${item.status}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 text-right">
+              <button onclick="openToothModal(${item.tooth_number})" class="text-teal-600 hover:underline">Sửa</button>
+            </td>
+          </tr>
+        `;
+      });
+      planBody.innerHTML = planRows;
     }
 
-    // 3. XỬ LÝ LƯU BỆNH NHÂN
+    // Mở Modal chỉnh sửa răng
+    let activeToothNum = null;
+    function openToothModal(toothNum) {
+      if (!currentPatient) {
+        alert("Vui lòng nhấp chọn một bệnh nhân ở danh sách bên trái trước khi khám răng!");
+        return;
+      }
+      activeToothNum = toothNum;
+      document.getElementById("modalToothNumber").innerText = toothNum;
+      const exist = currentTeethData[toothNum];
+      document.getElementById("modalCondition").value = exist ? exist.condition : "Bình thường";
+      document.getElementById("modalPlan").value = exist ? (exist.treatment_plan || "") : "";
+      document.getElementById("modalStatus").value = exist ? (exist.status || "Chưa làm") : "Chưa làm";
+      document.getElementById("toothModal").classList.remove("hidden");
+    }
+
+    function closeToothModal() {
+      document.getElementById("toothModal").classList.add("hidden");
+    }
+
+    // Lưu dữ liệu răng
+    async function saveToothData() {
+      const condition = document.getElementById("modalCondition").value;
+      const plan = document.getElementById("modalPlan").value.trim();
+      const status = document.getElementById("modalStatus").value;
+
+      if (condition === "Bình thường" && !plan) {
+        // Xóa khỏi bảng nếu trở về bình thường
+        await supabaseClient.from('dental_chart').delete().match({ patient_id: currentPatient.id, tooth_number: activeToothNum });
+      } else {
+        // Cập nhật hoặc thêm mới
+        const payload = {
+          patient_id: currentPatient.id,
+          tooth_number: activeToothNum,
+          condition: condition,
+          treatment_plan: plan,
+          status: status
+        };
+        const { error } = await supabaseClient.from('dental_chart').upsert(payload, { onConflict: 'patient_id,tooth_number' });
+        if (error) {
+          // Fallback nếu chưa set composite unique: xóa rồi thêm lại
+          await supabaseClient.from('dental_chart').delete().match({ patient_id: currentPatient.id, tooth_number: activeToothNum });
+          await supabaseClient.from('dental_chart').insert([payload]);
+        }
+      }
+
+      closeToothModal();
+      loadDentalChart(currentPatient.id);
+    }
+
+    // Lưu bệnh nhân mới
     document.getElementById("patientForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const btn = document.getElementById("btnSubmit");
-      btn.disabled = true;
+      const btn = document.getElementById("btnSavePatient");
       btn.innerText = "Đang lưu...";
+      btn.disabled = true;
 
-      const newPatient = {
+      const payload = {
         full_name: document.getElementById("fullName").value.trim(),
         phone: document.getElementById("phone").value.trim(),
         dob: document.getElementById("dob").value || null,
         medical_history: document.getElementById("medicalHistory").value.trim() || null
       };
 
-      const { error } = await supabaseClient.from('patients').insert([newPatient]);
+      const { data, error } = await supabaseClient.from('patients').insert([payload]).select();
+      btn.innerText = "+ Tạo Hồ Sơ";
+      btn.disabled = false;
 
       if (error) {
-        alert("Lỗi khi thêm bệnh nhân: " + error.message);
+        alert("Lỗi: " + error.message);
       } else {
         document.getElementById("patientForm").reset();
-        fetchPatients();
-      }
-
-      btn.disabled = false;
-      btn.innerText = "Lưu Hồ Sơ Bệnh Nhân";
-    });
-
-    // 4. XỬ LÝ TÌM KIẾM
-    document.getElementById("btnSearch").addEventListener("click", () => {
-      const val = document.getElementById("searchInput").value;
-      fetchPatients(val);
-    });
-    
-    document.getElementById("searchInput").addEventListener("keyup", (e) => {
-      if (e.key === "Enter") {
-        fetchPatients(e.target.value);
+        loadPatients();
+        if (data && data[0]) {
+          selectPatient(data[0].id, data[0].full_name, data[0].phone, data[0].medical_history);
+        }
       }
     });
 
-    // Tự động tải dữ liệu ban đầu khi mở trang
-    fetchPatients();
+    // Tìm kiếm
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      loadPatients(e.target.value);
+    });
+
+    // Khởi tạo
+    renderOdontogramUI();
+    loadPatients();
   </script>
 </body>
 </html>

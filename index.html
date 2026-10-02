@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nha Khoa - Quản Lý Bệnh Án & Sơ Đồ Răng</title>
+  <title>Nha Khoa - Quản Lý Bệnh Án & Lâm Sàng</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
@@ -30,21 +30,21 @@
     <!-- Header -->
     <header class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
       <div>
-        <h1 class="text-2xl font-bold text-teal-800">Hệ Thống Lâm Sàng Nha Khoa</h1>
-        <p class="text-xs md:text-sm text-slate-500 mt-1">Hồ sơ bệnh nhân & Sơ đồ răng tương tác (Odontogram FDI)</p>
+        <h1 class="text-2xl font-bold text-teal-800">Hệ Thống Quản Lý Phòng Khám</h1>
+        <p class="text-xs md:text-sm text-slate-500 mt-1">Hồ sơ bệnh án, Sơ đồ răng FDI & Nhật ký lâm sàng</p>
       </div>
       <div id="activePatientBanner" class="mt-3 md:mt-0 px-4 py-2 bg-slate-100 rounded-xl text-xs md:text-sm text-slate-600 font-medium">
         Chưa chọn bệnh nhân nào
       </div>
     </header>
 
-    <!-- Khu vực làm việc: 2 Cột -->
+    <!-- Layout 2 Cột -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-      <!-- CỘT TRÁI: DANH SÁCH BỆNH NHÂN & TẠO MỚI (4 cột) -->
+      <!-- CỘT TRÁI: TIẾP NHẬN & DANH SÁCH BỆNH NHÂN (4 Cột) -->
       <div class="lg:col-span-4 space-y-4">
         
-        <!-- Form thêm nhanh -->
+        <!-- Form thêm bệnh nhân -->
         <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Tiếp Nhận Bệnh Nhân</h2>
           <form id="patientForm" class="space-y-3">
@@ -63,11 +63,11 @@
               </div>
             </div>
             <div>
-              <label class="block text-xs text-slate-600 mb-1">Tiền sử toàn thân / Cảnh báo</label>
-              <input type="text" id="medicalHistory" placeholder="Tiểu đường, dị ứng, cao HA..." class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 outline-none" />
+              <label class="block text-xs text-slate-600 mb-1">Tiền sử toàn thân / Cảnh báo y khoa</label>
+              <input type="text" id="medicalHistory" placeholder="Tiểu đường, dị ứng thuốc, cao HA..." class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 outline-none" />
             </div>
-            <button type="submit" id="btnSavePatient" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 rounded-lg text-sm transition-colors">
-              + Tạo Hồ Sơ
+            <button type="submit" id="btnSavePatient" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 rounded-lg text-sm transition-colors shadow">
+              + Tạo Hồ Sơ Bệnh Nhân
             </button>
           </form>
         </div>
@@ -77,24 +77,24 @@
           <div class="p-3 border-b border-slate-100 bg-slate-50">
             <input type="text" id="searchInput" placeholder="Tìm tên hoặc SĐT..." class="w-full px-3 py-1.5 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-teal-500" />
           </div>
-          <div id="patientList" class="divide-y divide-slate-100 max-h-[460px] overflow-y-auto text-sm">
+          <div id="patientList" class="divide-y divide-slate-100 max-h-[500px] overflow-y-auto text-sm">
             <div class="p-4 text-center text-slate-400 text-xs">Đang tải danh sách...</div>
           </div>
         </div>
 
       </div>
 
-      <!-- CỘT PHẢI: SƠ ĐỒ RĂNG & KẾ HOẠCH ĐIỀU TRỊ (8 cột) -->
+      <!-- CỘT PHẢI: KHÁM LÂM SÀNG, SƠ ĐỒ RĂNG & NHẬT KÝ ĐIỀU TRỊ (8 Cột) -->
       <div class="lg:col-span-8 space-y-6">
 
-        <!-- Khung Odontogram -->
+        <!-- SƠ ĐỒ RĂNG -->
         <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-100 mb-4 gap-2">
             <div>
               <h2 class="text-base font-bold text-slate-900">Sơ Đồ Răng FDI (32 Răng)</h2>
-              <p class="text-xs text-slate-400">Nhấp vào từng răng để cập nhật bệnh lý và kế hoạch điều trị</p>
+              <p class="text-xs text-slate-400">Nhấp vào từng răng để cập nhật bệnh lý & kế hoạch</p>
             </div>
-            <!-- Chú thích màu -->
+            <!-- Chú thích -->
             <div class="flex flex-wrap gap-2 text-[11px]">
               <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span> Sâu/Tủy</span>
               <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-sky-600"></span> Implant</span>
@@ -104,49 +104,87 @@
             </div>
           </div>
 
-          <!-- Bàn răng Hàm Trên -->
+          <!-- Hàm Trên -->
           <div class="mb-4">
-            <div class="text-[11px] font-bold text-center text-slate-400 mb-1 uppercase tracking-wider">Hàm Trên (Maxilla)</div>
+            <div class="text-[11px] font-bold text-center text-slate-400 mb-1 uppercase tracking-wider">Hàm Trên</div>
             <div class="flex justify-center gap-1 sm:gap-1.5 overflow-x-auto py-1">
-              <!-- Cung 1: 18 -> 11 -->
               <div class="flex gap-1 border-r-2 border-slate-300 pr-1.5" id="quadrant1"></div>
-              <!-- Cung 2: 21 -> 28 -->
               <div class="flex gap-1 pl-1.5" id="quadrant2"></div>
             </div>
           </div>
 
-          <!-- Bàn răng Hàm Dưới -->
+          <!-- Hàm Dưới -->
           <div>
             <div class="flex justify-center gap-1 sm:gap-1.5 overflow-x-auto py-1">
-              <!-- Cung 4: 48 -> 41 -->
               <div class="flex gap-1 border-r-2 border-slate-300 pr-1.5" id="quadrant4"></div>
-              <!-- Cung 3: 31 -> 38 -->
               <div class="flex gap-1 pl-1.5" id="quadrant3"></div>
             </div>
-            <div class="text-[11px] font-bold text-center text-slate-400 mt-1 uppercase tracking-wider">Hàm Dưới (Mandible)</div>
+            <div class="text-[11px] font-bold text-center text-slate-400 mt-1 uppercase tracking-wider">Hàm Dưới</div>
           </div>
         </div>
 
-        <!-- Bảng Kế Hoạch Điều Trị Chi Tiết Của Răng Đang Chọn / Tổng Thể -->
+        <!-- BẢNG KẾ HOẠCH ĐIỀU TRỊ THEO RĂNG -->
         <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-          <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Kế Hoạch & Tiến Trình Điều Trị Theo Răng</h2>
+          <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Kế Hoạch Điều Trị Răng</h2>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs sm:text-sm">
               <thead class="bg-slate-50 text-slate-500 uppercase text-[11px]">
                 <tr>
                   <th class="py-2.5 px-3">Răng</th>
-                  <th class="py-2.5 px-3">Tình trạng / Chẩn đoán</th>
-                  <th class="py-2.5 px-3">Chỉ định điều trị</th>
+                  <th class="py-2.5 px-3">Chẩn đoán</th>
+                  <th class="py-2.5 px-3">Kế hoạch</th>
                   <th class="py-2.5 px-3">Trạng thái</th>
-                  <th class="py-2.5 px-3 text-right">Thao tác</th>
+                  <th class="py-2.5 px-3 text-right">Sửa</th>
                 </tr>
               </thead>
               <tbody id="treatmentPlanBody" class="divide-y divide-slate-100">
                 <tr>
-                  <td colspan="5" class="text-center py-6 text-slate-400 text-xs">Vui lòng chọn một bệnh nhân để xem kế hoạch điều trị.</td>
+                  <td colspan="5" class="text-center py-4 text-slate-400 text-xs">Chưa chọn bệnh nhân.</td>
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- NHẬT KÝ ĐIỀU TRỊ TỪNG BUỔI (CLINICAL RECORDS) -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <div class="flex justify-between items-center border-b pb-3">
+            <div>
+              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Nhật Ký Khám & Điều Trị Từng Buổi</h2>
+              <p class="text-xs text-slate-400">Ghi nhận tiến trình thực hiện và đơn thuốc</p>
+            </div>
+          </div>
+
+          <!-- Form nhập buổi khám mới -->
+          <form id="recordForm" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Ngày điều trị</label>
+                <input type="date" id="recordDate" required class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Hẹn tái khám (nếu có)</label>
+                <input type="date" id="recordNextDate" class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-700 mb-1">Nội dung / Thủ thuật đã thực hiện *</label>
+              <textarea id="recordDone" rows="2" required placeholder="Ví dụ: Răng 46 gây tê Spix, mở tủy, đo chiều dài làm việc..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-700 mb-1">Đơn thuốc & Dặn dò bệnh nhân</label>
+              <input type="text" id="recordPrescription" placeholder="Ví dụ: Amox 500mg x 14v, Paracetamol 500mg, chườm lạnh 24h..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
+            </div>
+            <div class="text-right">
+              <button type="submit" id="btnSaveRecord" class="bg-slate-800 hover:bg-slate-900 text-white font-medium px-4 py-2 rounded-lg text-xs transition-colors">
+                + Lưu Buổi Điều Trị
+              </button>
+            </div>
+          </form>
+
+          <!-- Danh sách các buổi khám trước đây (Timeline) -->
+          <div id="recordsTimeline" class="space-y-3 pt-2">
+            <div class="text-center py-4 text-slate-400 text-xs">Chưa có nhật ký điều trị.</div>
           </div>
         </div>
 
@@ -199,7 +237,7 @@
   </div>
 
   <script>
-    // 1. KẾT NỐI SUPABASE
+    // 1. SUPABASE CONFIG
     const SUPABASE_URL = "https://eqifvioqxgvnwhmxqtnx.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxaWZ2aW9xeGd2bndobXhxdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5MTA5NjksImV4cCI6MjEwNjQ4Njk2OX0.24tg4fbKNxeJ1kYSa1R8YcL27hKK0ga-dyEnP759aV8";
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -207,13 +245,12 @@
     let currentPatient = null;
     let currentTeethData = {};
 
-    // Định danh 32 răng FDI
     const q1 = [18, 17, 16, 15, 14, 13, 12, 11];
     const q2 = [21, 22, 23, 24, 25, 26, 27, 28];
     const q4 = [48, 47, 46, 45, 44, 43, 42, 41];
     const q3 = [31, 32, 33, 34, 35, 36, 37, 38];
 
-    // Vẽ giao diện răng
+    // Khởi tạo sơ đồ răng
     function renderOdontogramUI() {
       const makeTooth = (num) => `
         <div onclick="openToothModal(${num})" id="tooth-${num}" 
@@ -225,9 +262,10 @@
       document.getElementById("quadrant2").innerHTML = q2.map(makeTooth).join('');
       document.getElementById("quadrant4").innerHTML = q4.map(makeTooth).join('');
       document.getElementById("quadrant3").innerHTML = q3.map(makeTooth).join('');
+      document.getElementById("recordDate").valueAsDate = new Date();
     }
 
-    // Tải danh sách bệnh nhân
+    // Danh sách bệnh nhân
     async function loadPatients(search = "") {
       const listEl = document.getElementById("patientList");
       let query = supabaseClient.from('patients').select('*').order('created_at', { ascending: false });
@@ -245,7 +283,7 @@
       }
       listEl.innerHTML = data.map(p => `
         <div onclick="selectPatient('${p.id}', '${p.full_name}', '${p.phone}', '${p.medical_history || ''}')" 
-             class="p-3 hover:bg-teal-50 cursor-pointer transition-colors ${currentPatient?.id === p.id ? 'bg-teal-50 border-l-4 border-teal-600' : ''}">
+             class="p-3 hover:bg-teal-50 cursor-pointer transition-colors ${String(currentPatient?.id) === String(p.id) ? 'bg-teal-50 border-l-4 border-teal-600' : ''}">
           <div class="font-semibold text-slate-800 text-xs sm:text-sm">${p.full_name}</div>
           <div class="text-[11px] text-slate-500">${p.phone}</div>
           ${p.medical_history ? `<div class="text-[10px] text-rose-600 mt-0.5 truncate">⚠️ ${p.medical_history}</div>` : ''}
@@ -253,20 +291,20 @@
       `).join('');
     }
 
-    // Chọn 1 bệnh nhân để làm việc
+    // Chọn bệnh nhân
     async function selectPatient(id, name, phone, history) {
-      currentPatient = { id, name, phone, history };
+      currentPatient = { id: String(id), name, phone, history };
       document.getElementById("activePatientBanner").innerHTML = `
         Đang khám: <strong class="text-teal-800">${name}</strong> (${phone}) 
         ${history ? `<span class="text-rose-600 font-bold ml-1">[Cảnh báo: ${history}]</span>` : ''}
       `;
       loadPatients(document.getElementById("searchInput").value);
-      await loadDentalChart(id);
+      await loadDentalChart(currentPatient.id);
+      await loadClinicalRecords(currentPatient.id);
     }
 
-    // Tải dữ liệu răng của bệnh nhân
+    // Tải sơ đồ răng
     async function loadDentalChart(patientId) {
-      // Reset giao diện răng về mặc định
       document.querySelectorAll('.tooth-box').forEach(el => {
         el.className = "tooth-box w-8 h-10 sm:w-10 sm:h-12 border-2 border-slate-200 rounded-lg flex flex-col items-center justify-center bg-white text-slate-700 font-semibold text-xs shadow-xs";
       });
@@ -274,22 +312,16 @@
       const { data, error } = await supabaseClient
         .from('dental_chart')
         .select('*')
-        .eq('patient_id', patientId);
+        .eq('patient_id', String(patientId));
 
       currentTeethData = {};
       const planBody = document.getElementById("treatmentPlanBody");
 
-      if (error) {
-        planBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-rose-500">Lỗi: ${error.message}</td></tr>`;
+      if (error || !data || data.length === 0) {
+        planBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Tất cả răng bình thường hoặc chưa lập kế hoạch.</td></tr>`;
         return;
       }
 
-      if (!data || data.length === 0) {
-        planBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Tất cả 32 răng bình thường hoặc chưa lập kế hoạch.</td></tr>`;
-        return;
-      }
-
-      // Tô màu răng & hiển thị bảng kế hoạch
       let planRows = "";
       data.forEach(item => {
         currentTeethData[item.tooth_number] = item;
@@ -323,11 +355,11 @@
       planBody.innerHTML = planRows;
     }
 
-    // Mở Modal chỉnh sửa răng
+    // Modal răng
     let activeToothNum = null;
     function openToothModal(toothNum) {
       if (!currentPatient) {
-        alert("Vui lòng nhấp chọn một bệnh nhân ở danh sách bên trái trước khi khám răng!");
+        alert("Vui lòng chọn bệnh nhân trước khi khám răng!");
         return;
       }
       activeToothNum = toothNum;
@@ -343,37 +375,89 @@
       document.getElementById("toothModal").classList.add("hidden");
     }
 
-    // Lưu dữ liệu răng
     async function saveToothData() {
       const condition = document.getElementById("modalCondition").value;
       const plan = document.getElementById("modalPlan").value.trim();
       const status = document.getElementById("modalStatus").value;
 
-      if (condition === "Bình thường" && !plan) {
-        // Xóa khỏi bảng nếu trở về bình thường
-        await supabaseClient.from('dental_chart').delete().match({ patient_id: currentPatient.id, tooth_number: activeToothNum });
-      } else {
-        // Cập nhật hoặc thêm mới
-        const payload = {
+      await supabaseClient.from('dental_chart').delete().match({ patient_id: currentPatient.id, tooth_number: activeToothNum });
+      
+      if (condition !== "Bình thường" || plan) {
+        await supabaseClient.from('dental_chart').insert([{
           patient_id: currentPatient.id,
           tooth_number: activeToothNum,
           condition: condition,
           treatment_plan: plan,
           status: status
-        };
-        const { error } = await supabaseClient.from('dental_chart').upsert(payload, { onConflict: 'patient_id,tooth_number' });
-        if (error) {
-          // Fallback nếu chưa set composite unique: xóa rồi thêm lại
-          await supabaseClient.from('dental_chart').delete().match({ patient_id: currentPatient.id, tooth_number: activeToothNum });
-          await supabaseClient.from('dental_chart').insert([payload]);
-        }
+        }]);
       }
 
       closeToothModal();
       loadDentalChart(currentPatient.id);
     }
 
-    // Lưu bệnh nhân mới
+    // TẢI NHẬT KÝ ĐIỀU TRỊ (TIMELINE)
+    async function loadClinicalRecords(patientId) {
+      const container = document.getElementById("recordsTimeline");
+      const { data, error } = await supabaseClient
+        .from('clinical_records')
+        .select('*')
+        .eq('patient_id', String(patientId))
+        .order('visit_date', { ascending: false });
+
+      if (error || !data || data.length === 0) {
+        container.innerHTML = `<div class="text-center py-4 text-slate-400 text-xs">Chưa có lịch sử điều trị cho bệnh nhân này.</div>`;
+        return;
+      }
+
+      container.innerHTML = data.map(rec => `
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-teal-800">📅 Ngày khám: ${rec.visit_date}</span>
+            ${rec.next_appointment ? `<span class="bg-amber-50 text-amber-700 px-2 py-0.5 rounded text-[11px] border border-amber-200 font-medium">Hẹn lại: ${rec.next_appointment}</span>` : ''}
+          </div>
+          <div class="text-xs text-slate-800 font-medium">Thủ thuật: <span class="font-normal text-slate-700">${rec.treatment_done}</span></div>
+          ${rec.prescription ? `<div class="text-xs text-slate-500 bg-white p-2 rounded border border-slate-100">💊 <strong>Đơn thuốc & Dặn dò:</strong> ${rec.prescription}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // LƯU BUỔI KHÁM MỚI
+    document.getElementById("recordForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentPatient) {
+        alert("Vui lòng chọn một bệnh nhân trước khi lưu buổi khám!");
+        return;
+      }
+
+      const btn = document.getElementById("btnSaveRecord");
+      btn.disabled = true;
+      btn.innerText = "Đang lưu...";
+
+      const payload = {
+        patient_id: currentPatient.id,
+        visit_date: document.getElementById("recordDate").value,
+        treatment_done: document.getElementById("recordDone").value.trim(),
+        prescription: document.getElementById("recordPrescription").value.trim() || null,
+        next_appointment: document.getElementById("recordNextDate").value || null
+      };
+
+      const { error } = await supabaseClient.from('clinical_records').insert([payload]);
+
+      btn.disabled = false;
+      btn.innerText = "+ Lưu Buổi Điều Trị";
+
+      if (error) {
+        alert("Lỗi lưu bệnh án: " + error.message);
+      } else {
+        document.getElementById("recordDone").value = "";
+        document.getElementById("recordPrescription").value = "";
+        document.getElementById("recordNextDate").value = "";
+        loadClinicalRecords(currentPatient.id);
+      }
+    });
+
+    // Tạo bệnh nhân mới
     document.getElementById("patientForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("btnSavePatient");
@@ -388,7 +472,7 @@
       };
 
       const { data, error } = await supabaseClient.from('patients').insert([payload]).select();
-      btn.innerText = "+ Tạo Hồ Sơ";
+      btn.innerText = "+ Tạo Hồ Sơ Bệnh Nhân";
       btn.disabled = false;
 
       if (error) {
@@ -407,7 +491,7 @@
       loadPatients(e.target.value);
     });
 
-    // Khởi tạo
+    // Chạy khi khởi động
     renderOdontogramUI();
     loadPatients();
   </script>

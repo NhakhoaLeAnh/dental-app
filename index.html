@@ -21,6 +21,21 @@
     .tooth-missing { background-color: #cbd5e1 !important; color: #94a3b8 !important; text-decoration: line-through; border-color: #94a3b8 !important; }
     .tooth-crown { background-color: #f59e0b !important; color: white !important; border-color: #d97706 !important; }
     .tooth-done { background-color: #10b981 !important; color: white !important; border-color: #059669 !important; }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printReceiptArea, #printReceiptArea * {
+        visibility: visible;
+      }
+      #printReceiptArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen">
@@ -31,7 +46,7 @@
     <header class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
       <div>
         <h1 class="text-2xl font-bold text-teal-800">Hệ Thống Lâm Sàng Nha Khoa</h1>
-        <p class="text-xs md:text-sm text-slate-500 mt-1">Hồ sơ bệnh nhân • Sơ đồ răng FDI • Nhật ký điều trị • Phim & Hình ảnh</p>
+        <p class="text-xs md:text-sm text-slate-500 mt-1">Hồ sơ bệnh nhân • Sơ đồ răng • Nhật ký điều trị • Phim ảnh • Viện phí & Công nợ</p>
       </div>
       <div id="activePatientBanner" class="mt-3 md:mt-0 px-4 py-2 bg-slate-100 rounded-xl text-xs md:text-sm text-slate-600 font-medium">
         Chưa chọn bệnh nhân nào
@@ -77,14 +92,14 @@
           <div class="p-3 border-b border-slate-100 bg-slate-50">
             <input type="text" id="searchInput" placeholder="Tìm tên hoặc SĐT..." class="w-full px-3 py-1.5 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-teal-500" />
           </div>
-          <div id="patientList" class="divide-y divide-slate-100 max-h-[520px] overflow-y-auto text-sm">
+          <div id="patientList" class="divide-y divide-slate-100 max-h-[550px] overflow-y-auto text-sm">
             <div class="p-4 text-center text-slate-400 text-xs">Đang tải danh sách...</div>
           </div>
         </div>
 
       </div>
 
-      <!-- CỘT PHẢI: KHÁM LÂM SÀNG, SƠ ĐỒ RĂNG, NHẬT KÝ & PHIM ẢNH (8 Cột) -->
+      <!-- CỘT PHẢI: TOÀN BỘ PHÂN HỆ ĐIỀU TRỊ & TÀI CHÍNH (8 Cột) -->
       <div class="lg:col-span-8 space-y-6">
 
         <!-- 1. SƠ ĐỒ RĂNG -->
@@ -167,11 +182,11 @@
             </div>
             <div>
               <label class="block text-xs font-medium text-slate-700 mb-1">Nội dung / Thủ thuật đã thực hiện *</label>
-              <textarea id="recordDone" rows="2" required placeholder="Ví dụ: Răng 46 gây tê Spix, mở tủy, đo chiều dài làm việc..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white"></textarea>
+              <textarea id="recordDone" rows="2" required placeholder="Ví dụ: Răng 46 cấy trụ Straumann BLT 4.1x10mm, ghép xương..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white"></textarea>
             </div>
             <div>
               <label class="block text-xs font-medium text-slate-700 mb-1">Đơn thuốc & Dặn dò bệnh nhân</label>
-              <input type="text" id="recordPrescription" placeholder="Ví dụ: Amox 500mg, chườm lạnh..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
+              <input type="text" id="recordPrescription" placeholder="Ví dụ: Augmentin 1g, Efferalgan codein, chườm đá..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
             </div>
             <div class="text-right">
               <button type="submit" id="btnSaveRecord" class="bg-slate-800 hover:bg-slate-900 text-white font-medium px-4 py-2 rounded-lg text-xs transition-colors">
@@ -185,7 +200,7 @@
           </div>
         </div>
 
-        <!-- 4. THƯ VIỆN HÌNH ẢNH & PHIM CHỤP (PATIENT MEDIA) -->
+        <!-- 4. THƯ VIỆN HÌNH ẢNH & PHIM CHỤP -->
         <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
           <div class="flex justify-between items-center border-b pb-3">
             <div>
@@ -194,7 +209,6 @@
             </div>
           </div>
 
-          <!-- Form Upload ảnh -->
           <form id="mediaUploadForm" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
@@ -208,7 +222,7 @@
               </div>
               <div>
                 <label class="block text-xs font-medium text-slate-700 mb-1">Mô tả / Vị trí</label>
-                <input type="text" id="mediaDescription" placeholder="Ví dụ: Phim chóp răng 36 trước điều trị..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
+                <input type="text" id="mediaDescription" placeholder="Ví dụ: Phim kiểm tra sau đặt fixture..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
               </div>
             </div>
             <div>
@@ -222,9 +236,81 @@
             </div>
           </form>
 
-          <!-- Lưới hiển thị ảnh (Gallery) -->
           <div id="mediaGallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pt-2">
             <div class="col-span-full text-center py-4 text-slate-400 text-xs">Chưa có hình ảnh nào cho bệnh nhân này.</div>
+          </div>
+        </div>
+
+        <!-- 5. PHÂN HỆ VIỆN PHÍ & THANH TOÁN TỪNG ĐỢT (MỚI) -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-3 gap-2">
+            <div>
+              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Viện Phí & Thanh Toán Từng Đợt</h2>
+              <p class="text-xs text-slate-400">Theo dõi dòng tiền, tạm ứng, công nợ và xuất phiếu thu</p>
+            </div>
+            <div class="bg-teal-50 border border-teal-200 px-3 py-1.5 rounded-xl text-right">
+              <span class="text-[10px] text-teal-600 block uppercase font-bold">Tổng Đã Thanh Toán</span>
+              <span id="totalPaidDisplay" class="text-base font-extrabold text-teal-800">0 đ</span>
+            </div>
+          </div>
+
+          <!-- Form tạo phiếu thu mới -->
+          <form id="paymentForm" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Ngày thu tiền</label>
+                <input type="date" id="paymentDate" required class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-xs font-medium text-slate-700 mb-1">Nội dung thu / Hạng mục *</label>
+                <input type="text" id="paymentService" required placeholder="Ví dụ: Cấy Implant R46 (Đợt 1 - Cấy trụ)..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Số tiền (VNĐ) *</label>
+                <input type="number" id="paymentAmount" required min="1000" step="1000" placeholder="15000000" class="w-full p-2 border rounded-lg text-xs outline-none bg-white font-semibold text-teal-900" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Phương thức thanh toán</label>
+                <select id="paymentMethod" class="w-full p-2 border rounded-lg text-xs outline-none bg-white">
+                  <option value="Chuyển khoản ngân hàng">Chuyển khoản</option>
+                  <option value="Tiền mặt">Tiền mặt</option>
+                  <option value="Quẹt thẻ POS">Quẹt thẻ POS</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Ghi chú thêm</label>
+                <input type="text" id="paymentNotes" placeholder="Người nộp thay, mã giao dịch..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
+              </div>
+            </div>
+
+            <div class="text-right">
+              <button type="submit" id="btnSavePayment" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg text-xs transition-colors shadow">
+                + Lập Phiếu Thu
+              </button>
+            </div>
+          </form>
+
+          <!-- Bảng danh sách các đợt đã đóng -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-50 text-slate-500 uppercase text-[11px]">
+                <tr>
+                  <th class="py-2.5 px-3">Ngày thu</th>
+                  <th class="py-2.5 px-3">Hạng mục thu</th>
+                  <th class="py-2.5 px-3">Hình thức</th>
+                  <th class="py-2.5 px-3 text-right">Số tiền</th>
+                  <th class="py-2.5 px-3 text-center">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="paymentHistoryBody" class="divide-y divide-slate-100">
+                <tr>
+                  <td colspan="5" class="text-center py-4 text-slate-400 text-xs">Chưa có giao dịch thu phí nào.</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -276,12 +362,41 @@
     </div>
   </div>
 
-  <!-- MODAL: PHÓNG TO HÌNH ẢNH (IMAGE VIEWER) -->
+  <!-- MODAL: PHÓNG TO HÌNH ẢNH -->
   <div id="imageViewerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex flex-col items-center justify-center p-4 z-50">
     <div class="relative max-w-4xl max-h-[90vh] flex flex-col items-center">
       <button onclick="closeImageViewer()" class="absolute -top-10 right-0 text-white text-3xl font-bold hover:text-slate-300">&times;</button>
       <img id="viewerImage" src="" alt="Full view" class="max-h-[80vh] w-auto rounded-lg shadow-2xl object-contain" />
       <p id="viewerCaption" class="text-white text-xs mt-2 text-center bg-black/50 px-3 py-1 rounded"></p>
+    </div>
+  </div>
+
+  <!-- KHU VỰC IN PHIẾU THU TIỀN (PRINT TEMPLATE) -->
+  <div id="printReceiptArea" class="hidden p-8 bg-white max-w-lg mx-auto text-slate-900 font-sans border">
+    <div class="text-center border-b pb-4 mb-4">
+      <h2 class="text-xl font-bold uppercase tracking-wider text-teal-800">NHA KHOA LÂM SÀNG</h2>
+      <p class="text-xs text-slate-500">Biên nhận thanh toán & Phiếu thu viện phí</p>
+    </div>
+    <div class="space-y-2 text-xs mb-4">
+      <div><strong>Khách hàng:</strong> <span id="printPatientName"></span></div>
+      <div><strong>Số điện thoại:</strong> <span id="printPatientPhone"></span></div>
+      <div><strong>Ngày thu:</strong> <span id="printPaymentDate"></span></div>
+      <div><strong>Nội dung:</strong> <span id="printPaymentService"></span></div>
+      <div><strong>Hình thức:</strong> <span id="printPaymentMethod"></span></div>
+    </div>
+    <div class="border-t border-b py-3 my-3 text-center">
+      <span class="text-xs text-slate-500">Số tiền thanh toán:</span>
+      <div id="printPaymentAmount" class="text-2xl font-bold text-teal-800 mt-1"></div>
+    </div>
+    <div class="flex justify-between text-xs text-center pt-6">
+      <div>
+        <p class="font-semibold">Người nộp tiền</p>
+        <p class="text-[10px] text-slate-400 mt-8">(Ký và ghi rõ họ tên)</p>
+      </div>
+      <div>
+        <p class="font-semibold">Người lập phiếu</p>
+        <p class="text-[10px] text-slate-400 mt-8">(Ký và xác nhận)</p>
+      </div>
     </div>
   </div>
 
@@ -311,6 +426,7 @@
       document.getElementById("quadrant4").innerHTML = q4.map(makeTooth).join('');
       document.getElementById("quadrant3").innerHTML = q3.map(makeTooth).join('');
       document.getElementById("recordDate").valueAsDate = new Date();
+      document.getElementById("paymentDate").valueAsDate = new Date();
     }
 
     async function loadPatients(search = "") {
@@ -348,6 +464,7 @@
       await loadDentalChart(currentPatient.id);
       await loadClinicalRecords(currentPatient.id);
       await loadPatientMedia(currentPatient.id);
+      await loadPayments(currentPatient.id);
     }
 
     async function loadDentalChart(patientId) {
@@ -501,7 +618,7 @@
       }
     });
 
-    // 4. QUẢN LÝ HÌNH ẢNH & PHIM CHỤP (STORAGE)
+    // HÌNH ẢNH & PHIM
     async function loadPatientMedia(patientId) {
       const gallery = document.getElementById("mediaGallery");
       const { data, error } = await supabaseClient
@@ -532,7 +649,7 @@
     document.getElementById("mediaUploadForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!currentPatient) {
-        alert("Vui lòng chọn một bệnh nhân trước khi tải ảnh!");
+        alert("Vui lòng chọn bệnh nhân trước khi tải ảnh!");
         return;
       }
 
@@ -544,28 +661,24 @@
       btn.disabled = true;
       btn.innerText = "Đang tải ảnh lên...";
 
-      // Đặt tên file ngẫu nhiên để tránh trùng
       const fileExt = file.name.split('.').pop();
       const fileName = `${currentPatient.id}/${Date.now()}.${fileExt}`;
 
-      // 1. Tải lên Supabase Storage
       const { data: uploadData, error: uploadError } = await supabaseClient.storage
         .from('patient-media')
         .upload(fileName, file);
 
       if (uploadError) {
-        alert("Lỗi khi tải ảnh lên Storage: " + uploadError.message);
+        alert("Lỗi tải ảnh: " + uploadError.message);
         btn.disabled = false;
         btn.innerText = "⬆ Tải Ảnh Lên Hồ Sơ";
         return;
       }
 
-      // 2. Lấy đường link public URL của ảnh
       const { data: { publicUrl } } = supabaseClient.storage
         .from('patient-media')
         .getPublicUrl(fileName);
 
-      // 3. Lưu thông tin vào bảng patient_media
       const payload = {
         patient_id: currentPatient.id,
         file_url: publicUrl,
@@ -579,7 +692,7 @@
       btn.innerText = "⬆ Tải Ảnh Lên Hồ Sơ";
 
       if (dbError) {
-        alert("Lỗi lưu thông tin ảnh vào database: " + dbError.message);
+        alert("Lỗi lưu DB: " + dbError.message);
       } else {
         document.getElementById("mediaDescription").value = "";
         fileInput.value = "";
@@ -587,7 +700,6 @@
       }
     });
 
-    // Mở modal xem ảnh lớn
     function openImageViewer(url, caption) {
       document.getElementById("viewerImage").src = url;
       document.getElementById("viewerCaption").innerText = caption;
@@ -596,6 +708,97 @@
 
     function closeImageViewer() {
       document.getElementById("imageViewerModal").classList.add("hidden");
+    }
+
+    // 5. QUẢN LÝ VIỆN PHÍ & PHIẾU THU (PAYMENTS)
+    async function loadPayments(patientId) {
+      const historyBody = document.getElementById("paymentHistoryBody");
+      const totalDisplay = document.getElementById("totalPaidDisplay");
+
+      const { data, error } = await supabaseClient
+        .from('payments')
+        .select('*')
+        .eq('patient_id', String(patientId))
+        .order('payment_date', { ascending: false });
+
+      if (error || !data || data.length === 0) {
+        historyBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Chưa có giao dịch thu phí nào.</td></tr>`;
+        totalDisplay.innerText = "0 đ";
+        return;
+      }
+
+      let total = 0;
+      historyBody.innerHTML = data.map(item => {
+        const amt = Number(item.amount) || 0;
+        total += amt;
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2.5 px-3 text-slate-600">${item.payment_date}</td>
+            <td class="py-2.5 px-3 font-semibold text-slate-900">
+              ${item.service_name}
+              ${item.notes ? `<span class="block text-[10px] text-slate-400 font-normal">Ghi chú: ${item.notes}</span>` : ''}
+            </td>
+            <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[11px] bg-slate-100 text-slate-700">${item.payment_method}</span></td>
+            <td class="py-2.5 px-3 text-right font-bold text-teal-800">${amt.toLocaleString('vi-VN')} đ</td>
+            <td class="py-2.5 px-3 text-center">
+              <button onclick="printReceipt('${item.payment_date}', '${item.service_name}', ${amt}, '${item.payment_method}')" 
+                      class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded">
+                🖨️ In Phiếu
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      totalDisplay.innerText = total.toLocaleString('vi-VN') + " đ";
+    }
+
+    document.getElementById("paymentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentPatient) {
+        alert("Vui lòng chọn một bệnh nhân trước khi lập phiếu thu!");
+        return;
+      }
+
+      const btn = document.getElementById("btnSavePayment");
+      btn.disabled = true;
+      btn.innerText = "Đang lưu phiếu...";
+
+      const payload = {
+        patient_id: currentPatient.id,
+        payment_date: document.getElementById("paymentDate").value,
+        service_name: document.getElementById("paymentService").value.trim(),
+        amount: parseInt(document.getElementById("paymentAmount").value, 10),
+        payment_method: document.getElementById("paymentMethod").value,
+        notes: document.getElementById("paymentNotes").value.trim() || null
+      };
+
+      const { error } = await supabaseClient.from('payments').insert([payload]);
+
+      btn.disabled = false;
+      btn.innerText = "+ Lập Phiếu Thu";
+
+      if (error) {
+        alert("Lỗi lưu phiếu thu: " + error.message);
+      } else {
+        document.getElementById("paymentService").value = "";
+        document.getElementById("paymentAmount").value = "";
+        document.getElementById("paymentNotes").value = "";
+        loadPayments(currentPatient.id);
+      }
+    });
+
+    // In phiếu thu
+    function printReceipt(date, service, amount, method) {
+      if (!currentPatient) return;
+      document.getElementById("printPatientName").innerText = currentPatient.name;
+      document.getElementById("printPatientPhone").innerText = currentPatient.phone;
+      document.getElementById("printPaymentDate").innerText = date;
+      document.getElementById("printPaymentService").innerText = service;
+      document.getElementById("printPaymentMethod").innerText = method;
+      document.getElementById("printPaymentAmount").innerText = Number(amount).toLocaleString('vi-VN') + " VNĐ";
+
+      window.print();
     }
 
     // TẠO BỆNH NHÂN MỚI

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nha Khoa - Quản Lý Bệnh Án & Lâm Sàng</title>
+  <title>Nha Khoa - Quản Lý Bệnh Án & Lâm Sàng Toàn Diện</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
@@ -30,8 +30,8 @@
     <!-- Header -->
     <header class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
       <div>
-        <h1 class="text-2xl font-bold text-teal-800">Hệ Thống Quản Lý Phòng Khám</h1>
-        <p class="text-xs md:text-sm text-slate-500 mt-1">Hồ sơ bệnh án, Sơ đồ răng FDI & Nhật ký lâm sàng</p>
+        <h1 class="text-2xl font-bold text-teal-800">Hệ Thống Lâm Sàng Nha Khoa</h1>
+        <p class="text-xs md:text-sm text-slate-500 mt-1">Hồ sơ bệnh nhân • Sơ đồ răng FDI • Nhật ký điều trị • Phim & Hình ảnh</p>
       </div>
       <div id="activePatientBanner" class="mt-3 md:mt-0 px-4 py-2 bg-slate-100 rounded-xl text-xs md:text-sm text-slate-600 font-medium">
         Chưa chọn bệnh nhân nào
@@ -77,24 +77,23 @@
           <div class="p-3 border-b border-slate-100 bg-slate-50">
             <input type="text" id="searchInput" placeholder="Tìm tên hoặc SĐT..." class="w-full px-3 py-1.5 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-teal-500" />
           </div>
-          <div id="patientList" class="divide-y divide-slate-100 max-h-[500px] overflow-y-auto text-sm">
+          <div id="patientList" class="divide-y divide-slate-100 max-h-[520px] overflow-y-auto text-sm">
             <div class="p-4 text-center text-slate-400 text-xs">Đang tải danh sách...</div>
           </div>
         </div>
 
       </div>
 
-      <!-- CỘT PHẢI: KHÁM LÂM SÀNG, SƠ ĐỒ RĂNG & NHẬT KÝ ĐIỀU TRỊ (8 Cột) -->
+      <!-- CỘT PHẢI: KHÁM LÂM SÀNG, SƠ ĐỒ RĂNG, NHẬT KÝ & PHIM ẢNH (8 Cột) -->
       <div class="lg:col-span-8 space-y-6">
 
-        <!-- SƠ ĐỒ RĂNG -->
+        <!-- 1. SƠ ĐỒ RĂNG -->
         <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-100 mb-4 gap-2">
             <div>
               <h2 class="text-base font-bold text-slate-900">Sơ Đồ Răng FDI (32 Răng)</h2>
               <p class="text-xs text-slate-400">Nhấp vào từng răng để cập nhật bệnh lý & kế hoạch</p>
             </div>
-            <!-- Chú thích -->
             <div class="flex flex-wrap gap-2 text-[11px]">
               <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span> Sâu/Tủy</span>
               <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-sky-600"></span> Implant</span>
@@ -123,7 +122,7 @@
           </div>
         </div>
 
-        <!-- BẢNG KẾ HOẠCH ĐIỀU TRỊ THEO RĂNG -->
+        <!-- 2. KẾ HOẠCH ĐIỀU TRỊ THEO RĂNG -->
         <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Kế Hoạch Điều Trị Răng</h2>
           <div class="overflow-x-auto">
@@ -146,7 +145,7 @@
           </div>
         </div>
 
-        <!-- NHẬT KÝ ĐIỀU TRỊ TỪNG BUỔI (CLINICAL RECORDS) -->
+        <!-- 3. NHẬT KÝ ĐIỀU TRỊ TỪNG BUỔI -->
         <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
           <div class="flex justify-between items-center border-b pb-3">
             <div>
@@ -155,7 +154,6 @@
             </div>
           </div>
 
-          <!-- Form nhập buổi khám mới -->
           <form id="recordForm" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
@@ -163,7 +161,7 @@
                 <input type="date" id="recordDate" required class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
               </div>
               <div>
-                <label class="block text-xs font-medium text-slate-700 mb-1">Hẹn tái khám (nếu có)</label>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Hẹn tái khám</label>
                 <input type="date" id="recordNextDate" class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
               </div>
             </div>
@@ -173,7 +171,7 @@
             </div>
             <div>
               <label class="block text-xs font-medium text-slate-700 mb-1">Đơn thuốc & Dặn dò bệnh nhân</label>
-              <input type="text" id="recordPrescription" placeholder="Ví dụ: Amox 500mg x 14v, Paracetamol 500mg, chườm lạnh 24h..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
+              <input type="text" id="recordPrescription" placeholder="Ví dụ: Amox 500mg, chườm lạnh..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
             </div>
             <div class="text-right">
               <button type="submit" id="btnSaveRecord" class="bg-slate-800 hover:bg-slate-900 text-white font-medium px-4 py-2 rounded-lg text-xs transition-colors">
@@ -182,9 +180,51 @@
             </div>
           </form>
 
-          <!-- Danh sách các buổi khám trước đây (Timeline) -->
           <div id="recordsTimeline" class="space-y-3 pt-2">
             <div class="text-center py-4 text-slate-400 text-xs">Chưa có nhật ký điều trị.</div>
+          </div>
+        </div>
+
+        <!-- 4. THƯ VIỆN HÌNH ẢNH & PHIM CHỤP (PATIENT MEDIA) -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <div class="flex justify-between items-center border-b pb-3">
+            <div>
+              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Hình Ảnh Lâm Sàng & Phim Chụp X-Quang</h2>
+              <p class="text-xs text-slate-400">Tải lên phim X-quang, ảnh chụp trong miệng, nụ cười hoặc mẫu scan</p>
+            </div>
+          </div>
+
+          <!-- Form Upload ảnh -->
+          <form id="mediaUploadForm" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Phân loại hình ảnh</label>
+                <select id="mediaType" class="w-full p-2 border rounded-lg text-xs outline-none bg-white">
+                  <option value="Phim X-quang (Panorama/Chóp/CBCT)">Phim X-quang (Panorama/Chóp/CBCT)</option>
+                  <option value="Ảnh trong miệng">Ảnh trong miệng</option>
+                  <option value="Ảnh chân dung / Nụ cười">Ảnh chân dung / Nụ cười</option>
+                  <option value="Ảnh khác / Mẫu scan">Ảnh khác / Mẫu scan</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Mô tả / Vị trí</label>
+                <input type="text" id="mediaDescription" placeholder="Ví dụ: Phim chóp răng 36 trước điều trị..." class="w-full p-2 border rounded-lg text-xs outline-none bg-white" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-700 mb-1">Chọn file ảnh từ thiết bị *</label>
+              <input type="file" id="mediaFileInput" accept="image/*" required class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer" />
+            </div>
+            <div class="text-right">
+              <button type="submit" id="btnUploadMedia" class="bg-teal-700 hover:bg-teal-800 text-white font-medium px-4 py-2 rounded-lg text-xs transition-colors">
+                ⬆ Tải Ảnh Lên Hồ Sơ
+              </button>
+            </div>
+          </form>
+
+          <!-- Lưới hiển thị ảnh (Gallery) -->
+          <div id="mediaGallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pt-2">
+            <div class="col-span-full text-center py-4 text-slate-400 text-xs">Chưa có hình ảnh nào cho bệnh nhân này.</div>
           </div>
         </div>
 
@@ -236,6 +276,15 @@
     </div>
   </div>
 
+  <!-- MODAL: PHÓNG TO HÌNH ẢNH (IMAGE VIEWER) -->
+  <div id="imageViewerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex flex-col items-center justify-center p-4 z-50">
+    <div class="relative max-w-4xl max-h-[90vh] flex flex-col items-center">
+      <button onclick="closeImageViewer()" class="absolute -top-10 right-0 text-white text-3xl font-bold hover:text-slate-300">&times;</button>
+      <img id="viewerImage" src="" alt="Full view" class="max-h-[80vh] w-auto rounded-lg shadow-2xl object-contain" />
+      <p id="viewerCaption" class="text-white text-xs mt-2 text-center bg-black/50 px-3 py-1 rounded"></p>
+    </div>
+  </div>
+
   <script>
     // 1. SUPABASE CONFIG
     const SUPABASE_URL = "https://eqifvioqxgvnwhmxqtnx.supabase.co";
@@ -250,7 +299,6 @@
     const q4 = [48, 47, 46, 45, 44, 43, 42, 41];
     const q3 = [31, 32, 33, 34, 35, 36, 37, 38];
 
-    // Khởi tạo sơ đồ răng
     function renderOdontogramUI() {
       const makeTooth = (num) => `
         <div onclick="openToothModal(${num})" id="tooth-${num}" 
@@ -265,7 +313,6 @@
       document.getElementById("recordDate").valueAsDate = new Date();
     }
 
-    // Danh sách bệnh nhân
     async function loadPatients(search = "") {
       const listEl = document.getElementById("patientList");
       let query = supabaseClient.from('patients').select('*').order('created_at', { ascending: false });
@@ -291,7 +338,6 @@
       `).join('');
     }
 
-    // Chọn bệnh nhân
     async function selectPatient(id, name, phone, history) {
       currentPatient = { id: String(id), name, phone, history };
       document.getElementById("activePatientBanner").innerHTML = `
@@ -301,9 +347,9 @@
       loadPatients(document.getElementById("searchInput").value);
       await loadDentalChart(currentPatient.id);
       await loadClinicalRecords(currentPatient.id);
+      await loadPatientMedia(currentPatient.id);
     }
 
-    // Tải sơ đồ răng
     async function loadDentalChart(patientId) {
       document.querySelectorAll('.tooth-box').forEach(el => {
         el.className = "tooth-box w-8 h-10 sm:w-10 sm:h-12 border-2 border-slate-200 rounded-lg flex flex-col items-center justify-center bg-white text-slate-700 font-semibold text-xs shadow-xs";
@@ -355,7 +401,6 @@
       planBody.innerHTML = planRows;
     }
 
-    // Modal răng
     let activeToothNum = null;
     function openToothModal(toothNum) {
       if (!currentPatient) {
@@ -396,7 +441,7 @@
       loadDentalChart(currentPatient.id);
     }
 
-    // TẢI NHẬT KÝ ĐIỀU TRỊ (TIMELINE)
+    // NHẬT KÝ ĐIỀU TRỊ
     async function loadClinicalRecords(patientId) {
       const container = document.getElementById("recordsTimeline");
       const { data, error } = await supabaseClient
@@ -422,11 +467,10 @@
       `).join('');
     }
 
-    // LƯU BUỔI KHÁM MỚI
     document.getElementById("recordForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!currentPatient) {
-        alert("Vui lòng chọn một bệnh nhân trước khi lưu buổi khám!");
+        alert("Vui lòng chọn một bệnh nhân trước!");
         return;
       }
 
@@ -448,7 +492,7 @@
       btn.innerText = "+ Lưu Buổi Điều Trị";
 
       if (error) {
-        alert("Lỗi lưu bệnh án: " + error.message);
+        alert("Lỗi: " + error.message);
       } else {
         document.getElementById("recordDone").value = "";
         document.getElementById("recordPrescription").value = "";
@@ -457,7 +501,104 @@
       }
     });
 
-    // Tạo bệnh nhân mới
+    // 4. QUẢN LÝ HÌNH ẢNH & PHIM CHỤP (STORAGE)
+    async function loadPatientMedia(patientId) {
+      const gallery = document.getElementById("mediaGallery");
+      const { data, error } = await supabaseClient
+        .from('patient_media')
+        .select('*')
+        .eq('patient_id', String(patientId))
+        .order('uploaded_at', { ascending: false });
+
+      if (error || !data || data.length === 0) {
+        gallery.innerHTML = `<div class="col-span-full text-center py-4 text-slate-400 text-xs">Chưa có hình ảnh hoặc phim chụp nào.</div>`;
+        return;
+      }
+
+      gallery.innerHTML = data.map(item => `
+        <div class="group relative bg-slate-100 border border-slate-200 rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
+          <img src="${item.file_url}" alt="${item.description || 'Dental Media'}" 
+               class="w-full h-28 object-cover cursor-pointer group-hover:opacity-95 transition-opacity"
+               onclick="openImageViewer('${item.file_url}', '${item.media_type}: ${item.description || ''}')" />
+          <div class="p-2 bg-white">
+            <div class="text-[10px] font-bold text-teal-700 truncate">${item.media_type}</div>
+            <div class="text-[11px] text-slate-600 truncate" title="${item.description || ''}">${item.description || 'Không có mô tả'}</div>
+            <div class="text-[9px] text-slate-400 mt-1">${new Date(item.uploaded_at).toLocaleDateString('vi-VN')}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById("mediaUploadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentPatient) {
+        alert("Vui lòng chọn một bệnh nhân trước khi tải ảnh!");
+        return;
+      }
+
+      const fileInput = document.getElementById("mediaFileInput");
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const btn = document.getElementById("btnUploadMedia");
+      btn.disabled = true;
+      btn.innerText = "Đang tải ảnh lên...";
+
+      // Đặt tên file ngẫu nhiên để tránh trùng
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${currentPatient.id}/${Date.now()}.${fileExt}`;
+
+      // 1. Tải lên Supabase Storage
+      const { data: uploadData, error: uploadError } = await supabaseClient.storage
+        .from('patient-media')
+        .upload(fileName, file);
+
+      if (uploadError) {
+        alert("Lỗi khi tải ảnh lên Storage: " + uploadError.message);
+        btn.disabled = false;
+        btn.innerText = "⬆ Tải Ảnh Lên Hồ Sơ";
+        return;
+      }
+
+      // 2. Lấy đường link public URL của ảnh
+      const { data: { publicUrl } } = supabaseClient.storage
+        .from('patient-media')
+        .getPublicUrl(fileName);
+
+      // 3. Lưu thông tin vào bảng patient_media
+      const payload = {
+        patient_id: currentPatient.id,
+        file_url: publicUrl,
+        media_type: document.getElementById("mediaType").value,
+        description: document.getElementById("mediaDescription").value.trim() || null
+      };
+
+      const { error: dbError } = await supabaseClient.from('patient_media').insert([payload]);
+
+      btn.disabled = false;
+      btn.innerText = "⬆ Tải Ảnh Lên Hồ Sơ";
+
+      if (dbError) {
+        alert("Lỗi lưu thông tin ảnh vào database: " + dbError.message);
+      } else {
+        document.getElementById("mediaDescription").value = "";
+        fileInput.value = "";
+        loadPatientMedia(currentPatient.id);
+      }
+    });
+
+    // Mở modal xem ảnh lớn
+    function openImageViewer(url, caption) {
+      document.getElementById("viewerImage").src = url;
+      document.getElementById("viewerCaption").innerText = caption;
+      document.getElementById("imageViewerModal").classList.remove("hidden");
+    }
+
+    function closeImageViewer() {
+      document.getElementById("imageViewerModal").classList.add("hidden");
+    }
+
+    // TẠO BỆNH NHÂN MỚI
     document.getElementById("patientForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("btnSavePatient");
@@ -486,12 +627,10 @@
       }
     });
 
-    // Tìm kiếm
     document.getElementById("searchInput").addEventListener("input", (e) => {
       loadPatients(e.target.value);
     });
 
-    // Chạy khi khởi động
     renderOdontogramUI();
     loadPatients();
   </script>

@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nha Khoa Lê Anh - Lâm Sàng, Kho & Quản Trị Toàn Diện</title>
+  <title>Nha Khoa Lê Anh - Lâm Sàng & Quản Trị</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Nạp thư viện Supabase JS UMD chuẩn -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     .tooth-box { transition: all 0.15s ease; cursor: pointer; user-select: none; }
     .tooth-box:hover { transform: scale(1.08); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15); }
@@ -43,28 +44,18 @@
     <header class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
         <h1 class="text-2xl font-bold text-teal-800">Nha Khoa Lê Anh</h1>
-        <p class="text-xs md:text-sm text-slate-500 mt-1">Phòng Khám Chuyên Khoa Răng Hàm Mặt • Lâm Sàng & Quản Trị Vận Hành</p>
+        <p class="text-xs md:text-sm text-slate-500 mt-1">Phòng Khám Chuyên Khoa Răng Hàm Mặt • Quản Trị Lâm Sàng</p>
       </div>
       
-      <!-- Thanh điều hướng Tab -->
       <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
         <button type="button" onclick="switchTab('clinical')" id="tabBtnClinical" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all">
           🏥 Lâm Sàng & Thuốc
         </button>
-        <button type="button" onclick="switchTab('analytics')" id="tabBtnAnalytics" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
-          📈 Báo Cáo
-        </button>
         <button type="button" onclick="switchTab('pricing')" id="tabBtnPricing" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
           📋 Bảng Giá
         </button>
-        <button type="button" onclick="switchTab('inventory')" id="tabBtnInventory" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
-          📦 Kho
-        </button>
         <button type="button" onclick="switchTab('schedule')" id="tabBtnSchedule" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
           📅 Lịch Hẹn
-        </button>
-        <button type="button" onclick="switchTab('crm')" id="tabBtnCrm" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
-          🤝 CSKH
         </button>
         <button type="button" onclick="switchTab('finance')" id="tabBtnFinance" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
           📊 Kế Toán
@@ -81,26 +72,12 @@
           <span>Chưa chọn bệnh nhân nào</span>
         </div>
         <div class="flex items-center gap-2">
-          <button type="button" onclick="quickCreateCrmTaskFromClinical()" class="bg-amber-600 hover:bg-amber-700 text-white font-medium px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-sm transition-colors">
-            + Hẹn Chăm Sóc Hậu Phẫu
+          <button type="button" onclick="printPrescriptionDoc()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-sm transition-colors">
+            🖨️ In Đơn Thuốc
           </button>
-          <button type="button" onclick="printMedicalRecordBYT()" class="bg-teal-700 hover:bg-teal-800 text-white font-medium px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-sm transition-colors cursor-pointer">
+          <button type="button" onclick="printMedicalRecordBYT()" class="bg-teal-700 hover:bg-teal-800 text-white font-medium px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-sm transition-colors cursor-pointer">
             📄 In Bệnh Án Ngoại Trú (Mẫu BYT)
           </button>
-        </div>
-      </div>
-
-      <!-- Thẻ thành viên động -->
-      <div id="membershipCard" class="hidden p-4 rounded-2xl border transition-all">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-          <div class="flex items-center gap-3">
-            <span id="tierBadge" class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider"></span>
-            <div>
-              <span class="text-xs text-slate-500">Tích lũy chi phí điều trị:</span>
-              <strong id="tierSpent" class="text-sm font-extrabold text-slate-900 ml-1">0 đ</strong>
-            </div>
-          </div>
-          <div id="tierBenefits" class="text-xs font-medium text-slate-700"></div>
         </div>
       </div>
 
@@ -157,7 +134,7 @@
           <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="p-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
               <input type="text" id="searchInput" placeholder="Tìm tên hoặc SĐT..." class="w-full px-3 py-1.5 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-teal-500" />
-              <button type="button" onclick="loadPatients()" class="ml-2 text-xs text-teal-700 font-bold px-2 py-1 bg-white border rounded">↻</button>
+              <button type="button" onclick="loadPatients()" class="ml-2 text-xs text-teal-700 font-bold px-2 py-1 bg-white border rounded hover:bg-teal-50">↻</button>
             </div>
             <div id="patientList" class="divide-y divide-slate-100 max-h-[460px] overflow-y-auto text-sm">
               <div class="p-4 text-center text-slate-400 text-xs">Đang tải danh sách...</div>
@@ -165,7 +142,7 @@
           </div>
         </div>
 
-        <!-- Cột Phải: Khám, Sơ đồ răng, Kế hoạch, Đơn thuốc, Thu tiền -->
+        <!-- Cột Phải -->
         <div class="lg:col-span-8 space-y-6">
           
           <!-- KHÁM LÂM SÀNG BYT -->
@@ -193,11 +170,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Lý do vào khám</label>
-                <input type="text" id="examReason" placeholder="Đau nhức vùng hàm dưới, mất răng ăn nhai kém..." class="w-full p-2 border rounded-lg outline-none" />
+                <input type="text" id="examReason" placeholder="Đau nhức răng, mất răng..." class="w-full p-2 border rounded-lg outline-none" />
               </div>
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Bệnh sử</label>
-                <input type="text" id="examHistory" placeholder="Diễn biến đau nhức, thời gian khởi phát..." class="w-full p-2 border rounded-lg outline-none" />
+                <input type="text" id="examHistory" placeholder="Diễn biến đau nhức..." class="w-full p-2 border rounded-lg outline-none" />
               </div>
             </div>
 
@@ -215,7 +192,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Chẩn đoán xác định</label>
-                <input type="text" id="examDiagnosis" placeholder="K04.0 Viêm tủy cấp / K08.1 Mất răng..." class="w-full p-2 border rounded-lg outline-none font-bold text-teal-900" />
+                <input type="text" id="examDiagnosis" placeholder="K04.0 Viêm tủy cấp / Mất răng..." class="w-full p-2 border rounded-lg outline-none font-bold text-teal-900" />
               </div>
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Bác sĩ điều trị</label>
@@ -284,9 +261,6 @@
                 <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Kê Đơn Thuốc & Hướng Dẫn Điều Trị</h2>
                 <p class="text-xs text-slate-400">Chọn đơn mẫu chuẩn hoặc thêm nhanh từng loại thuốc</p>
               </div>
-              <button type="button" onclick="printPrescriptionDoc()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-sm transition-colors cursor-pointer">
-                🖨️ In Đơn Thuốc Bệnh Nhân
-              </button>
             </div>
 
             <form id="prescriptionForm" class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
@@ -295,10 +269,10 @@
                   <label class="block font-semibold text-slate-700 mb-1">⚡ Chọn nhanh Đơn Thuốc Mẫu:</label>
                   <select id="rxTemplateSelect" onchange="applyRxTemplate()" class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800 outline-none">
                     <option value="">-- Chọn đơn thuốc mẫu chuẩn --</option>
-                    <option value="post_surgery">1. Đơn thuốc Sau Tiểu Phẫu (Augmentin 1g, Medrol 16mg, Efferalgan Codein, Nexium)</option>
-                    <option value="occlusal_trauma">2. Chấn thương khớp cắn (Medrol 16mg, Ibuprofen 400mg, Nexium 40mg)</option>
-                    <option value="pulpitis">3. Viêm tủy cấp / Đau răng cấp (Dorogyne + Ibuprofen)</option>
-                    <option value="gingivitis">4. Viêm nướu & Viêm nha chu (Dorogyne, Vitamin C, Nước súc Kin)</option>
+                    <option value="post_surgery">1. Sau Tiểu Phẫu (Augmentin 1g, Medrol 16, Efferalgan Codein, Nexium 40)</option>
+                    <option value="occlusal_trauma">2. Chấn thương khớp cắn (Medrol 16, Ibuprofen 400, Nexium 40)</option>
+                    <option value="pulpitis">3. Viêm tủy cấp (Dorogyne + Ibuprofen)</option>
+                    <option value="gingivitis">4. Viêm nướu (Dorogyne, Vitamin C, Nước súc Kin)</option>
                   </select>
                 </div>
                 <div>
@@ -327,7 +301,7 @@
 
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Danh sách thuốc, hàm lượng, số lượng và cách dùng *</label>
-                <textarea id="rxDrugsList" rows="6" required placeholder="Nội dung toa thuốc..." class="w-full p-2.5 border rounded-lg bg-white font-mono text-xs leading-relaxed outline-none focus:ring-2 focus:ring-teal-500"></textarea>
+                <textarea id="rxDrugsList" rows="5" required placeholder="Nội dung toa thuốc..." class="w-full p-2.5 border rounded-lg bg-white font-mono text-xs leading-relaxed outline-none focus:ring-2 focus:ring-teal-500"></textarea>
               </div>
 
               <div>
@@ -335,8 +309,7 @@
                 <input type="text" id="rxAdvice" placeholder="Dặn dò dùng thuốc..." class="w-full p-2 border rounded-lg bg-white text-xs outline-none" />
               </div>
 
-              <div class="flex justify-between items-center pt-2">
-                <span class="text-[11px] text-slate-400 italic">Đơn thuốc sẽ được lưu vào lịch sử của bệnh nhân</span>
+              <div class="flex justify-end pt-2">
                 <button type="submit" id="btnSaveRx" class="bg-slate-800 hover:bg-slate-900 text-white font-medium px-5 py-2 rounded-lg text-xs transition-colors shadow">
                   + Lưu Vào Hồ Sơ Đơn Thuốc
                 </button>
@@ -344,25 +317,24 @@
             </form>
 
             <div class="space-y-2 pt-2">
-              <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Lịch Sử Các Đơn Thuốc Đã Kê Cho BN Này:</h3>
+              <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Lịch Sử Đơn Thuốc Đã Kê:</h3>
               <div id="rxHistoryContainer" class="space-y-2 text-xs">
                 <div class="text-center py-4 text-slate-400 text-xs">Chưa có đơn thuốc nào được lưu.</div>
               </div>
             </div>
           </div>
 
-          <!-- PHIẾU THU TIỀN -->
+          <!-- LẬP PHIẾU THU TIỀN -->
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-3 gap-2">
               <div>
                 <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Lập Phiếu Thu Viện Phí</h2>
-                <p class="text-xs text-slate-400">Chọn dịch vụ từ bảng giá, phân loại Nguồn khách để phục vụ Báo cáo chiến lược</p>
               </div>
               <span id="patientTotalPaid" class="text-xs font-bold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-lg">Tổng nộp: 0 đ</span>
             </div>
 
             <form id="paymentForm" class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
-              <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label class="block font-medium text-slate-700 mb-1">Ngày thu</label>
                   <input type="date" id="payDate" required class="w-full p-2 border rounded-lg bg-white" />
@@ -376,659 +348,92 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-700 mb-1">Nguồn khách hàng *</label>
-                  <select id="payLeadSource" required class="w-full p-2 border rounded-lg bg-white font-bold text-sky-800">
-                    <option value="Online - Facebook/Ads">Online - Facebook / Ads</option>
-                    <option value="Online - Website/Google">Online - Google / Web</option>
-                    <option value="Online - Zalo/Tiktok">Online - Zalo / TikTok</option>
-                    <option value="Offline - Vãng lai">Offline - Vãng lai</option>
-                    <option value="Offline - Khách giới thiệu">Offline - Giới thiệu</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block font-medium text-slate-700 mb-1">Loại khách *</label>
-                  <select id="payCustomerType" required class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800">
-                    <option value="Khách mới">Khách mới</option>
-                    <option value="Khách cũ">Khách cũ / Tái khám</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div class="sm:col-span-2">
-                  <label class="block font-medium text-slate-700 mb-1">Chọn nhanh từ Bảng Giá Dịch Vụ</label>
-                  <select id="payServiceSelect" onchange="onSelectServiceCatalog()" class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800">
-                    <option value="">-- Chọn dịch vụ niêm yết --</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block font-medium text-slate-700 mb-1">Chế độ ưu đãi áp dụng *</label>
-                  <select id="payDiscountType" onchange="toggleDiscountInputs()" class="w-full p-2 border rounded-lg bg-white font-semibold">
-                    <option value="tier">1. Theo Hạng Thành Viên</option>
-                    <option value="referral">2. Thẻ Referral Giới Thiệu</option>
-                    <option value="custom_percent">3. Giảm theo % tùy chỉnh</option>
-                    <option value="custom_fixed">4. Bớt trực tiếp số tiền (VNĐ)</option>
-                    <option value="none">5. Không giảm giá</option>
-                  </select>
+                  <label class="block font-medium text-slate-700 mb-1">Số tiền (VNĐ) *</label>
+                  <input type="number" id="payAmount" required min="1000" step="1000" placeholder="Số tiền thực thu..." class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800" />
                 </div>
               </div>
 
               <div>
-                <label class="block font-medium text-slate-700 mb-1">Tên dịch vụ thực hiện *</label>
-                <input type="text" id="payService" required placeholder="Tên dịch vụ / thủ thuật..." class="w-full p-2 border rounded-lg bg-white font-medium" />
+                <label class="block font-medium text-slate-700 mb-1">Nội dung thu *</label>
+                <input type="text" id="payService" required placeholder="Cấy Implant R46 (Đợt 1)..." class="w-full p-2 border rounded-lg bg-white font-medium" />
               </div>
 
-              <div id="tierCategoryBox" class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white p-2.5 rounded-lg border border-slate-200">
-                <div>
-                  <label class="block font-medium text-slate-600 mb-1">Nhóm dịch vụ tính ưu đãi</label>
-                  <select id="payServiceCategory" onchange="calculateBillingDiscount()" class="w-full p-1.5 border rounded-lg bg-slate-50 font-semibold">
-                    <option value="general">Điều trị Tổng quát (Silver: 5%, Gold: 7%, Diamond: 10%)</option>
-                    <option value="specialized">Điều trị Chuyên sâu (Implant, Chỉnh nha...: Gold: 3%, Diamond: 5%)</option>
-                    <option value="other">Dịch vụ khác / Không chiết khấu</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block font-medium text-slate-600 mb-1">Ghi chú phân hạng</label>
-                  <input type="text" id="tierNoteDisplay" readonly class="w-full p-1.5 border rounded-lg bg-slate-100 text-slate-600 text-xs" value="Áp dụng ưu đãi thành viên tự động" />
-                </div>
-              </div>
-
-              <div id="customDiscountBox" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 bg-amber-50 p-2.5 rounded-lg border border-amber-200">
-                <div>
-                  <label id="customDiscountLabel" class="block font-medium text-amber-900 mb-1">Mức giảm tùy chỉnh</label>
-                  <input type="number" id="customDiscountValue" oninput="calculateBillingDiscount()" placeholder="Nhập % hoặc số tiền bớt..." class="w-full p-1.5 border rounded-lg bg-white font-bold text-rose-700" />
-                </div>
-                <div>
-                  <label class="block font-medium text-amber-900 mb-1">Lý do giảm giá *</label>
-                  <input type="text" id="customDiscountReason" placeholder="Ví dụ: Bạn BS Anh, Người thân giới thiệu..." class="w-full p-1.5 border rounded-lg bg-white" />
-                </div>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label class="block font-medium text-slate-600 mb-1">Giá niêm yết ban đầu (VNĐ) *</label>
-                  <input type="number" id="payOriginalAmount" oninput="calculateBillingDiscount()" required min="1000" step="1000" placeholder="Số tiền gốc..." class="w-full p-2 border rounded-lg bg-white font-bold text-slate-800" />
-                </div>
-                <div>
-                  <label class="block font-medium text-slate-600 mb-1">Tiền được giảm trừ</label>
-                  <input type="text" id="payDiscountAmount" readonly class="w-full p-2 border rounded-lg bg-slate-50 text-rose-600 font-bold" value="0 đ" />
-                </div>
-                <div>
-                  <label class="block font-medium text-teal-800 mb-1">Số tiền thực thu (Sau giảm)</label>
-                  <input type="text" id="payFinalAmount" readonly class="w-full p-2 border rounded-lg bg-teal-50 text-teal-900 font-extrabold text-base" value="0 đ" />
-                </div>
-              </div>
-
-              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-2 gap-3">
-                <div class="flex items-center gap-2">
-                  <label class="text-slate-600 font-medium">Hình thức:</label>
-                  <select id="payMethod" class="p-2 border rounded-lg bg-white">
-                    <option value="Chuyển khoản">Chuyển khoản</option>
-                    <option value="Tiền mặt">Tiền mặt tại quầy</option>
-                    <option value="Quẹt thẻ">Quẹt thẻ POS</option>
-                  </select>
-                </div>
-                <button type="submit" id="btnSubmitPayment" class="w-full sm:w-auto bg-teal-700 hover:bg-teal-800 text-white font-medium px-6 py-2 rounded-lg text-xs transition-colors shadow">
+              <div class="flex justify-end pt-2">
+                <button type="submit" id="btnSubmitPayment" class="bg-teal-700 hover:bg-teal-800 text-white font-medium px-6 py-2 rounded-lg text-xs transition-colors shadow">
                   + Xác Nhận Lập Phiếu Thu
                 </button>
               </div>
             </form>
           </div>
+
         </div>
       </div>
     </main>
 
     <!-- ============================================== -->
-    <!-- TAB 2: BÁO CÁO CHIẾN LƯỢC KINH DOANH          -->
-    <!-- ============================================== -->
-    <main id="analyticsTab" class="hidden space-y-6">
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-          <div>
-            <h2 class="text-base font-bold text-slate-900 uppercase tracking-wider">Bảng Điều Khiển & Phân Tích Chiến Lược</h2>
-            <p class="text-xs text-slate-400">Đánh giá nguồn doanh thu, cơ cấu dịch vụ và định hướng phát triển phòng khám</p>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-2">
-            <button onclick="setAnalyticsPreset('7days')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-teal-50 hover:text-teal-800 transition-colors">1 Tuần qua</button>
-            <button onclick="setAnalyticsPreset('30days')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-teal-50 hover:text-teal-800 transition-colors">1 Tháng (30 ngày)</button>
-            <button onclick="setAnalyticsPreset('90days')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-teal-50 hover:text-teal-800 transition-colors">3 Tháng (Quý)</button>
-            
-            <div class="flex items-center gap-1.5 bg-slate-50 p-1 rounded-lg border text-xs">
-              <input type="date" id="analyticsFromDate" class="bg-transparent outline-none font-medium p-0.5" />
-              <span>—</span>
-              <input type="date" id="analyticsToDate" class="bg-transparent outline-none font-medium p-0.5" />
-              <button onclick="loadAnalyticsReport()" class="bg-teal-700 hover:bg-teal-800 text-white px-2.5 py-1 rounded text-xs font-medium">Lọc</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2 border-t">
-          <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
-            <span class="text-[11px] font-bold uppercase text-emerald-700 block">Doanh Thu Thực Thu</span>
-            <span id="anaKpiRevenue" class="text-2xl font-black text-emerald-900 mt-1 block">0 đ</span>
-          </div>
-          <div class="bg-sky-50 border border-sky-200 p-4 rounded-xl">
-            <span class="text-[11px] font-bold uppercase text-sky-700 block">Tổng Lượt Ca Giao Dịch</span>
-            <span id="anaKpiTransactions" class="text-2xl font-black text-sky-900 mt-1 block">0 ca</span>
-          </div>
-          <div class="bg-purple-50 border border-purple-200 p-4 rounded-xl">
-            <span class="text-[11px] font-bold uppercase text-purple-700 block">Giá Trị TB / Ca (AOV)</span>
-            <span id="anaKpiAov" class="text-2xl font-black text-purple-900 mt-1 block">0 đ</span>
-          </div>
-          <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl">
-            <span class="text-[11px] font-bold uppercase text-amber-700 block">Tỷ Lệ Đóng Góp Online</span>
-            <span id="anaKpiOnlineShare" class="text-2xl font-black text-amber-900 mt-1 block">0%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-6 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-          <div class="border-b pb-2 flex justify-between items-center">
-            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">1. Phân Tích Nguồn Khách (Channel)</h3>
-            <span class="text-[11px] text-slate-400">Online vs Offline</span>
-          </div>
-          <div id="anaSourceReportList" class="space-y-3 pt-1">
-            <div class="text-center py-6 text-slate-400 text-xs">Đang nạp số liệu...</div>
-          </div>
-        </div>
-
-        <div class="lg:col-span-6 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-          <div class="border-b pb-2 flex justify-between items-center">
-            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">2. Khách Cũ vs Khách Mới</h3>
-            <span class="text-[11px] text-slate-400">Hiệu quả Retention</span>
-          </div>
-          <div id="anaCustomerTypeReportList" class="space-y-3 pt-1">
-            <div class="text-center py-6 text-slate-400 text-xs">Đang nạp số liệu...</div>
-          </div>
-        </div>
-
-        <div class="lg:col-span-12 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-          <div class="border-b pb-2 flex justify-between items-center">
-            <div>
-              <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">3. Cơ Cấu Doanh Thu Theo Dịch Vụ</h3>
-              <p class="text-xs text-slate-400">Dịch vụ mũi nhọn mang lại doanh số lớn nhất</p>
-            </div>
-            <span class="text-xs text-teal-700 font-bold bg-teal-50 px-2.5 py-1 rounded-lg">Top Dịch Vụ Chủ Lực</span>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm">
-              <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
-                <tr>
-                  <th class="py-2.5 px-3">Tên Dịch Vụ</th>
-                  <th class="py-2.5 px-3 text-center">Số Ca</th>
-                  <th class="py-2.5 px-3 text-right">Tổng Doanh Thu</th>
-                  <th class="py-2.5 px-3 text-right">Tỷ Trọng (%)</th>
-                  <th class="py-2.5 px-3 text-center">Đánh Giá</th>
-                </tr>
-              </thead>
-              <tbody id="anaServiceReportBody" class="divide-y divide-slate-100">
-                <tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Đang nạp số liệu dịch vụ...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="lg:col-span-12 bg-gradient-to-br from-teal-900 to-slate-900 text-white p-6 rounded-2xl shadow-sm space-y-3">
-          <div class="flex items-center gap-2">
-            <span class="text-lg">💡</span>
-            <h3 class="text-sm font-extrabold uppercase tracking-wider text-teal-300">Nhận Định & Khuyến Nghị Chiến Lược Cho Nha Khoa Lê Anh</h3>
-          </div>
-          <div id="anaStrategicInsights" class="text-xs md:text-sm text-slate-200 space-y-2 leading-relaxed">
-            Đang phân tích số liệu...
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- ============================================== -->
-    <!-- TAB 3: BẢNG GIÁ DỊCH VỤ                        -->
+    <!-- TAB 2: BẢNG GIÁ DỊCH VỤ                        -->
     <!-- ============================================== -->
     <main id="pricingTab" class="hidden space-y-6">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-          <div class="border-b pb-3">
-            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Thêm Dịch Vụ Mới</h2>
-            <p class="text-xs text-slate-400">Định nghĩa dịch vụ, đơn giá niêm yết và phân nhóm</p>
-          </div>
-
-          <form id="serviceForm" class="space-y-3 text-xs">
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Tên dịch vụ *</label>
-              <input type="text" id="serviceName" required placeholder="Ví dụ: Cấy Implant Straumann BLT..." class="w-full p-2 border rounded-lg bg-white font-medium outline-none focus:ring-2 focus:ring-teal-500" />
-            </div>
-
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Phân nhóm dịch vụ *</label>
-              <select id="serviceCategory" required class="w-full p-2 border rounded-lg bg-white font-semibold text-teal-800">
-                <option value="specialized">1. Điều trị Chuyên sâu (Implant, Chỉnh nha, Sứ...)</option>
-                <option value="general">2. Điều trị Tổng quát (Trám răng, Cạo vôi, Nhổ răng, Tủy...)</option>
-                <option value="other">3. Dịch vụ khác / Khám chụp</option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Đơn giá niêm yết (VNĐ) *</label>
-                <input type="number" id="servicePrice" required min="1000" step="1000" placeholder="28000000" class="w-full p-2 border rounded-lg bg-white font-bold text-slate-800" />
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Đơn vị tính</label>
-                <input type="text" id="serviceUnit" value="Răng" placeholder="Trụ, Răng, Hàm, Ca..." class="w-full p-2 border rounded-lg bg-white" />
-              </div>
-            </div>
-
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Mô tả / Ghi chú</label>
-              <textarea id="serviceDesc" rows="2" placeholder="Ghi chú chi tiết dịch vụ..." class="w-full p-2 border rounded-lg bg-white"></textarea>
-            </div>
-
-            <button type="submit" id="btnSaveService" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 rounded-lg text-xs transition-colors shadow">
-              + Lưu Vào Bảng Giá
-            </button>
-          </form>
-        </div>
-
-        <div class="lg:col-span-8 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3">
-            <div>
-              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Danh Mục Bảng Giá Niêm Yết</h2>
-              <p class="text-xs text-slate-400">Dịch vụ sẽ tự động xuất hiện ở form lập phiếu thu</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <select id="pricingFilterCategory" onchange="loadServiceCatalog()" class="p-1.5 border rounded-lg text-xs bg-slate-50 font-medium">
-                <option value="all">Tất cả nhóm</option>
-                <option value="specialized">Chuyên sâu (Implant, Chỉnh nha, Sứ)</option>
-                <option value="general">Tổng quát (Cạo vôi, Trám, Tủy...)</option>
-                <option value="other">Khác</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm">
-              <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
-                <tr>
-                  <th class="py-2.5 px-3">Tên dịch vụ</th>
-                  <th class="py-2.5 px-3">Phân nhóm</th>
-                  <th class="py-2.5 px-3 text-center">Đơn vị</th>
-                  <th class="py-2.5 px-3 text-right">Đơn giá niêm yết</th>
-                  <th class="py-2.5 px-3 text-right">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody id="serviceCatalogBody" class="divide-y divide-slate-100">
-                <tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Đang tải bảng giá dịch vụ...</td></tr>
-              </tbody>
-            </table>
-          </div>
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Bảng Giá Dịch Vụ Niêm Yết</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
+              <tr>
+                <th class="py-2.5 px-3">Tên dịch vụ</th>
+                <th class="py-2.5 px-3">Phân nhóm</th>
+                <th class="py-2.5 px-3 text-right">Đơn giá niêm yết</th>
+              </tr>
+            </thead>
+            <tbody id="serviceCatalogBody" class="divide-y divide-slate-100">
+              <tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">Đang tải bảng giá...</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </main>
 
     <!-- ============================================== -->
-    <!-- TAB 4: KHO VẬT TƯ NHA KHOA                     -->
-    <!-- ============================================== -->
-    <main id="inventoryTab" class="hidden space-y-6">
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
-          <span class="text-[11px] font-bold uppercase text-slate-400 block">Tổng Mặt Hàng</span>
-          <span id="invKpiTotalItems" class="text-2xl font-extrabold text-slate-900 mt-1 block">0</span>
-        </div>
-        <div class="bg-rose-50 p-4 rounded-2xl border border-rose-200 shadow-xs">
-          <span class="text-[11px] font-bold uppercase text-rose-700 block">⚠️ Sắp Hết Kho</span>
-          <span id="invKpiLowStock" class="text-2xl font-extrabold text-rose-900 mt-1 block">0</span>
-        </div>
-        <div class="bg-teal-50 p-4 rounded-2xl border border-teal-200 shadow-xs">
-          <span class="text-[11px] font-bold uppercase text-teal-700 block">Trụ Implant & Phẫu Thuật</span>
-          <span id="invKpiImplantCount" class="text-2xl font-extrabold text-teal-900 mt-1 block">0</span>
-        </div>
-        <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 shadow-xs">
-          <span class="text-[11px] font-bold uppercase text-amber-700 block">Ước Tính Giá Trị Kho</span>
-          <span id="invKpiTotalValue" class="text-2xl font-extrabold text-amber-900 mt-1 block">0 đ</span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-          <div class="border-b pb-3">
-            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Khai Báo Mặt Hàng Mới</h2>
-            <p class="text-xs text-slate-400">Quản lý Implant, vật liệu tiêu hao & ngưỡng cảnh báo</p>
-          </div>
-
-          <form id="inventoryItemForm" class="space-y-3 text-xs">
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Tên mặt hàng / Quy cách *</label>
-              <input type="text" id="invItemName" required placeholder="Ví dụ: Trụ Straumann BLT 4.1x10mm..." class="w-full p-2 border rounded-lg bg-white outline-none focus:ring-2 focus:ring-teal-500 font-medium" />
-            </div>
-
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Phân loại mặt hàng *</label>
-              <select id="invItemCategory" required class="w-full p-2 border rounded-lg bg-white font-semibold text-teal-800">
-                <option value="Implant & Phẫu thuật">1. Trụ Implant & Vật liệu phẫu thuật</option>
-                <option value="Vật liệu trám/nội nha">2. Vật liệu trám & Nội nha</option>
-                <option value="Vật tư tiêu hao">3. Vật tư tiêu hao</option>
-                <option value="Dụng cụ & Khác">4. Dụng cụ & Hóa chất vô trùng</option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2">
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Tồn ban đầu</label>
-                <input type="number" id="invItemStock" min="0" value="0" class="w-full p-2 border rounded-lg bg-white font-bold text-center" />
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Tối thiểu</label>
-                <input type="number" id="invItemMinStock" min="1" value="5" class="w-full p-2 border rounded-lg bg-white font-bold text-center text-rose-600" />
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Đơn vị</label>
-                <input type="text" id="invItemUnit" value="Hộp" placeholder="Trụ, Hộp, Ống..." class="w-full p-2 border rounded-lg bg-white text-center" />
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Giá vốn (VNĐ)</label>
-                <input type="number" id="invItemCost" min="0" step="1000" placeholder="Giá nhập..." class="w-full p-2 border rounded-lg bg-white font-bold" />
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Hạn dùng (EXP)</label>
-                <input type="date" id="invItemExpiry" class="w-full p-2 border rounded-lg bg-white" />
-              </div>
-            </div>
-
-            <button type="submit" id="btnSaveInventoryItem" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 rounded-lg text-xs transition-colors shadow">
-              + Khai Báo Mặt Hàng
-            </button>
-          </form>
-        </div>
-
-        <div class="lg:col-span-8 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3">
-            <div>
-              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Danh Sách Tồn Kho & Nhập Xuất Nhanh</h2>
-              <p class="text-xs text-slate-400">Bấm nút Nhập/Xuất để cập nhật số lượng tức thì</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <select id="invFilterCategory" onchange="loadInventoryItems()" class="p-1.5 border rounded-lg text-xs bg-slate-50 font-medium">
-                <option value="all">Tất cả danh mục</option>
-                <option value="low_stock">⚠️ Chỉ xem hàng sắp hết</option>
-                <option value="Implant & Phẫu thuật">Implant & Phẫu thuật</option>
-                <option value="Vật liệu trám/nội nha">Vật liệu trám/nội nha</option>
-                <option value="Vật tư tiêu hao">Vật tư tiêu hao</option>
-                <option value="Dụng cụ & Khác">Dụng cụ & Khác</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm">
-              <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
-                <tr>
-                  <th class="py-2.5 px-3">Tên mặt hàng / Quy cách</th>
-                  <th class="py-2.5 px-3">Phân loại</th>
-                  <th class="py-2.5 px-3 text-center">Tồn kho</th>
-                  <th class="py-2.5 px-3 text-center">Hạn dùng</th>
-                  <th class="py-2.5 px-3 text-right">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody id="inventoryTableBody" class="divide-y divide-slate-100">
-                <tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Đang tải danh sách kho...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- ============================================== -->
-    <!-- TAB 5: LỊCH HẸN & CA TRỰC                     -->
+    <!-- TAB 3: LỊCH HẸN                               -->
     <!-- ============================================== -->
     <main id="scheduleTab" class="hidden space-y-6">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-5 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-          <div class="border-b pb-3">
-            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Đặt Lịch Hẹn Bệnh Nhân</h2>
-            <p class="text-xs text-slate-400">Kiểm tra lịch trực & quyền lợi ưu tiên theo hạng</p>
-          </div>
-
-          <form id="appointmentForm" class="space-y-3 text-xs">
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Bệnh nhân hẹn khám *</label>
-              <input type="text" id="apptPatientName" required placeholder="Họ tên bệnh nhân hoặc chọn từ danh sách..." class="w-full p-2 border rounded-lg bg-white outline-none focus:ring-2 focus:ring-teal-500 font-medium" />
-              <input type="hidden" id="apptPatientId" />
-            </div>
-
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Bác sĩ phụ trách *</label>
-              <select id="apptDoctor" onchange="validateAppointmentTime()" required class="w-full p-2 border rounded-lg bg-white font-semibold">
-                <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh</option>
-                <option value="BS. Trần Văn B">BS. Trần Văn B</option>
-                <option value="BS. Nguyễn Thị C">BS. Nguyễn Thị C</option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Ngày hẹn *</label>
-                <input type="date" id="apptDate" onchange="validateAppointmentTime()" required class="w-full p-2 border rounded-lg bg-white font-medium" />
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Giờ hẹn *</label>
-                <select id="apptTime" onchange="validateAppointmentTime()" required class="w-full p-2 border rounded-lg bg-white font-medium">
-                  <option value="08:30">08:30 sáng</option>
-                  <option value="09:00">09:00 sáng</option>
-                  <option value="09:30">09:30 sáng</option>
-                  <option value="10:00">10:00 sáng</option>
-                  <option value="10:30">10:30 sáng</option>
-                  <option value="11:00">11:00 trưa</option>
-                  <option value="14:00">14:00 chiều</option>
-                  <option value="14:30">14:30 chiều</option>
-                  <option value="15:00">15:00 chiều</option>
-                  <option value="15:30">15:30 chiều</option>
-                  <option value="16:00">16:00 chiều</option>
-                  <option value="16:30">16:30 chiều</option>
-                  <option value="17:00">17:00 chiều</option>
-                  <option value="17:30">17:30 chiều</option>
-                  <option value="18:00">18:00 tối</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Nội dung dự kiến thực hiện</label>
-              <input type="text" id="apptProcedure" placeholder="Ví dụ: Cấy trụ Implant, Lắp mão sứ..." class="w-full p-2 border rounded-lg bg-white" />
-            </div>
-
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Phòng / Ghế nha</label>
-              <select id="apptChair" class="w-full p-2 border rounded-lg bg-white">
-                <option value="1">Ghế 01 (Phòng VIP / Phẫu Thuật)</option>
-                <option value="2">Ghế 02 (Nha Khoa Tổng Quát)</option>
-                <option value="3">Ghế 03 (Chỉnh Nha)</option>
-              </select>
-            </div>
-
-            <div id="appointmentValidationBox" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
-
-            <button type="submit" id="btnSaveAppointment" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 rounded-lg text-xs transition-colors shadow">
-              + Xác Nhận Đặt Lịch Hẹn
-            </button>
-          </form>
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+        <div class="flex justify-between items-center border-b pb-3">
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Danh Sách Lịch Hẹn</h2>
+          <button type="button" onclick="loadAppointments()" class="text-xs text-teal-600 font-bold">Làm mới ↻</button>
         </div>
-
-        <div class="lg:col-span-7 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3">
-            <div>
-              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Lịch Khám & Hẹn Bệnh Nhân</h2>
-              <p class="text-xs text-slate-400">Xem và quản lý bệnh nhân theo ngày hẹn</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <input type="date" id="filterApptDate" onchange="loadAppointments()" class="p-1.5 border rounded-lg text-xs font-medium bg-slate-50" />
-              <select id="filterApptDoctor" onchange="loadAppointments()" class="p-1.5 border rounded-lg text-xs font-medium bg-slate-50">
-                <option value="Tất cả">Tất cả Bác sĩ</option>
-                <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh</option>
-                <option value="BS. Trần Văn B">BS. Trần Văn B</option>
-                <option value="BS. Nguyễn Thị C">BS. Nguyễn Thị C</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm">
-              <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
-                <tr>
-                  <th class="py-2.5 px-3">Giờ hẹn</th>
-                  <th class="py-2.5 px-3">Bệnh nhân</th>
-                  <th class="py-2.5 px-3">Nội dung dự kiến</th>
-                  <th class="py-2.5 px-3">Bác sĩ</th>
-                  <th class="py-2.5 px-3">Ghế</th>
-                  <th class="py-2.5 px-3 text-right">Trạng thái</th>
-                </tr>
-              </thead>
-              <tbody id="appointmentTableBody" class="divide-y divide-slate-100">
-                <tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Đang tải lịch hẹn...</td></tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
+              <tr>
+                <th class="py-2.5 px-3">Giờ hẹn</th>
+                <th class="py-2.5 px-3">Bệnh nhân</th>
+                <th class="py-2.5 px-3">Nội dung</th>
+                <th class="py-2.5 px-3">Bác sĩ</th>
+              </tr>
+            </thead>
+            <tbody id="appointmentTableBody" class="divide-y divide-slate-100">
+              <tr><td colspan="4" class="text-center py-6 text-slate-400 text-xs">Đang tải lịch hẹn...</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </main>
 
     <!-- ============================================== -->
-    <!-- TAB 6: CHĂM SÓC KHÁCH HÀNG (CRM)              -->
-    <!-- ============================================== -->
-    <main id="crmTab" class="hidden space-y-6">
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-        <div onclick="filterCrmTasks('all')" class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs cursor-pointer hover:border-teal-500 transition-colors">
-          <span class="text-[10px] font-bold text-slate-400 uppercase block">Tất Cả Cần Chăm Sóc</span>
-          <span id="crmCountAll" class="text-xl font-extrabold text-slate-900 mt-1 block">0</span>
-        </div>
-        <div onclick="filterCrmTasks('Hậu phẫu 24h-48h')" class="bg-amber-50 p-3.5 rounded-2xl border border-amber-200 shadow-xs cursor-pointer hover:border-amber-500 transition-colors">
-          <span class="text-[10px] font-bold text-amber-700 uppercase block">🩺 Hậu Phẫu 24-48h</span>
-          <span id="crmCountPostOp" class="text-xl font-extrabold text-amber-900 mt-1 block">0</span>
-        </div>
-        <div onclick="filterCrmTasks('Chưa chốt phác đồ')" class="bg-sky-50 p-3.5 rounded-2xl border border-sky-200 shadow-xs cursor-pointer hover:border-sky-500 transition-colors">
-          <span class="text-[10px] font-bold text-sky-700 uppercase block">⏳ Chưa Chốt Phác Đồ</span>
-          <span id="crmCountUnclosed" class="text-xl font-extrabold text-sky-900 mt-1 block">0</span>
-        </div>
-        <div onclick="filterCrmTasks('Chăm sóc 6 tháng')" class="bg-purple-50 p-3.5 rounded-2xl border border-purple-200 shadow-xs cursor-pointer hover:border-purple-500 transition-colors">
-          <span class="text-[10px] font-bold text-purple-700 uppercase block">📅 Tái Khám 6 Tháng</span>
-          <span id="crmCountRecall" class="text-xl font-extrabold text-purple-900 mt-1 block">0</span>
-        </div>
-        <div onclick="filterCrmTasks('Khiếu nại/Phản hồi')" class="bg-rose-50 p-3.5 rounded-2xl border border-rose-200 shadow-xs cursor-pointer hover:border-rose-500 transition-colors col-span-2 sm:col-span-1">
-          <span class="text-[10px] font-bold text-rose-700 uppercase block">⚠️️ Khiếu Nại</span>
-          <span id="crmCountComplaint" class="text-xl font-extrabold text-rose-900 mt-1 block">0</span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-          <div class="border-b pb-3">
-            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Tạo Lịch Chăm Sóc / Follow-up</h2>
-          </div>
-
-          <form id="crmTaskForm" class="space-y-3 text-xs">
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Bệnh nhân *</label>
-              <input type="text" id="crmPatientName" required placeholder="Tên bệnh nhân..." class="w-full p-2 border rounded-lg bg-white outline-none focus:ring-2 focus:ring-teal-500 font-medium" />
-              <input type="hidden" id="crmPatientId" />
-            </div>
-
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Số điện thoại *</label>
-              <input type="tel" id="crmPatientPhone" required placeholder="0901234567" class="w-full p-2 border rounded-lg bg-white" />
-            </div>
-
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Phân loại chăm sóc *</label>
-              <select id="crmTaskType" required class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800">
-                <option value="Hậu phẫu 24h-48h">1. Hậu phẫu 24h-48h</option>
-                <option value="Chưa chốt phác đồ">2. Follow-up Chưa chốt phác đồ</option>
-                <option value="Chăm sóc 6 tháng">3. Nhắc tái khám định kỳ 6 tháng</option>
-                <option value="Khiếu nại/Phản hồi">4. Tiếp nhận Khiếu nại / Phản hồi</option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Ngày cần gọi *</label>
-                <input type="date" id="crmDueDate" required class="w-full p-2 border rounded-lg bg-white font-semibold" />
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Người phụ trách</label>
-                <select id="crmAssignedTo" class="w-full p-2 border rounded-lg bg-white">
-                  <option value="Lễ tân / CSKH">Lễ tân / CSKH</option>
-                  <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Nội dung chi tiết *</label>
-              <textarea id="crmContent" rows="3" required placeholder="Nội dung chăm sóc..." class="w-full p-2 border rounded-lg bg-white"></textarea>
-            </div>
-
-            <button type="submit" id="btnSaveCrmTask" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 rounded-lg text-xs transition-colors shadow">
-              + Thêm Vào Danh Sách Chăm Sóc
-            </button>
-          </form>
-        </div>
-
-        <div class="lg:col-span-8 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm">
-              <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
-                <tr>
-                  <th class="py-2.5 px-3">Hạn gọi</th>
-                  <th class="py-2.5 px-3">Phân loại</th>
-                  <th class="py-2.5 px-3">Bệnh nhân / SĐT</th>
-                  <th class="py-2.5 px-3">Nội dung</th>
-                  <th class="py-2.5 px-3">Trạng thái</th>
-                  <th class="py-2.5 px-3 text-right">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody id="crmTableBody" class="divide-y divide-slate-100">
-                <tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Đang tải danh sách chăm sóc...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- ============================================== -->
-    <!-- TAB 7: KẾ TOÁN & DÒNG TIỀN                     -->
+    <!-- TAB 4: KẾ TOÁN & DÒNG TIỀN                     -->
     <!-- ============================================== -->
     <main id="financeTab" class="hidden space-y-6">
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-          <div>
-            <h2 class="text-base font-bold text-slate-900 uppercase tracking-wider">Tổng Quan Doanh Thu & Dòng Tiền</h2>
-          </div>
-          <div class="flex items-center gap-2">
-            <input type="month" id="filterMonth" class="px-3 py-1.5 border rounded-lg text-xs font-semibold bg-slate-50 outline-none" />
-            <button type="button" onclick="loadFinancialData()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-1.5 rounded-lg text-xs font-medium">Lọc</button>
-          </div>
-        </div>
-
+        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Doanh Thu & Dòng Tiền Két</h2>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
           <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
             <span class="text-[11px] font-bold uppercase text-emerald-700 block">Tổng Thu Tháng</span>
             <span id="kpiTotalRevenue" class="text-xl font-extrabold text-emerald-900">0 đ</span>
           </div>
           <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl">
-            <span class="text-[11px] font-bold uppercase text-rose-700 block">Tổng Chi Hoạt Động</span>
+            <span class="text-[11px] font-bold uppercase text-rose-700 block">Tổng Chi</span>
             <span id="kpiTotalExpense" class="text-xl font-extrabold text-rose-900">0 đ</span>
-          </div>
-          <div class="bg-teal-50 border border-teal-200 p-4 rounded-xl">
-            <span class="text-[11px] font-bold uppercase text-teal-700 block">Lợi Nhuận Thuần</span>
-            <span id="kpiNetProfit" class="text-xl font-extrabold text-teal-900">0 đ</span>
-          </div>
-          <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl">
-            <span class="text-[11px] font-bold uppercase text-amber-700 block">Dòng Tiền Két</span>
-            <span id="kpiCashBalance" class="text-xl font-extrabold text-amber-900">0 đ</span>
           </div>
         </div>
       </div>
@@ -1222,853 +627,36 @@
     </div>
   </div>
 
-  <!-- SCRIPT HỆ THỐNG -->
+  <!-- SCRIPT HỆ THỐNG ĐÃ CÔ LẬP KHỞI CHẠY AN TOÀN -->
   <script>
+    // 1. Cấu hình Supabase an toàn
     const SUPABASE_URL = "https://eqifvioqxgvnwhmxqtnx.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxaWZ2aW9xeGd2bndobXhxdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5MTA5NjksImV4cCI6MjEwNjQ4Njk2OX0.24tg4fbKNxeJ1kYSa1R8YcL27hKK0ga-dyEnP759aV8";
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    let currentPatient = null;
-    let currentTeethData = {};
-    let activeToothNum = null;
-    let currentPatientTier = { name: "MEMBER", generalDiscount: 0, specialDiscount: 0 };
-    let currentCrmFilter = 'all';
-    let activeCrmTaskId = null;
-    let cachedServices = [];
-
-    // BỘ ĐƠN THUỐC MẪU
-    const RX_TEMPLATES = {
-      post_surgery: {
-        drugs: `1. Augmentin 1g (Amoxicillin/Clavulanate) x 14 viên\n   Uống 1 viên x 2 lần/ngày sau khi ăn no\n2. Medrol 16mg x 04 viên\n   Uống 1 viên x 1 lần/ngày vào buổi sáng sau khi ăn no\n3. Efferalgan Codein 500mg (sủi) x 09 viên\n   Uống 1 viên x 3 lần/ngày sau ăn (hòa tan hoàn toàn trong 1 ly nước đầy, uống khi đau)\n4. Nexium 40mg x 04 viên\n   Uống 1 viên x 1 lần/ngày vào buổi sáng trước khi ăn 30-60 phút`,
-        advice: "Uống thuốc đúng cữ; cắn chặt bông gạc 60-90 phút; chườm lạnh ngoài má 24h đầu; không khạc nhổ, không súc miệng mạnh ngày đầu."
-      },
-      occlusal_trauma: {
-        drugs: `1. Medrol 16mg x 04 viên\n   Uống 1 viên x 1 lần/ngày vào buổi sáng sau khi ăn no\n2. Ibuprofen 400mg x 12 viên\n   Uống 1 viên x 3 lần/ngày sau khi ăn no (Chống viêm giảm đau khớp cắn)\n3. Nexium 40mg x 04 viên\n   Uống 1 viên x 1 lần/ngày vào buổi sáng trước khi ăn 30-60 phút`,
-        advice: "Ăn thức ăn mềm, tránh nhai đồ cứng hoặc há miệng quá lớn; tái khám kiểm tra và mài chỉnh khớp cắn theo hẹn."
-      },
-      pulpitis: {
-        drugs: `1. Dorogyne (Spiramycin + Metronidazol) x 16 viên\n   Uống 2 viên x 2 lần/ngày sau ăn\n2. Ibuprofen 400mg x 12 viên\n   Uống 1 viên x 3 lần/ngày sau ăn no\n3. Nexium 40mg x 04 viên\n   Uống 1 viên x 1 lần/ngày trước ăn sáng`,
-        advice: "Uống thuốc giảm đau sau khi ăn no; tái khám theo lịch hẹn để mở tủy / làm sạch ống tủy dứt điểm."
-      },
-      gingivitis: {
-        drugs: `1. Dorogyne x 14 viên\n   Uống 2 viên x 2 lần/ngày sau ăn\n2. Vitamin C 500mg x 10 viên\n   Uống 1 viên vào buổi sáng sau ăn\n3. Nước súc miệng Kin Gingival (Chlorhexidine 0.12%) x 1 chai\n   Súc miệng 15ml x 2 lần/ngày sau khi chải răng`,
-        advice: "Chải răng đúng cách bằng bàn chải lông mềm; dùng chỉ nha khoa; tái khám kiểm tra nướu định kỳ."
+    
+    let supabaseClient = null;
+    try {
+      if (window.supabase && window.supabase.createClient) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       }
-    };
-
-    function applyRxTemplate() {
-      const key = document.getElementById("rxTemplateSelect").value;
-      if (!key || !RX_TEMPLATES[key]) return;
-      const tpl = RX_TEMPLATES[key];
-      document.getElementById("rxDrugsList").value = tpl.drugs;
-      document.getElementById("rxAdvice").value = tpl.advice;
+    } catch(e) {
+      console.error("Lỗi khởi tạo Supabase Client:", e);
     }
 
-    function appendDrug(drugName, qty, usage) {
-      const textarea = document.getElementById("rxDrugsList");
-      const current = textarea.value.trim();
-      let nextNum = 1;
-      const numMatches = current.match(/^\d+\./gm);
-      if (numMatches) nextNum = numMatches.length + 1;
-      const drugEntry = `${nextNum}. ${drugName} x ${qty}\n   ${usage}`;
-      textarea.value = current ? `${current}\n${drugEntry}` : drugEntry;
+    // 2. VẼ BÀN RĂNG NGAY LẬP TỨC (BẢO ĐẢM KHÔNG BAO GIỜ BỊ MẤT SƠ ĐỒ RĂNG)
+    try {
+      renderOdontogramUI();
+    } catch(e) {
+      console.error("Lỗi vẽ sơ đồ răng:", e);
     }
 
-    const q1 = [18, 17, 16, 15, 14, 13, 12, 11];
-    const q2 = [21, 22, 23, 24, 25, 26, 27, 28];
-    const q4 = [48, 47, 46, 45, 44, 43, 42, 41];
-    const q3 = [31, 32, 33, 34, 35, 36, 37, 38];
-
-    // CHUYỂN TAB 7 PHÂN HỆ
-    function switchTab(tab) {
-      const tabs = ['clinical', 'analytics', 'pricing', 'inventory', 'schedule', 'crm', 'finance'];
-      tabs.forEach(t => {
-        const el = document.getElementById(t + 'Tab');
-        if (el) el.classList.add('hidden');
-        const btn = document.getElementById('tabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
-        if (btn) btn.className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all";
-      });
-
-      const activeEl = document.getElementById(tab + 'Tab');
-      if (activeEl) activeEl.classList.remove('hidden');
-
-      const activeBtn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
-      if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all";
-
-      if (tab === 'analytics') {
-        initAnalyticsDates();
-        loadAnalyticsReport();
-      } else if (tab === 'pricing') {
-        loadServiceCatalog();
-      } else if (tab === 'inventory') {
-        loadInventoryItems();
-      } else if (tab === 'schedule') {
-        loadAppointments();
-      } else if (tab === 'crm') {
-        loadCrmTasks();
-      } else if (tab === 'finance') {
-        loadFinancialData();
-      }
-    }
-
-    // KHỞI TẠO BÀN RĂNG
-    function renderOdontogramUI() {
-      const makeTooth = (num) => `
-        <div onclick="openToothModal(${num})" id="tooth-${num}" 
-             class="tooth-box w-8 h-10 sm:w-10 sm:h-12 border-2 border-slate-200 rounded-lg flex flex-col items-center justify-center bg-white text-slate-700 font-semibold text-xs shadow-xs">
-          <span>${num}</span>
-        </div>
-      `;
-      const q1El = document.getElementById("quadrant1");
-      const q2El = document.getElementById("quadrant2");
-      const q4El = document.getElementById("quadrant4");
-      const q3El = document.getElementById("quadrant3");
-
-      if (q1El) q1El.innerHTML = q1.map(makeTooth).join('');
-      if (q2El) q2El.innerHTML = q2.map(makeTooth).join('');
-      if (q4El) q4El.innerHTML = q4.map(makeTooth).join('');
-      if (q3El) q3El.innerHTML = q3.map(makeTooth).join('');
-
-      const payDateEl = document.getElementById("payDate");
-      if (payDateEl) payDateEl.valueAsDate = new Date();
-    }
-
-    // DANH SÁCH BỆNH NHÂN (CƠ CHẾ BẢO VỆ CHỐNG TREO)
-    async function loadPatients(search = "") {
-      const listEl = document.getElementById("patientList");
-      if (!listEl) return;
-      try {
-        let query = supabaseClient.from('patients').select('*').order('created_at', { ascending: false });
-        if (search && search.trim()) {
-          query = query.or(`full_name.ilike.%${search.trim()}%,phone.ilike.%${search.trim()}%`);
-        }
-        const { data, error } = await query;
-
-        if (error) {
-          console.error("Lỗi Supabase:", error);
-          listEl.innerHTML = `<div class="p-4 text-center text-rose-500 text-xs">⚠️ Lỗi Supabase: ${error.message}<br/><span class="text-slate-400">Hãy đảm bảo RLS bảng patients đã TẮT (Unchecked).</span></div>`;
-          return;
-        }
-
-        if (!data || data.length === 0) {
-          listEl.innerHTML = `<div class="p-4 text-center text-slate-400 text-xs">Chưa có bệnh nhân nào trong danh sách.</div>`;
-          return;
-        }
-
-        listEl.innerHTML = data.map(p => `
-          <div onclick="selectPatient('${p.id}')" 
-               class="p-3 hover:bg-teal-50 cursor-pointer transition-colors ${String(currentPatient?.id) === String(p.id) ? 'bg-teal-50 border-l-4 border-teal-600' : ''}">
-            <div class="font-semibold text-slate-800 text-xs sm:text-sm uppercase">${p.full_name}</div>
-            <div class="text-[11px] text-slate-500">${p.phone || 'Chưa có SĐT'}</div>
-            ${p.medical_history ? `<div class="text-[10px] text-rose-600 mt-0.5 truncate">⚠️ ${p.medical_history}</div>` : ''}
-          </div>
-        `).join('');
-      } catch (err) {
-        console.error("Lỗi kết nối:", err);
-        listEl.innerHTML = `<div class="p-4 text-center text-rose-500 text-xs">⚠️ Lỗi kết nối: ${err.message}</div>`;
-      }
-    }
-
-    // CHỌN BỆNH NHÂN
-    async function selectPatient(id) {
-      try {
-        const { data, error } = await supabaseClient.from('patients').select('*').eq('id', id).single();
-        if (error || !data) return;
-        currentPatient = data;
-
-        const { data: payHistory } = await supabaseClient.from('payments').select('amount').eq('patient_id', String(id));
-        const totalSpent = (payHistory || []).reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
-
-        const custTypeEl = document.getElementById("payCustomerType");
-        if (custTypeEl) {
-          custTypeEl.value = (payHistory && payHistory.length > 0) ? "Khách cũ" : "Khách mới";
-        }
-
-        let tierInfo = {
-          name: "MEMBER",
-          badgeClass: "bg-slate-200 text-slate-700",
-          borderClass: "bg-slate-50 border-slate-200",
-          generalDiscount: 0,
-          specialDiscount: 0,
-          desc: "Khám & tư vấn miễn phí • Miễn phí chụp phim khảo sát (6 tháng)"[cite: 1]
-        };
-
-        if (totalSpent >= 80000000) {
-          tierInfo = {
-            name: "DIAMOND 💎",
-            badgeClass: "bg-cyan-500 text-white shadow-sm",
-            borderClass: "bg-cyan-50/70 border-cyan-300",
-            generalDiscount: 10,
-            specialDiscount: 5,
-            desc: "Giảm 10% tổng quát, 5% chuyên sâu • Ưu tiên phòng VIP • Quà SN 500k • Tặng 03 thẻ Referral/năm"[cite: 1]
-          };
-        } else if (totalSpent >= 30000000) {
-          tierInfo = {
-            name: "GOLD 🥇",
-            badgeClass: "bg-amber-500 text-white shadow-sm",
-            borderClass: "bg-amber-50/70 border-amber-300",
-            generalDiscount: 7,
-            specialDiscount: 3,
-            desc: "Giảm 7% tổng quát, 3% chuyên sâu • Ưu tiên lịch hẹn • Quà SN 300k"[cite: 1]
-          };
-        } else if (totalSpent >= 5000000) {
-          tierInfo = {
-            name: "SILVER 🩶",
-            badgeClass: "bg-slate-400 text-white shadow-sm",
-            borderClass: "bg-slate-50 border-slate-300",
-            generalDiscount: 5,
-            specialDiscount: 0,
-            desc: "Giảm 5% dịch vụ tổng quát • Tích lũy nâng hạng Gold"[cite: 1]
-          };
-        }
-
-        currentPatientTier = tierInfo;
-
-        document.getElementById("activePatientBanner").innerHTML = `
-          <span>Đang khám: <strong class="text-teal-800 uppercase">${data.full_name}</strong> (${data.phone})</span>
-          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase ${tierInfo.badgeClass}">
-            ${tierInfo.name}
-          </span>
-        `;
-
-        const card = document.getElementById("membershipCard");
-        if (card) {
-          card.className = `p-4 rounded-2xl border transition-all ${tierInfo.borderClass}`;
-          document.getElementById("tierBadge").className = `px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${tierInfo.badgeClass}`;
-          document.getElementById("tierBadge").innerText = tierInfo.name;
-          document.getElementById("tierSpent").innerText = totalSpent.toLocaleString('vi-VN') + " đ";
-          document.getElementById("tierBenefits").innerHTML = `🎁 <strong>Quyền lợi:</strong> ${tierInfo.desc}`;
-          card.classList.remove("hidden");
-        }
-
-        const tierNoteEl = document.getElementById("tierNoteDisplay");
-        if (tierNoteEl) tierNoteEl.value = `Hạng ${tierInfo.name} (Tổng quát: -${tierInfo.generalDiscount}%, Chuyên sâu: -${tierInfo.specialDiscount}%)`[cite: 1];
-
-        const patientTotalPaidEl = document.getElementById("patientTotalPaid");
-        if (patientTotalPaidEl) patientTotalPaidEl.innerText = "Tổng nộp: " + totalSpent.toLocaleString('vi-VN') + " đ";
-
-        const apptNameEl = document.getElementById("apptPatientName");
-        if (apptNameEl) apptNameEl.value = data.full_name + " (" + data.phone + ") - [" + tierInfo.name + "]";
-        const apptIdEl = document.getElementById("apptPatientId");
-        if (apptIdEl) apptIdEl.value = data.id;
-
-        const crmNameEl = document.getElementById("crmPatientName");
-        if (crmNameEl) crmNameEl.value = data.full_name;
-        const crmPhoneEl = document.getElementById("crmPatientPhone");
-        if (crmPhoneEl) crmPhoneEl.value = data.phone;
-        const crmIdEl = document.getElementById("crmPatientId");
-        if (crmIdEl) crmIdEl.value = data.id;
-
-        loadPatients(document.getElementById("searchInput")?.value || "");
-        await loadDentalChart(currentPatient.id);
-        await loadPatientPrescriptions(currentPatient.id);
-        toggleDiscountInputs();
-        calculateBillingDiscount();
-      } catch (e) {
-        console.error("Lỗi chọn bệnh nhân:", e);
-      }
-    }
-
-    // TIẾP NHẬN BỆNH NHÂN (FORM SUBMIT)
-    document.getElementById("patientForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const alertBox = document.getElementById("patientFormAlert");
-      const btn = document.getElementById("btnSavePatient");
-      
-      btn.disabled = true;
-      btn.innerText = "Đang lưu...";
-      alertBox.className = "hidden";
-
-      try {
-        const payload = {
-          full_name: document.getElementById("fullName").value.trim(),
-          phone: document.getElementById("phone").value.trim(),
-          dob: document.getElementById("dob").value || null,
-          gender: document.getElementById("gender").value,
-          address: document.getElementById("address").value.trim() || null,
-          medical_history: document.getElementById("medicalHistory").value.trim() || null
-        };
-
-        const { data, error } = await supabaseClient.from('patients').insert([payload]).select();
-
-        if (error) {
-          alertBox.className = "p-2.5 rounded-lg text-xs font-semibold mb-3 bg-rose-50 border border-rose-200 text-rose-700 block";
-          alertBox.innerText = "Lỗi Supabase: " + error.message;
-        } else {
-          alertBox.className = "p-2.5 rounded-lg text-xs font-semibold mb-3 bg-emerald-50 border border-emerald-200 text-emerald-800 block";
-          alertBox.innerText = "✅ Đã tiếp nhận bệnh nhân thành công!";
-          document.getElementById("patientForm").reset();
-          await loadPatients();
-          if (data && data[0]) selectPatient(data[0].id);
-        }
-      } catch (err) {
-        alertBox.className = "p-2.5 rounded-lg text-xs font-semibold mb-3 bg-rose-50 border border-rose-200 text-rose-700 block";
-        alertBox.innerText = "Lỗi hệ thống: " + err.message;
-      } finally {
-        btn.disabled = false;
-        btn.innerText = "+ Tiếp Nhận Bệnh Nhân";
-      }
+    // 3. NẠP DỮ LIỆU BAN ĐẦU
+    window.addEventListener("load", () => {
+      loadPatients();
     });
 
-    // SƠ ĐỒ RĂNG
-    async function loadDentalChart(patientId) {
-      document.querySelectorAll('.tooth-box').forEach(el => {
-        el.className = "tooth-box w-8 h-10 sm:w-10 sm:h-12 border-2 border-slate-200 rounded-lg flex flex-col items-center justify-center bg-white text-slate-700 font-semibold text-xs shadow-xs";
-      });
-
-      const { data, error } = await supabaseClient.from('dental_chart').select('*').eq('patient_id', String(patientId));
-      currentTeethData = {};
-      const planBody = document.getElementById("treatmentPlanBody");
-
-      if (error || !data || data.length === 0) {
-        if (planBody) planBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Tất cả răng bình thường hoặc chưa lập kế hoạch.</td></tr>`;
-        return;
-      }
-
-      let planRows = "";
-      data.forEach(item => {
-        currentTeethData[item.tooth_number] = item;
-        const toothEl = document.getElementById(`tooth-${item.tooth_number}`);
-        if (toothEl) {
-          const cond = item.condition || '';
-          if (item.status === 'Đã hoàn thành') toothEl.classList.add('tooth-done');
-          else if (cond.includes('Implant')) toothEl.classList.add('tooth-implant');
-          else if (cond.includes('Sâu') || cond.includes('tủy')) toothEl.classList.add('tooth-decay');
-          else if (cond.includes('Mất răng')) toothEl.classList.add('tooth-missing');
-          else if (cond.includes('Mão') || cond.includes('Cầu')) toothEl.classList.add('tooth-crown');
-          else toothEl.classList.add('bg-slate-100');
-        }
-
-        planRows += `
-          <tr class="hover:bg-slate-50">
-            <td class="py-2.5 px-3 font-bold text-teal-700">Răng ${item.tooth_number}</td>
-            <td class="py-2.5 px-3">${item.condition || '—'}</td>
-            <td class="py-2.5 px-3 font-medium text-slate-800">${item.treatment_plan || '—'}</td>
-            <td class="py-2.5 px-3">
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold 
-                ${item.status === 'Đã hoàn thành' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
-                ${item.status || 'Chưa làm'}
-              </span>
-            </td>
-            <td class="py-2.5 px-3 text-right">
-              <button type="button" onclick="openToothModal(${item.tooth_number})" class="text-teal-600 hover:underline font-medium">Sửa</button>
-            </td>
-          </tr>
-        `;
-      });
-      if (planBody) planBody.innerHTML = planRows;
-    }
-
-    function openToothModal(toothNum) {
-      if (!currentPatient) {
-        alert("Vui lòng nhấp chọn một bệnh nhân ở danh sách bên trái trước khi chọn khám răng!");
-        return;
-      }
-      activeToothNum = toothNum;
-      document.getElementById("modalToothNumber").innerText = toothNum;
-      const exist = currentTeethData[toothNum] || {};
-      document.getElementById("modalCondition").value = exist.condition || "Bình thường";
-      document.getElementById("modalPlan").value = exist.treatment_plan || "";
-      document.getElementById("modalStatus").value = exist.status || "Chưa làm";
-      document.getElementById("toothModal").classList.remove("hidden");
-    }
-
-    function closeToothModal() {
-      document.getElementById("toothModal").classList.add("hidden");
-    }
-
-    async function saveToothData() {
-      if (!currentPatient || !activeToothNum) return;
-      const condition = document.getElementById("modalCondition").value;
-      const plan = document.getElementById("modalPlan").value.trim();
-      const status = document.getElementById("modalStatus").value;
-
-      await supabaseClient.from('dental_chart').delete().match({ patient_id: String(currentPatient.id), tooth_number: activeToothNum });
-      if (condition !== "Bình thường" || plan) {
-        await supabaseClient.from('dental_chart').insert([{
-          patient_id: String(currentPatient.id),
-          tooth_number: activeToothNum,
-          condition: condition,
-          treatment_plan: plan,
-          status: status
-        }]);
-      }
-      closeToothModal();
-      await loadDentalChart(currentPatient.id);
-    }
-
-    // ĐƠN THUỐC
-    document.getElementById("prescriptionForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!currentPatient) {
-        alert("Vui lòng chọn bệnh nhân trước khi lưu đơn thuốc!");
-        return;
-      }
-
-      const payload = {
-        patient_id: String(currentPatient.id),
-        patient_name: currentPatient.full_name,
-        prescribed_date: new Date().toISOString().split('T')[0],
-        diagnosis: document.getElementById("examDiagnosis").value || "Bệnh lý răng miệng",
-        doctor_name: document.getElementById("rxDoctor").value,
-        drugs_list: document.getElementById("rxDrugsList").value.trim(),
-        advice: document.getElementById("rxAdvice").value.trim() || null
-      };
-
-      const { error } = await supabaseClient.from('prescriptions').insert([payload]);
-      if (error) alert("Lỗi: " + error.message);
-      else {
-        alert("Đã lưu đơn thuốc vào hồ sơ!");
-        loadPatientPrescriptions(currentPatient.id);
-      }
-    });
-
-    async function loadPatientPrescriptions(patientId) {
-      const container = document.getElementById("rxHistoryContainer");
-      if (!container) return;
-      const { data } = await supabaseClient
-        .from('prescriptions')
-        .select('*')
-        .eq('patient_id', String(patientId))
-        .order('created_at', { ascending: false });
-
-      if (!data || data.length === 0) {
-        container.innerHTML = `<div class="text-center py-3 text-slate-400 text-xs">Chưa có đơn thuốc nào được lưu.</div>`;
-        return;
-      }
-
-      container.innerHTML = data.map((rx) => `
-        <div class="p-3 bg-white border border-slate-200 rounded-xl space-y-1.5 hover:border-teal-400 transition-colors">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-bold text-teal-800">💊 Đơn thuốc ngày: ${rx.prescribed_date} (${rx.doctor_name})</span>
-            <button onclick="reprintSavedRx('${encodeURIComponent(JSON.stringify(rx))}')" class="text-xs bg-teal-50 hover:bg-teal-100 text-teal-700 px-2 py-0.5 rounded font-semibold border border-teal-200">🖨️ In Lại</button>
-          </div>
-          <div class="text-slate-600 whitespace-pre-wrap font-mono text-[11px] bg-slate-50 p-2 rounded">${rx.drugs_list}</div>
-          ${rx.advice ? `<div class="text-[11px] text-slate-500 italic">📌 Lời dặn: ${rx.advice}</div>` : ''}
-        </div>
-      `).join('');
-    }
-
-    function printPrescriptionDoc() {
-      if (!currentPatient) {
-        alert("Vui lòng chọn một bệnh nhân trước khi in đơn thuốc!");
-        return;
-      }
-      const drugs = document.getElementById("rxDrugsList").value.trim();
-      if (!drugs) {
-        alert("Vui lòng chọn hoặc nhập danh sách thuốc trước khi in!");
-        return;
-      }
-
-      document.getElementById("printRxCode").innerText = "RX-" + String(currentPatient.id).slice(0, 5).toUpperCase();
-      document.getElementById("printRxDate").innerText = new Date().toLocaleDateString('vi-VN');
-      document.getElementById("printRxPatientName").innerText = currentPatient.full_name;
-      document.getElementById("printRxDob").innerText = currentPatient.dob ? new Date(currentPatient.dob).getFullYear() : "----";
-      document.getElementById("printRxGender").innerText = currentPatient.gender || "Nam";
-      document.getElementById("printRxPhone").innerText = currentPatient.phone || "--";
-      document.getElementById("printRxAddress").innerText = currentPatient.address || "TP. Hồ Chí Minh";
-      document.getElementById("printRxDiagnosis").innerText = document.getElementById("examDiagnosis").value.trim() || "Khám & Điều trị";
-      document.getElementById("printRxDrugsList").innerText = drugs;
-      document.getElementById("printRxAdvice").innerText = document.getElementById("rxAdvice").value.trim() || "Uống thuốc đúng cữ.";
-      document.getElementById("printRxDoctorName").innerText = document.getElementById("rxDoctor").value;
-      document.getElementById("printRxSignDate").innerText = `Ngày ${new Date().getDate()} tháng ${new Date().getMonth() + 1} năm ${new Date().getFullYear()}`;
-
-      document.body.className = "bg-slate-100 text-slate-800 min-h-screen printing-prescription";
-      window.print();
-      document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
-    }
-
-    function reprintSavedRx(encodedRx) {
-      const rx = JSON.parse(decodeURIComponent(encodedRx));
-      document.getElementById("printRxCode").innerText = "RX-" + String(rx.patient_id).slice(0, 5).toUpperCase();
-      document.getElementById("printRxDate").innerText = rx.prescribed_date;
-      document.getElementById("printRxPatientName").innerText = rx.patient_name;
-      document.getElementById("printRxDob").innerText = currentPatient?.dob ? new Date(currentPatient.dob).getFullYear() : "----";
-      document.getElementById("printRxGender").innerText = currentPatient?.gender || "Nam";
-      document.getElementById("printRxPhone").innerText = currentPatient?.phone || "--";
-      document.getElementById("printRxAddress").innerText = currentPatient?.address || "TP. Hồ Chí Minh";
-      document.getElementById("printRxDiagnosis").innerText = rx.diagnosis || "Bệnh lý răng miệng";
-      document.getElementById("printRxDrugsList").innerText = rx.drugs_list;
-      document.getElementById("printRxAdvice").innerText = rx.advice || "Uống thuốc theo hướng dẫn.";
-      document.getElementById("printRxDoctorName").innerText = rx.doctor_name || "BS. Lê Hiếu Trọng Anh";
-      document.getElementById("printRxSignDate").innerText = `Ngày ${new Date().getDate()} tháng ${new Date().getMonth() + 1} năm ${new Date().getFullYear()}`;
-
-      document.body.className = "bg-slate-100 text-slate-800 min-h-screen printing-prescription";
-      window.print();
-      document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
-    }
-
-    function printMedicalRecordBYT() {
-      if (!currentPatient) {
-        alert("Vui lòng chọn một bệnh nhân ở danh sách trước khi in hồ sơ bệnh án!");
-        return;
-      }
-      document.getElementById("pCode").innerText = "BN-" + String(currentPatient.id).slice(0, 6).toUpperCase();
-      document.getElementById("pFullName").innerText = currentPatient.full_name || "--";
-      document.getElementById("pDob").innerText = currentPatient.dob ? new Date(currentPatient.dob).toLocaleDateString('vi-VN') : "----";
-      document.getElementById("pGender").innerText = currentPatient.gender || "Nam";
-      document.getElementById("pOccupation").innerText = currentPatient.occupation || "Tự do";
-      document.getElementById("pPhone").innerText = currentPatient.phone || "--";
-      document.getElementById("pAddress").innerText = currentPatient.address || "Chưa ghi nhận";
-      document.getElementById("pMedicalHistory").innerText = currentPatient.medical_history || "Không ghi nhận bất thường";
-
-      document.getElementById("pReason").innerText = document.getElementById("examReason").value || "Khám răng";
-      document.getElementById("pHistory").innerText = document.getElementById("examHistory").value || "Đến khám theo hẹn";
-      document.getElementById("pPulse").innerText = document.getElementById("vitalPulse").value || "80";
-      document.getElementById("pBP").innerText = document.getElementById("vitalBP").value || "120/80";
-      document.getElementById("pTemp").innerText = document.getElementById("vitalTemp").value || "36.8";
-      document.getElementById("pResp").innerText = document.getElementById("vitalResp").value || "18";
-      document.getElementById("pExtraOral").innerText = document.getElementById("examExtraOral").value;
-      document.getElementById("pIntraOral").innerText = document.getElementById("examIntraOral").value;
-      document.getElementById("pDiagnosis").innerText = document.getElementById("examDiagnosis").value || "Bệnh lý răng miệng";
-      document.getElementById("pDoctorSign").innerText = document.getElementById("examDoctor").value || "BS. Lê Hiếu Trọng Anh";
-
-      const teethEntries = Object.values(currentTeethData);
-      const teethTable = document.getElementById("pTeethTable");
-      if (teethEntries.length === 0) {
-        teethTable.innerHTML = `<tr><td colspan="3" style="border: 1px solid #000; padding: 5px; text-align: center;">Chưa ghi nhận tổn thương.</td></tr>`;
-      } else {
-        teethTable.innerHTML = teethEntries.map(t => `
-          <tr>
-            <td style="border: 1px solid #000; padding: 4px; text-align: center; font-weight: bold;">Răng ${t.tooth_number}</td>
-            <td style="border: 1px solid #000; padding: 4px;">${t.condition || '—'}</td>
-            <td style="border: 1px solid #000; padding: 4px;">${t.treatment_plan || 'Theo dõi'}</td>
-          </tr>
-        `).join('');
-      }
-
-      document.body.className = "bg-slate-100 text-slate-800 min-h-screen printing-record";
-      window.print();
-      document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
-    }
-
-    // THU TIỀN & BẢNG GIÁ
-    function toggleDiscountInputs() {
-      const mode = document.getElementById("payDiscountType").value;
-      const tierBox = document.getElementById("tierCategoryBox");
-      const customBox = document.getElementById("customDiscountBox");
-
-      if (mode === 'tier') {
-        tierBox.classList.remove("hidden");
-        customBox.classList.add("hidden");
-      } else if (mode === 'none') {
-        tierBox.classList.add("hidden");
-        customBox.classList.add("hidden");
-      } else {
-        tierBox.classList.add("hidden");
-        customBox.classList.remove("hidden");
-      }
-      calculateBillingDiscount();
-    }
-
-    function calculateBillingDiscount() {
-      const origVal = parseInt(document.getElementById("payOriginalAmount").value, 10) || 0;
-      const mode = document.getElementById("payDiscountType").value;
-      let discountAmount = 0;
-
-      if (mode === 'tier') {
-        const cat = document.getElementById("payServiceCategory").value;
-        const rate = (cat === 'general') ? currentPatientTier.generalDiscount : (cat === 'specialized' ? currentPatientTier.specialDiscount : 0);
-        discountAmount = Math.round(origVal * (rate / 100));
-      } else if (mode === 'referral') {
-        discountAmount = Math.round(origVal * 0.2);
-      } else if (mode === 'custom_percent') {
-        const rate = parseFloat(document.getElementById("customDiscountValue").value) || 0;
-        discountAmount = Math.round(origVal * (rate / 100));
-      } else if (mode === 'custom_fixed') {
-        discountAmount = parseInt(document.getElementById("customDiscountValue").value, 10) || 0;
-      }
-
-      const finalAmount = Math.max(0, origVal - discountAmount);
-      document.getElementById("payDiscountAmount").value = discountAmount > 0 ? "- " + discountAmount.toLocaleString('vi-VN') + " đ" : "0 đ";
-      document.getElementById("payFinalAmount").value = finalAmount.toLocaleString('vi-VN') + " đ";
-    }
-
-    async function loadServiceCatalog() {
-      const tbody = document.getElementById("serviceCatalogBody");
-      const selectPay = document.getElementById("payServiceSelect");
-      const { data } = await supabaseClient.from('services').select('*').order('name', { ascending: true });
-
-      if (tbody) {
-        if (!data || data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Chưa có dịch vụ niêm yết nào.</td></tr>`;
-        } else {
-          tbody.innerHTML = data.map(s => `
-            <tr class="hover:bg-slate-50">
-              <td class="py-2.5 px-3 font-bold text-slate-900">${s.name}</td>
-              <td class="py-2.5 px-3">${s.category === 'specialized' ? 'Chuyên sâu' : 'Tổng quát'}</td>
-              <td class="py-2.5 px-3 text-center">${s.unit || 'Lần'}</td>
-              <td class="py-2.5 px-3 text-right font-extrabold text-teal-800">${Number(s.price).toLocaleString('vi-VN')} đ</td>
-              <td class="py-2.5 px-3 text-right">
-                <button onclick="deleteService('${s.id}')" class="text-rose-600 hover:underline">Xóa</button>
-              </td>
-            </tr>
-          `).join('');
-        }
-      }
-
-      if (selectPay && data) {
-        selectPay.innerHTML = '<option value="">-- Chọn dịch vụ niêm yết --</option>' + data.map(s => `
-          <option value="${s.id}" data-name="${s.name}" data-price="${s.price}" data-category="${s.category}">
-            ${s.name} - ${Number(s.price).toLocaleString('vi-VN')} đ
-          </option>
-        `).join('');
-      }
-    }
-
-    function onSelectServiceCatalog() {
-      const select = document.getElementById("payServiceSelect");
-      const opt = select.options[select.selectedIndex];
-      if (!opt || !opt.value) return;
-
-      document.getElementById("payService").value = opt.getAttribute('data-name');
-      document.getElementById("payOriginalAmount").value = opt.getAttribute('data-price');
-      const cat = opt.getAttribute('data-category');
-      if (cat) document.getElementById("payServiceCategory").value = cat;
-      calculateBillingDiscount();
-    }
-
-    document.getElementById("serviceForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        name: document.getElementById("serviceName").value.trim(),
-        category: document.getElementById("serviceCategory").value,
-        price: parseInt(document.getElementById("servicePrice").value, 10),
-        unit: document.getElementById("serviceUnit").value.trim() || "Răng",
-        description: document.getElementById("serviceDesc").value.trim() || null
-      };
-      await supabaseClient.from('services').insert([payload]);
-      document.getElementById("serviceForm").reset();
-      loadServiceCatalog();
-    });
-
-    async function deleteService(id) {
-      if (!confirm("Xóa dịch vụ này?")) return;
-      await supabaseClient.from('services').delete().eq('id', id);
-      loadServiceCatalog();
-    }
-
-    document.getElementById("paymentForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!currentPatient) {
-        alert("Vui lòng chọn một bệnh nhân trước khi thu tiền!");
-        return;
-      }
-
-      const origVal = parseInt(document.getElementById("payOriginalAmount").value, 10);
-      const finalAmountStr = document.getElementById("payFinalAmount").value.replace(/[^\d]/g, '');
-      const finalAmount = parseInt(finalAmountStr, 10) || origVal;
-
-      const payload = {
-        patient_id: String(currentPatient.id),
-        payment_date: document.getElementById("payDate").value,
-        service_name: document.getElementById("payService").value.trim(),
-        amount: finalAmount,
-        payment_method: document.getElementById("payMethod").value,
-        doctor_name: document.getElementById("payDoctor").value,
-        lead_source: document.getElementById("payLeadSource").value,
-        customer_type: document.getElementById("payCustomerType").value
-      };
-
-      const { error } = await supabaseClient.from('payments').insert([payload]);
-      if (error) alert("Lỗi: " + error.message);
-      else {
-        alert("Đã lập phiếu thu thành công!");
-        document.getElementById("payService").value = "";
-        document.getElementById("payOriginalAmount").value = "";
-        selectPatient(currentPatient.id);
-      }
-    });
-
-    // KHO VẬT TƯ
-    async function loadInventoryItems() {
-      const tbody = document.getElementById("inventoryTableBody");
-      const { data } = await supabaseClient.from('inventory_items').select('*').order('item_name', { ascending: true });
-      if (!tbody) return;
-
-      if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Kho hiện chưa có vật tư.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = data.map(item => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-2.5 px-3 font-bold text-slate-900">${item.item_name}</td>
-          <td class="py-2.5 px-3">${item.category}</td>
-          <td class="py-2.5 px-3 text-center font-bold text-teal-800">${item.current_stock} ${item.unit || ''}</td>
-          <td class="py-2.5 px-3 text-center">${item.expiry_date || '—'}</td>
-          <td class="py-2.5 px-3 text-right">
-            <button onclick="deleteInventoryItem('${item.id}')" class="text-rose-500 hover:underline">Xóa</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    document.getElementById("inventoryItemForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        item_name: document.getElementById("invItemName").value.trim(),
-        category: document.getElementById("invItemCategory").value,
-        current_stock: parseInt(document.getElementById("invItemStock").value, 10) || 0,
-        min_stock: parseInt(document.getElementById("invItemMinStock").value, 10) || 5,
-        unit: document.getElementById("invItemUnit").value.trim() || "Hộp",
-        cost_price: parseInt(document.getElementById("invItemCost").value, 10) || 0,
-        expiry_date: document.getElementById("invItemExpiry").value || null
-      };
-      await supabaseClient.from('inventory_items').insert([payload]);
-      document.getElementById("inventoryItemForm").reset();
-      loadInventoryItems();
-    });
-
-    async function deleteInventoryItem(id) {
-      if (!confirm("Xóa mặt hàng này?")) return;
-      await supabaseClient.from('inventory_items').delete().eq('id', id);
-      loadInventoryItems();
-    }
-
-    // LỊCH HẸN
-    async function loadAppointments() {
-      const filterDate = document.getElementById("filterApptDate")?.value || new Date().toISOString().split('T')[0];
-      const tbody = document.getElementById("appointmentTableBody");
-      if (!tbody) return;
-
-      const { data } = await supabaseClient.from('appointments').select('*')
-        .gte('appointment_time', `${filterDate}T00:00:00+07:00`)
-        .lte('appointment_time', `${filterDate}T23:59:59+07:00`)
-        .order('appointment_time', { ascending: true });
-
-      if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Không có lịch hẹn trong ngày ${filterDate}.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = data.map(a => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-2.5 px-3 font-bold text-teal-800">${new Date(a.appointment_time).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</td>
-          <td class="py-2.5 px-3 font-semibold">${a.notes || 'Bệnh nhân'}</td>
-          <td class="py-2.5 px-3">${a.procedure_expected || '—'}</td>
-          <td class="py-2.5 px-3">${a.doctor_name}</td>
-          <td class="py-2.5 px-3">Ghế 0${a.chair_number || 1}</td>
-          <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800">Đã đặt</span></td>
-        </tr>
-      `).join('');
-    }
-
-    document.getElementById("appointmentForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const date = document.getElementById("apptDate").value;
-      const time = document.getElementById("apptTime").value;
-
-      const payload = {
-        patient_id: document.getElementById("apptPatientId").value || null,
-        doctor_name: document.getElementById("apptDoctor").value,
-        chair_number: parseInt(document.getElementById("apptChair").value, 10),
-        appointment_time: `${date}T${time}:00+07:00`,
-        procedure_expected: document.getElementById("apptProcedure").value.trim() || "Khám & Điều trị",
-        status: 'scheduled',
-        notes: document.getElementById("apptPatientName").value.trim()
-      };
-
-      await supabaseClient.from('appointments').insert([payload]);
-      alert("Đã tạo lịch hẹn thành công!");
-      loadAppointments();
-    });
-
-    // CRM
-    function quickCreateCrmTaskFromClinical() {
-      if (!currentPatient) {
-        alert("Vui lòng chọn một bệnh nhân ở danh sách bên trái trước!");
-        return;
-      }
-      switchTab('crm');
-      document.getElementById("crmPatientName").value = currentPatient.full_name;
-      document.getElementById("crmPatientPhone").value = currentPatient.phone;
-      document.getElementById("crmPatientId").value = currentPatient.id;
-      const tom = new Date();
-      tom.setDate(tom.getDate() + 1);
-      document.getElementById("crmDueDate").valueAsDate = tom;
-      document.getElementById("crmTaskType").value = "Hậu phẫu 24h-48h";
-      document.getElementById("crmContent").value = `Hỏi thăm tình trạng sưng đau sau thủ thuật cho ${currentPatient.full_name}.`;
-    }
-
-    async function loadCrmTasks() {
-      const tbody = document.getElementById("crmTableBody");
-      if (!tbody) return;
-
-      const { data } = await supabaseClient.from('crm_tasks').select('*').order('due_date', { ascending: true });
-
-      if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Chưa có nhiệm vụ chăm sóc nào.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = data.map(item => `
-        <tr class="hover:bg-slate-50">
-          <td class="py-2.5 px-3 font-bold">${item.due_date}</td>
-          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100">${item.task_type}</span></td>
-          <td class="py-2.5 px-3 font-bold text-slate-900">${item.patient_name} (${item.phone})</td>
-          <td class="py-2.5 px-3 text-slate-700">${item.content}</td>
-          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800">${item.status || 'Chờ'}</span></td>
-          <td class="py-2.5 px-3 text-right">
-            <button onclick="deleteCrmTask('${item.id}')" class="text-rose-600 hover:underline">Xóa</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    document.getElementById("crmTaskForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        patient_id: document.getElementById("crmPatientId").value || null,
-        patient_name: document.getElementById("crmPatientName").value.trim(),
-        phone: document.getElementById("crmPatientPhone").value.trim(),
-        task_type: document.getElementById("crmTaskType").value,
-        due_date: document.getElementById("crmDueDate").value,
-        assigned_to: document.getElementById("crmAssignedTo").value,
-        content: document.getElementById("crmContent").value.trim(),
-        status: 'Chờ chăm sóc'
-      };
-      await supabaseClient.from('crm_tasks').insert([payload]);
-      document.getElementById("crmContent").value = "";
-      loadCrmTasks();
-    });
-
-    async function deleteCrmTask(id) {
-      await supabaseClient.from('crm_tasks').delete().eq('id', id);
-      loadCrmTasks();
-    }
-
-    // KẾ TOÁN & TÀI CHÍNH
-    async function loadFinancialData() {
-      const now = new Date();
-      const startDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
-      const endDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-31`;
-
-      const { data: payments } = await supabaseClient.from('payments').select('*').gte('payment_date', startDate).lte('payment_date', endDate);
-      const { data: expenses } = await supabaseClient.from('expenses').select('*').gte('expense_date', startDate).lte('expense_date', endDate);
-
-      const pays = payments || [];
-      const exps = expenses || [];
-
-      const totalRev = pays.reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
-      const totalExp = exps.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
-
-      document.getElementById("kpiTotalRevenue").innerText = totalRev.toLocaleString('vi-VN') + " đ";
-      document.getElementById("kpiTotalExpense").innerText = totalExp.toLocaleString('vi-VN') + " đ";
-      document.getElementById("kpiNetProfit").innerText = (totalRev - totalExp).toLocaleString('vi-VN') + " đ";
-      document.getElementById("kpiCashBalance").innerText = totalRev.toLocaleString('vi-VN') + " đ";
-    }
-
-    // TÌM KIẾM BỆNH NHÂN
+    // CÁC HÀM XỬ LÝ SỰ KIỆN TÌM KIẾM
     document.getElementById("searchInput")?.addEventListener("input", (e) => {
       loadPatients(e.target.value);
-    });
-
-    // KHỞI CHẠY HỆ THỐNG AN TOÀN
-    window.addEventListener("DOMContentLoaded", () => {
-      renderOdontogramUI();
-      loadPatients();
-      loadServiceCatalog();
     });
   </script>
 </body>

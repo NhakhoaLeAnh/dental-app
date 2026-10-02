@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nha Khoa Lê Anh - Lâm Sàng & Quản Trị</title>
+  <title>Nha Khoa Lê Anh - Quản Trị Lâm Sàng & Vận Hành</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Nạp thư viện Supabase JS UMD chuẩn -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- Nạp thư viện CDN Supabase chuẩn xác -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
     .tooth-box { transition: all 0.15s ease; cursor: pointer; user-select: none; }
     .tooth-box:hover { transform: scale(1.08); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15); }
@@ -44,27 +44,24 @@
     <header class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
         <h1 class="text-2xl font-bold text-teal-800">Nha Khoa Lê Anh</h1>
-        <p class="text-xs md:text-sm text-slate-500 mt-1">Phòng Khám Chuyên Khoa Răng Hàm Mặt • Quản Trị Lâm Sàng</p>
+        <p class="text-xs md:text-sm text-slate-500 mt-1">Phòng Khám Chuyên Khoa Răng Hàm Mặt • Hồ Sơ Lâm Sàng & Kê Đơn Thuốc</p>
       </div>
       
-      <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-        <button type="button" onclick="switchTab('clinical')" id="tabBtnClinical" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all">
-          🏥 Lâm Sàng & Thuốc
+      <div class="flex flex-wrap items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+        <button type="button" onclick="switchTab('clinical')" id="tabBtnClinical" class="px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all">
+          🏥 Lâm Sàng & Bệnh Án
         </button>
-        <button type="button" onclick="switchTab('pricing')" id="tabBtnPricing" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
+        <button type="button" onclick="switchTab('pricing')" id="tabBtnPricing" class="px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
           📋 Bảng Giá
         </button>
-        <button type="button" onclick="switchTab('schedule')" id="tabBtnSchedule" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
-          📅 Lịch Hẹn
-        </button>
-        <button type="button" onclick="switchTab('finance')" id="tabBtnFinance" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
+        <button type="button" onclick="switchTab('finance')" id="tabBtnFinance" class="px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
           📊 Kế Toán
         </button>
       </div>
     </header>
 
     <!-- ============================================== -->
-    <!-- TAB 1: LÂM SÀNG & BỆNH ÁN & ĐƠN THUỐC         -->
+    <!-- TAB 1: LÂM SÀNG & BỆNH ÁN                      -->
     <!-- ============================================== -->
     <main id="clinicalTab" class="space-y-6">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -142,7 +139,7 @@
           </div>
         </div>
 
-        <!-- Cột Phải -->
+        <!-- Cột Phải: Khám, Sơ đồ răng, Kế hoạch, Đơn thuốc, Thu tiền -->
         <div class="lg:col-span-8 space-y-6">
           
           <!-- KHÁM LÂM SÀNG BYT -->
@@ -238,7 +235,7 @@
             <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Chi Tiết Kế Hoạch Theo Răng</h2>
             <div class="overflow-x-auto">
               <table class="w-full text-left text-xs sm:text-sm">
-                <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
+                <thead class="bg-slate-50 text-slate-500 uppercase text-[11px]">
                   <tr>
                     <th class="py-2.5 px-3">Răng</th>
                     <th class="py-2.5 px-3">Chẩn đoán</th>
@@ -394,34 +391,7 @@
     </main>
 
     <!-- ============================================== -->
-    <!-- TAB 3: LỊCH HẸN                               -->
-    <!-- ============================================== -->
-    <main id="scheduleTab" class="hidden space-y-6">
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-        <div class="flex justify-between items-center border-b pb-3">
-          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Danh Sách Lịch Hẹn</h2>
-          <button type="button" onclick="loadAppointments()" class="text-xs text-teal-600 font-bold">Làm mới ↻</button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
-              <tr>
-                <th class="py-2.5 px-3">Giờ hẹn</th>
-                <th class="py-2.5 px-3">Bệnh nhân</th>
-                <th class="py-2.5 px-3">Nội dung</th>
-                <th class="py-2.5 px-3">Bác sĩ</th>
-              </tr>
-            </thead>
-            <tbody id="appointmentTableBody" class="divide-y divide-slate-100">
-              <tr><td colspan="4" class="text-center py-6 text-slate-400 text-xs">Đang tải lịch hẹn...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </main>
-
-    <!-- ============================================== -->
-    <!-- TAB 4: KẾ TOÁN & DÒNG TIỀN                     -->
+    <!-- TAB 3: KẾ TOÁN & DÒNG TIỀN                     -->
     <!-- ============================================== -->
     <main id="financeTab" class="hidden space-y-6">
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
@@ -627,37 +597,580 @@
     </div>
   </div>
 
-  <!-- SCRIPT HỆ THỐNG ĐÃ CÔ LẬP KHỞI CHẠY AN TOÀN -->
+  <!-- SCRIPT HỆ THỐNG -->
   <script>
-    // 1. Cấu hình Supabase an toàn
     const SUPABASE_URL = "https://eqifvioqxgvnwhmxqtnx.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxaWZ2aW9xeGd2bndobXhxdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5MTA5NjksImV4cCI6MjEwNjQ4Njk2OX0.24tg4fbKNxeJ1kYSa1R8YcL27hKK0ga-dyEnP759aV8";
-    
+
+    // Khởi tạo Supabase Client
     let supabaseClient = null;
-    try {
-      if (window.supabase && window.supabase.createClient) {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+
+    let currentPatient = null;
+    let currentTeethData = {};
+    let activeToothNum = null;
+
+    // BỘ ĐƠN THUỐC MẪU
+    const RX_TEMPLATES = {
+      post_surgery: {
+        drugs: `1. Augmentin 1g (Amoxicillin/Clavulanate) x 14 viên\n   Uống 1 viên x 2 lần/ngày sau khi ăn no\n2. Medrol 16mg x 04 viên\n   Uống 1 viên x 1 lần/ngày vào buổi sáng sau khi ăn no\n3. Efferalgan Codein 500mg (sủi) x 09 viên\n   Uống 1 viên x 3 lần/ngày sau ăn (hòa tan hoàn toàn trong 1 ly nước đầy, uống khi đau)\n4. Nexium 40mg x 04 viên\n   Uống 1 viên x 1 lần/ngày vào buổi sáng trước khi ăn 30-60 phút`,
+        advice: "Uống thuốc đúng cữ; cắn chặt bông gạc 60-90 phút; chườm lạnh ngoài má 24h đầu; không khạc nhổ, không súc miệng mạnh ngày đầu."
+      },
+      occlusal_trauma: {
+        drugs: `1. Medrol 16mg x 04 viên\n   Uống 1 viên x 1 lần/ngày vào buổi sáng sau khi ăn no\n2. Ibuprofen 400mg x 12 viên\n   Uống 1 viên x 3 lần/ngày sau khi ăn no (Chống viêm giảm đau khớp cắn)\n3. Nexium 40mg x 04 viên\n   Uống 1 viên x 1 lần/ngày vào buổi sáng trước khi ăn 30-60 phút`,
+        advice: "Ăn thức ăn mềm, tránh nhai đồ cứng hoặc há miệng quá lớn; tái khám kiểm tra và mài chỉnh khớp cắn theo hẹn."
+      },
+      pulpitis: {
+        drugs: `1. Dorogyne (Spiramycin + Metronidazol) x 16 viên\n   Uống 2 viên x 2 lần/ngày sau ăn\n2. Ibuprofen 400mg x 12 viên\n   Uống 1 viên x 3 lần/ngày sau ăn no\n3. Nexium 40mg x 04 viên\n   Uống 1 viên x 1 lần/ngày trước ăn sáng`,
+        advice: "Uống thuốc giảm đau sau khi ăn no; tái khám theo lịch hẹn để mở tủy / làm sạch ống tủy dứt điểm."
+      },
+      gingivitis: {
+        drugs: `1. Dorogyne x 14 viên\n   Uống 2 viên x 2 lần/ngày sau ăn\n2. Vitamin C 500mg x 10 viên\n   Uống 1 viên vào buổi sáng sau ăn\n3. Nước súc miệng Kin Gingival (Chlorhexidine 0.12%) x 1 chai\n   Súc miệng 15ml x 2 lần/ngày sau khi chải răng`,
+        advice: "Chải răng đúng cách bằng bàn chải lông mềm; dùng chỉ nha khoa; tái khám kiểm tra nướu định kỳ."
       }
-    } catch(e) {
-      console.error("Lỗi khởi tạo Supabase Client:", e);
+    };
+
+    function applyRxTemplate() {
+      const key = document.getElementById("rxTemplateSelect").value;
+      if (!key || !RX_TEMPLATES[key]) return;
+      const tpl = RX_TEMPLATES[key];
+      document.getElementById("rxDrugsList").value = tpl.drugs;
+      document.getElementById("rxAdvice").value = tpl.advice;
     }
 
-    // 2. VẼ BÀN RĂNG NGAY LẬP TỨC (BẢO ĐẢM KHÔNG BAO GIỜ BỊ MẤT SƠ ĐỒ RĂNG)
-    try {
-      renderOdontogramUI();
-    } catch(e) {
-      console.error("Lỗi vẽ sơ đồ răng:", e);
+    function appendDrug(drugName, qty, usage) {
+      const textarea = document.getElementById("rxDrugsList");
+      const current = textarea.value.trim();
+      let nextNum = 1;
+      const numMatches = current.match(/^\d+\./gm);
+      if (numMatches) nextNum = numMatches.length + 1;
+      const drugEntry = `${nextNum}. ${drugName} x ${qty}\n   ${usage}`;
+      textarea.value = current ? `${current}\n${drugEntry}` : drugEntry;
     }
 
-    // 3. NẠP DỮ LIỆU BAN ĐẦU
-    window.addEventListener("load", () => {
-      loadPatients();
+    // 1. VẼ BÀN RĂNG 32 VỊ TRÍ NGAY LẬP TỨC
+    const q1 = [18, 17, 16, 15, 14, 13, 12, 11];
+    const q2 = [21, 22, 23, 24, 25, 26, 27, 28];
+    const q4 = [48, 47, 46, 45, 44, 43, 42, 41];
+    const q3 = [31, 32, 33, 34, 35, 36, 37, 38];
+
+    function renderOdontogramUI() {
+      const makeTooth = (num) => `
+        <div onclick="openToothModal(${num})" id="tooth-${num}" 
+             class="tooth-box w-8 h-10 sm:w-10 sm:h-12 border-2 border-slate-200 rounded-lg flex flex-col items-center justify-center bg-white text-slate-700 font-semibold text-xs shadow-xs">
+          <span>${num}</span>
+        </div>
+      `;
+      const q1El = document.getElementById("quadrant1");
+      const q2El = document.getElementById("quadrant2");
+      const q4El = document.getElementById("quadrant4");
+      const q3El = document.getElementById("quadrant3");
+
+      if (q1El) q1El.innerHTML = q1.map(makeTooth).join('');
+      if (q2El) q2El.innerHTML = q2.map(makeTooth).join('');
+      if (q4El) q4El.innerHTML = q4.map(makeTooth).join('');
+      if (q3El) q3El.innerHTML = q3.map(makeTooth).join('');
+
+      const payDateEl = document.getElementById("payDate");
+      if (payDateEl) payDateEl.valueAsDate = new Date();
+    }
+
+    // 2. TẢI DANH SÁCH BỆNH NHÂN (HỖ TRỢ CẢ SUPABASE SDK VÀ FETCH REST TRỰC TIẾP)
+    async function loadPatients(search = "") {
+      const listEl = document.getElementById("patientList");
+      if (!listEl) return;
+
+      listEl.innerHTML = `<div class="p-4 text-center text-slate-400 text-xs">Đang tải danh sách...</div>`;
+
+      try {
+        let patients = null;
+
+        if (supabaseClient) {
+          let query = supabaseClient.from('patients').select('*').order('created_at', { ascending: false });
+          if (search && search.trim()) {
+            query = query.or(`full_name.ilike.%${search.trim()}%,phone.ilike.%${search.trim()}%`);
+          }
+          const { data, error } = await query;
+          if (!error && data) patients = data;
+        }
+
+        // Nếu SDK chưa có hoặc lỗi -> Dùng Fetch REST API trực tiếp
+        if (!patients) {
+          let url = `${SUPABASE_URL}/rest/v1/patients?select=*&order=created_at.desc`;
+          if (search && search.trim()) {
+            url += `&or=(full_name.ilike.*${encodeURIComponent(search.trim())}*,phone.ilike.*${encodeURIComponent(search.trim())}*)`;
+          }
+          const res = await fetch(url, {
+            headers: {
+              "apikey": SUPABASE_KEY,
+              "Authorization": `Bearer ${SUPABASE_KEY}`
+            }
+          });
+          if (res.ok) {
+            patients = await res.json();
+          } else {
+            const errJson = await res.json().catch(() => ({}));
+            listEl.innerHTML = `<div class="p-4 text-center text-rose-500 text-xs">⚠️ Lỗi máy chủ: ${errJson.message || res.statusText}<br/><span class="text-slate-400">Kiểm tra lại xem RLS bảng patients đã tắt chưa.</span></div>`;
+            return;
+          }
+        }
+
+        if (!patients || patients.length === 0) {
+          listEl.innerHTML = `<div class="p-4 text-center text-slate-400 text-xs">Chưa có bệnh nhân nào trong danh sách.</div>`;
+          return;
+        }
+
+        listEl.innerHTML = patients.map(p => `
+          <div onclick="selectPatient('${p.id}')" 
+               class="p-3 hover:bg-teal-50 cursor-pointer transition-colors ${String(currentPatient?.id) === String(p.id) ? 'bg-teal-50 border-l-4 border-teal-600' : ''}">
+            <div class="font-semibold text-slate-800 text-xs sm:text-sm uppercase">${p.full_name}</div>
+            <div class="text-[11px] text-slate-500">${p.phone || 'Chưa có SĐT'}</div>
+            ${p.medical_history ? `<div class="text-[10px] text-rose-600 mt-0.5 truncate">⚠️ ${p.medical_history}</div>` : ''}
+          </div>
+        `).join('');
+
+      } catch (err) {
+        console.error("Lỗi kết nối:", err);
+        listEl.innerHTML = `<div class="p-4 text-center text-rose-500 text-xs">⚠️ Lỗi kết nối: ${err.message}</div>`;
+      }
+    }
+
+    // 3. TIẾP NHẬN BỆNH NHÂN (INSERT)
+    document.getElementById("patientForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const alertBox = document.getElementById("patientFormAlert");
+      const btn = document.getElementById("btnSavePatient");
+
+      btn.disabled = true;
+      btn.innerText = "Đang lưu...";
+      alertBox.className = "hidden";
+
+      const payload = {
+        full_name: document.getElementById("fullName").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        dob: document.getElementById("dob").value || null,
+        gender: document.getElementById("gender").value,
+        address: document.getElementById("address").value.trim() || null,
+        medical_history: document.getElementById("medicalHistory").value.trim() || null
+      };
+
+      try {
+        let inserted = null;
+
+        if (supabaseClient) {
+          const { data, error } = await supabaseClient.from('patients').insert([payload]).select();
+          if (!error && data && data[0]) inserted = data[0];
+          else if (error) throw new Error(error.message);
+        }
+
+        if (!inserted) {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/patients`, {
+            method: "POST",
+            headers: {
+              "apikey": SUPABASE_KEY,
+              "Authorization": `Bearer ${SUPABASE_KEY}`,
+              "Content-Type": "application/json",
+              "Prefer": "return=representation"
+            },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data[0]) inserted = data[0];
+          } else {
+            const errJson = await res.json().catch(() => ({}));
+            throw new Error(errJson.message || res.statusText);
+          }
+        }
+
+        alertBox.className = "p-2.5 rounded-lg text-xs font-semibold mb-3 bg-emerald-50 border border-emerald-200 text-emerald-800 block";
+        alertBox.innerText = "✅ Tiếp nhận bệnh nhân thành công!";
+        document.getElementById("patientForm").reset();
+        await loadPatients();
+        if (inserted) selectPatient(inserted.id);
+
+      } catch (err) {
+        alertBox.className = "p-2.5 rounded-lg text-xs font-semibold mb-3 bg-rose-50 border border-rose-200 text-rose-700 block";
+        alertBox.innerText = "Lỗi lưu: " + err.message;
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "+ Tiếp Nhận Bệnh Nhân";
+      }
     });
 
-    // CÁC HÀM XỬ LÝ SỰ KIỆN TÌM KIẾM
+    // 4. CHỌN 1 BỆNH NHÂN ĐỂ KHÁM
+    async function selectPatient(id) {
+      try {
+        let patient = null;
+
+        if (supabaseClient) {
+          const { data } = await supabaseClient.from('patients').select('*').eq('id', id).single();
+          if (data) patient = data;
+        }
+
+        if (!patient) {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/patients?id=eq.${id}&select=*`, {
+            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+          });
+          const list = await res.json();
+          if (list && list[0]) patient = list[0];
+        }
+
+        if (!patient) return;
+        currentPatient = patient;
+
+        document.getElementById("activePatientBanner").innerHTML = `
+          <span>Đang khám: <strong class="text-teal-800 uppercase">${patient.full_name}</strong> (${patient.phone})</span>
+        `;
+
+        loadPatients(document.getElementById("searchInput")?.value || "");
+        await loadDentalChart(patient.id);
+        await loadPatientPrescriptions(patient.id);
+
+      } catch (e) {
+        console.error("Lỗi chọn BN:", e);
+      }
+    }
+
+    // 5. TẢI SƠ ĐỒ RĂNG THEO BỆNH NHÂN
+    async function loadDentalChart(patientId) {
+      document.querySelectorAll('.tooth-box').forEach(el => {
+        el.className = "tooth-box w-8 h-10 sm:w-10 sm:h-12 border-2 border-slate-200 rounded-lg flex flex-col items-center justify-center bg-white text-slate-700 font-semibold text-xs shadow-xs";
+      });
+
+      let chartData = [];
+      try {
+        if (supabaseClient) {
+          const { data } = await supabaseClient.from('dental_chart').select('*').eq('patient_id', String(patientId));
+          if (data) chartData = data;
+        } else {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/dental_chart?patient_id=eq.${patientId}&select=*`, {
+            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+          });
+          if (res.ok) chartData = await res.json();
+        }
+      } catch(e) {}
+
+      currentTeethData = {};
+      const planBody = document.getElementById("treatmentPlanBody");
+
+      if (!chartData || chartData.length === 0) {
+        if (planBody) planBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Tất cả răng bình thường hoặc chưa lập kế hoạch.</td></tr>`;
+        return;
+      }
+
+      let planRows = "";
+      chartData.forEach(item => {
+        currentTeethData[item.tooth_number] = item;
+        const toothEl = document.getElementById(`tooth-${item.tooth_number}`);
+        if (toothEl) {
+          const cond = item.condition || '';
+          if (item.status === 'Đã hoàn thành') toothEl.classList.add('tooth-done');
+          else if (cond.includes('Implant')) toothEl.classList.add('tooth-implant');
+          else if (cond.includes('Sâu') || cond.includes('tủy')) toothEl.classList.add('tooth-decay');
+          else if (cond.includes('Mất răng')) toothEl.classList.add('tooth-missing');
+          else if (cond.includes('Mão') || cond.includes('Cầu')) toothEl.classList.add('tooth-crown');
+          else toothEl.classList.add('bg-slate-100');
+        }
+
+        planRows += `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2.5 px-3 font-bold text-teal-700">Răng ${item.tooth_number}</td>
+            <td class="py-2.5 px-3">${item.condition || '—'}</td>
+            <td class="py-2.5 px-3 font-medium text-slate-800">${item.treatment_plan || '—'}</td>
+            <td class="py-2.5 px-3">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold 
+                ${item.status === 'Đã hoàn thành' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+                ${item.status || 'Chưa làm'}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 text-right">
+              <button type="button" onclick="openToothModal(${item.tooth_number})" class="text-teal-600 hover:underline font-medium">Sửa</button>
+            </td>
+          </tr>
+        `;
+      });
+      if (planBody) planBody.innerHTML = planRows;
+    }
+
+    function openToothModal(toothNum) {
+      if (!currentPatient) {
+        alert("Vui lòng nhấp chọn một bệnh nhân ở danh sách bên trái trước khi khám răng!");
+        return;
+      }
+      activeToothNum = toothNum;
+      document.getElementById("modalToothNumber").innerText = toothNum;
+      const exist = currentTeethData[toothNum] || {};
+      document.getElementById("modalCondition").value = exist.condition || "Bình thường";
+      document.getElementById("modalPlan").value = exist.treatment_plan || "";
+      document.getElementById("modalStatus").value = exist.status || "Chưa làm";
+      document.getElementById("toothModal").classList.remove("hidden");
+    }
+
+    function closeToothModal() {
+      document.getElementById("toothModal").classList.add("hidden");
+    }
+
+    async function saveToothData() {
+      if (!currentPatient || !activeToothNum) return;
+      const condition = document.getElementById("modalCondition").value;
+      const plan = document.getElementById("modalPlan").value.trim();
+      const status = document.getElementById("modalStatus").value;
+
+      try {
+        if (supabaseClient) {
+          await supabaseClient.from('dental_chart').delete().match({ patient_id: String(currentPatient.id), tooth_number: activeToothNum });
+          if (condition !== "Bình thường" || plan) {
+            await supabaseClient.from('dental_chart').insert([{
+              patient_id: String(currentPatient.id),
+              tooth_number: activeToothNum,
+              condition: condition,
+              treatment_plan: plan,
+              status: status
+            }]);
+          }
+        } else {
+          await fetch(`${SUPABASE_URL}/rest/v1/dental_chart?patient_id=eq.${currentPatient.id}&tooth_number=eq.${activeToothNum}`, {
+            method: "DELETE",
+            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+          });
+          if (condition !== "Bình thường" || plan) {
+            await fetch(`${SUPABASE_URL}/rest/v1/dental_chart`, {
+              method: "POST",
+              headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
+              body: JSON.stringify({ patient_id: String(currentPatient.id), tooth_number: activeToothNum, condition, treatment_plan: plan, status })
+            });
+          }
+        }
+      } catch(e){}
+
+      closeToothModal();
+      await loadDentalChart(currentPatient.id);
+    }
+
+    // 6. LƯU VÀ IN ĐƠN THUỐC
+    document.getElementById("prescriptionForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentPatient) {
+        alert("Vui lòng chọn bệnh nhân trước khi lưu đơn thuốc!");
+        return;
+      }
+
+      const payload = {
+        patient_id: String(currentPatient.id),
+        patient_name: currentPatient.full_name,
+        prescribed_date: new Date().toISOString().split('T')[0],
+        diagnosis: document.getElementById("examDiagnosis").value || "Bệnh lý răng miệng",
+        doctor_name: document.getElementById("rxDoctor").value,
+        drugs_list: document.getElementById("rxDrugsList").value.trim(),
+        advice: document.getElementById("rxAdvice").value.trim() || null
+      };
+
+      try {
+        if (supabaseClient) {
+          await supabaseClient.from('prescriptions').insert([payload]);
+        } else {
+          await fetch(`${SUPABASE_URL}/rest/v1/prescriptions`, {
+            method: "POST",
+            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        }
+        alert("Đã lưu đơn thuốc vào hồ sơ!");
+        loadPatientPrescriptions(currentPatient.id);
+      } catch (err) {
+        alert("Lỗi: " + err.message);
+      }
+    });
+
+    async function loadPatientPrescriptions(patientId) {
+      const container = document.getElementById("rxHistoryContainer");
+      if (!container) return;
+
+      let data = [];
+      try {
+        if (supabaseClient) {
+          const res = await supabaseClient.from('prescriptions').select('*').eq('patient_id', String(patientId)).order('created_at', { ascending: false });
+          if (res.data) data = res.data;
+        } else {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/prescriptions?patient_id=eq.${patientId}&select=*&order=created_at.desc`, {
+            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+          });
+          if (res.ok) data = await res.json();
+        }
+      } catch(e){}
+
+      if (!data || data.length === 0) {
+        container.innerHTML = `<div class="text-center py-4 text-slate-400 text-xs">Chưa có đơn thuốc nào được lưu.</div>`;
+        return;
+      }
+
+      container.innerHTML = data.map((rx) => `
+        <div class="p-3 bg-white border border-slate-200 rounded-xl space-y-1.5 hover:border-teal-400 transition-colors">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-teal-800">💊 Đơn thuốc ngày: ${rx.prescribed_date} (${rx.doctor_name})</span>
+            <button onclick="reprintSavedRx('${encodeURIComponent(JSON.stringify(rx))}')" class="text-xs bg-teal-50 hover:bg-teal-100 text-teal-700 px-2 py-0.5 rounded font-semibold border border-teal-200">🖨️ In Lại</button>
+          </div>
+          <div class="text-slate-600 whitespace-pre-wrap font-mono text-[11px] bg-slate-50 p-2 rounded">${rx.drugs_list}</div>
+          ${rx.advice ? `<div class="text-[11px] text-slate-500 italic">📌 Lời dặn: ${rx.advice}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function printPrescriptionDoc() {
+      if (!currentPatient) {
+        alert("Vui lòng chọn bệnh nhân trước khi in đơn thuốc!");
+        return;
+      }
+      const drugs = document.getElementById("rxDrugsList").value.trim();
+      if (!drugs) {
+        alert("Vui lòng chọn hoặc nhập danh sách thuốc trước khi in!");
+        return;
+      }
+
+      document.getElementById("printRxCode").innerText = "RX-" + String(currentPatient.id).slice(0, 5).toUpperCase() + "-" + new Date().getDate();
+      document.getElementById("printRxDate").innerText = new Date().toLocaleDateString('vi-VN');
+      document.getElementById("printRxPatientName").innerText = currentPatient.full_name;
+      document.getElementById("printRxDob").innerText = currentPatient.dob ? new Date(currentPatient.dob).getFullYear() : "----";
+      document.getElementById("printRxGender").innerText = currentPatient.gender || "Nam";
+      document.getElementById("printRxPhone").innerText = currentPatient.phone || "--";
+      document.getElementById("printRxAddress").innerText = currentPatient.address || "TP. Hồ Chí Minh";
+      document.getElementById("printRxDiagnosis").innerText = document.getElementById("examDiagnosis").value.trim() || "Khám & Điều trị";
+      document.getElementById("printRxDrugsList").innerText = drugs;
+      document.getElementById("printRxAdvice").innerText = document.getElementById("rxAdvice").value.trim() || "Uống thuốc đúng cữ.";
+      document.getElementById("printRxDoctorName").innerText = document.getElementById("rxDoctor").value;
+      document.getElementById("printRxSignDate").innerText = `Ngày ${new Date().getDate()} tháng ${new Date().getMonth() + 1} năm ${new Date().getFullYear()}`;
+
+      document.body.className = "bg-slate-100 text-slate-800 min-h-screen printing-prescription";
+      window.print();
+      document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
+    }
+
+    function reprintSavedRx(encodedRx) {
+      const rx = JSON.parse(decodeURIComponent(encodedRx));
+      document.getElementById("printRxCode").innerText = "RX-" + String(rx.patient_id).slice(0, 5).toUpperCase();
+      document.getElementById("printRxDate").innerText = rx.prescribed_date;
+      document.getElementById("printRxPatientName").innerText = rx.patient_name;
+      document.getElementById("printRxDob").innerText = currentPatient?.dob ? new Date(currentPatient.dob).getFullYear() : "----";
+      document.getElementById("printRxGender").innerText = currentPatient?.gender || "Nam";
+      document.getElementById("printRxPhone").innerText = currentPatient?.phone || "--";
+      document.getElementById("printRxAddress").innerText = currentPatient?.address || "TP. Hồ Chí Minh";
+      document.getElementById("printRxDiagnosis").innerText = rx.diagnosis || "Bệnh lý răng miệng";
+      document.getElementById("printRxDrugsList").innerText = rx.drugs_list;
+      document.getElementById("printRxAdvice").innerText = rx.advice || "Uống thuốc theo hướng dẫn.";
+      document.getElementById("printRxDoctorName").innerText = rx.doctor_name || "BS. Lê Hiếu Trọng Anh";
+      document.getElementById("printRxSignDate").innerText = `Ngày ${new Date().getDate()} tháng ${new Date().getMonth() + 1} năm ${new Date().getFullYear()}`;
+
+      document.body.className = "bg-slate-100 text-slate-800 min-h-screen printing-prescription";
+      window.print();
+      document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
+    }
+
+    function printMedicalRecordBYT() {
+      if (!currentPatient) {
+        alert("Vui lòng chọn một bệnh nhân ở danh sách trước khi in hồ sơ bệnh án!");
+        return;
+      }
+      document.getElementById("pCode").innerText = "BN-" + String(currentPatient.id).slice(0, 6).toUpperCase();
+      document.getElementById("pFullName").innerText = currentPatient.full_name || "--";
+      document.getElementById("pDob").innerText = currentPatient.dob ? new Date(currentPatient.dob).toLocaleDateString('vi-VN') : "----";
+      document.getElementById("pGender").innerText = currentPatient.gender || "Nam";
+      document.getElementById("pOccupation").innerText = currentPatient.occupation || "Tự do";
+      document.getElementById("pPhone").innerText = currentPatient.phone || "--";
+      document.getElementById("pAddress").innerText = currentPatient.address || "Chưa ghi nhận";
+      document.getElementById("pMedicalHistory").innerText = currentPatient.medical_history || "Không ghi nhận bất thường";
+
+      document.getElementById("pReason").innerText = document.getElementById("examReason").value || "Khám răng";
+      document.getElementById("pHistory").innerText = document.getElementById("examHistory").value || "Đến khám theo hẹn";
+      document.getElementById("pPulse").innerText = document.getElementById("vitalPulse").value || "80";
+      document.getElementById("pBP").innerText = document.getElementById("vitalBP").value || "120/80";
+      document.getElementById("pTemp").innerText = document.getElementById("vitalTemp").value || "36.8";
+      document.getElementById("pResp").innerText = document.getElementById("vitalResp").value || "18";
+      document.getElementById("pExtraOral").innerText = document.getElementById("examExtraOral").value;
+      document.getElementById("pIntraOral").innerText = document.getElementById("examIntraOral").value;
+      document.getElementById("pDiagnosis").innerText = document.getElementById("examDiagnosis").value || "Bệnh lý răng miệng";
+      document.getElementById("pDoctorSign").innerText = document.getElementById("examDoctor").value || "BS. Lê Hiếu Trọng Anh";
+
+      const teethEntries = Object.values(currentTeethData);
+      const teethTable = document.getElementById("pTeethTable");
+      if (teethEntries.length === 0) {
+        teethTable.innerHTML = `<tr><td colspan="3" style="border: 1px solid #000; padding: 5px; text-align: center;">Chưa ghi nhận tổn thương.</td></tr>`;
+      } else {
+        teethTable.innerHTML = teethEntries.map(t => `
+          <tr>
+            <td style="border: 1px solid #000; padding: 4px; text-align: center; font-weight: bold;">Răng ${t.tooth_number}</td>
+            <td style="border: 1px solid #000; padding: 4px;">${t.condition || '—'}</td>
+            <td style="border: 1px solid #000; padding: 4px;">${t.treatment_plan || 'Theo dõi'}</td>
+          </tr>
+        `).join('');
+      }
+
+      document.body.className = "bg-slate-100 text-slate-800 min-h-screen printing-record";
+      window.print();
+      document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
+    }
+
+    // 7. LẬP PHIẾU THU TIỀN
+    document.getElementById("paymentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentPatient) {
+        alert("Vui lòng chọn một bệnh nhân trước khi thu tiền!");
+        return;
+      }
+
+      const payload = {
+        patient_id: String(currentPatient.id),
+        payment_date: document.getElementById("payDate").value,
+        service_name: document.getElementById("payService").value.trim(),
+        amount: parseInt(document.getElementById("payAmount").value, 10),
+        doctor_name: document.getElementById("payDoctor").value
+      };
+
+      try {
+        if (supabaseClient) {
+          await supabaseClient.from('payments').insert([payload]);
+        } else {
+          await fetch(`${SUPABASE_URL}/rest/v1/payments`, {
+            method: "POST",
+            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        }
+        alert("Đã lập phiếu thu thành công!");
+        document.getElementById("payService").value = "";
+        document.getElementById("payAmount").value = "";
+      } catch(err) {
+        alert("Lỗi: " + err.message);
+      }
+    });
+
+    // 8. ĐIỀU HƯỚNG TAB
+    function switchTab(tab) {
+      const tabs = ['clinical', 'pricing', 'finance'];
+      tabs.forEach(t => {
+        const el = document.getElementById(t + 'Tab');
+        if (el) el.classList.add('hidden');
+        const btn = document.getElementById('tabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
+        if (btn) btn.className = "px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all";
+      });
+
+      const activeEl = document.getElementById(tab + 'Tab');
+      if (activeEl) activeEl.classList.remove('hidden');
+
+      const activeBtn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
+      if (activeBtn) activeBtn.className = "px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all";
+    }
+
+    // TÌM KIẾM BỆNH NHÂN
     document.getElementById("searchInput")?.addEventListener("input", (e) => {
       loadPatients(e.target.value);
     });
+
+    // KHỞI CHẠY TỰ ĐỘNG KHI TẢI TRANG
+    renderOdontogramUI();
+    loadPatients();
   </script>
 </body>
 </html>

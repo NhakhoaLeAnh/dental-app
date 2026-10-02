@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nha Khoa Lê Anh - Lâm Sàng, Nhân Sự & Quản Trị</title>
+  <title>Nha Khoa Lê Anh - Hệ Thống Điều Hành & Quản Trị Toàn Diện</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
@@ -184,7 +184,6 @@
 
         <!-- Cột Phải -->
         <div class="lg:col-span-8 space-y-6">
-          
           <!-- KHÁM LÂM SÀNG BYT -->
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Thông Tin Khám Ngoại Trú (Chuẩn BYT)</h2>
@@ -372,7 +371,7 @@
             </div>
           </div>
 
-          <!-- LẬP PHIẾU THU TIỀN -->
+          <!-- PHIẾU THU TIỀN -->
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-3 gap-2">
               <div>
@@ -382,7 +381,7 @@
             </div>
 
             <form id="paymentForm" class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
                 <div>
                   <label class="block font-medium text-slate-700 mb-1">Ngày thu</label>
                   <input type="date" id="payDate" required class="w-full p-2 border rounded-lg bg-white" />
@@ -398,9 +397,27 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-700 mb-1">Số tiền (VNĐ) *</label>
-                  <input type="number" id="payAmount" required min="1000" step="1000" placeholder="Số tiền thực thu..." class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800" />
+                  <label class="block font-medium text-slate-700 mb-1">Nguồn khách hàng *</label>
+                  <select id="payLeadSource" required class="w-full p-2 border rounded-lg bg-white font-bold text-sky-800">
+                    <option value="Online - Facebook/Ads">Online - Facebook / Ads</option>
+                    <option value="Online - Website/Google">Online - Google / Web</option>
+                    <option value="Online - Zalo/Tiktok">Online - Zalo / TikTok</option>
+                    <option value="Offline - Vãng lai">Offline - Vãng lai</option>
+                    <option value="Offline - Khách giới thiệu">Offline - Giới thiệu</option>
+                  </select>
                 </div>
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Loại khách *</label>
+                  <select id="payCustomerType" required class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800">
+                    <option value="Khách mới">Khách mới</option>
+                    <option value="Khách cũ">Khách cũ / Tái khám</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Số tiền thực thu (VNĐ) *</label>
+                <input type="number" id="payAmount" required min="1000" step="1000" placeholder="Số tiền thực thu..." class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800" />
               </div>
 
               <div>
@@ -442,6 +459,11 @@
               <input type="date" id="analyticsToDate" class="bg-transparent outline-none font-medium p-0.5" />
               <button onclick="loadAnalyticsReport()" class="bg-teal-700 hover:bg-teal-800 text-white px-2.5 py-1 rounded text-xs font-medium">Lọc</button>
             </div>
+
+            <!-- Nút xuất Excel / CSV cho Kế toán -->
+            <button onclick="exportPaymentsToCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm">
+              📥 Xuất Excel
+            </button>
           </div>
         </div>
 
@@ -1313,7 +1335,6 @@
         <div class="p-3 bg-white border border-slate-200 rounded-xl space-y-1.5 hover:border-teal-400 transition-colors">
           <div class="flex justify-between items-center text-xs">
             <span class="font-bold text-teal-800">💊 Đơn thuốc ngày: ${rx.prescribed_date} (${rx.doctor_name})</span>
-            <button onclick="reprintSavedRx('${encodeURIComponent(JSON.stringify(rx))}')" class="text-xs bg-teal-50 hover:bg-teal-100 text-teal-700 px-2 py-0.5 rounded font-semibold border border-teal-200">🖨️ In Lại</button>
           </div>
           <div class="text-slate-600 whitespace-pre-wrap font-mono text-[11px] bg-slate-50 p-2 rounded">${rx.drugs_list}</div>
           ${rx.advice ? `<div class="text-[11px] text-slate-500 italic">📌 Lời dặn: ${rx.advice}</div>` : ''}
@@ -1345,7 +1366,7 @@
       else if (tab === 'analytics') { initAnalyticsDates(); loadAnalyticsReport(); }
     }
 
-    // BÁO CÁO CHIẾN LƯỢC
+    // BÁO CÁO CHIẾN LƯỢC & XUẤT EXCEL (CSV)
     function initAnalyticsDates() {
       if (!document.getElementById("analyticsFromDate").value) {
         setAnalyticsPreset('30days');
@@ -1386,9 +1407,54 @@
       const totalTx = payments.length;
       const aov = totalTx > 0 ? Math.round(totalRev / totalTx) : 0;
 
+      let onlineRev = 0;
+      payments.forEach(p => {
+        if ((p.lead_source || "").toLowerCase().includes("online")) onlineRev += Number(p.amount || 0);
+      });
+      const onlineShare = totalRev > 0 ? ((onlineRev / totalRev) * 100).toFixed(1) : 0;
+
       document.getElementById("anaKpiRevenue").innerText = totalRev.toLocaleString('vi-VN') + " đ";
       document.getElementById("anaKpiTransactions").innerText = totalTx + " ca";
       document.getElementById("anaKpiAov").innerText = aov.toLocaleString('vi-VN') + " đ";
+      document.getElementById("anaKpiOnlineShare").innerText = onlineShare + "%";
+    }
+
+    // HÀM XUẤT CSV CHO KẾ TOÁN
+    async function exportPaymentsToCSV() {
+      const fromDate = document.getElementById("analyticsFromDate")?.value || "2026-01-01";
+      const toDate = document.getElementById("analyticsToDate")?.value || "2026-12-31";
+
+      let payments = [];
+      try {
+        if (supabaseClient) {
+          const { data } = await supabaseClient.from('payments').select('*').gte('payment_date', fromDate).lte('payment_date', toDate);
+          if (data) payments = data;
+        } else {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/payments?payment_date=gte.${fromDate}&payment_date=lte.${toDate}&select=*`, {
+            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+          });
+          if (res.ok) payments = await res.json();
+        }
+      } catch(e){}
+
+      if (payments.length === 0) {
+        alert("Không có dữ liệu thanh toán trong khoảng thời gian này để xuất file!");
+        return;
+      }
+
+      let csv = "\uFEFFNgày Thu,Bác Sĩ,Nội Dung Dịch Vụ,Số Tiền (VNĐ),Nguồn Khách,Loại Khách\n";
+      payments.forEach(p => {
+        csv += `"${p.payment_date}","${p.doctor_name || ''}","${p.service_name || ''}","${p.amount || 0}","${p.lead_source || ''}","${p.customer_type || ''}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `Bao_Cao_Doanh_Thu_${fromDate}_den_${toDate}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
     // BẢNG GIÁ DỊCH VỤ
@@ -1702,7 +1768,7 @@
       loadCrmTasks();
     }
 
-    // KẾ TOÁN & TÀI CHÍNH
+    // KẾ TOÁN
     async function loadFinancialData() {
       let pays = [];
       try {
@@ -1733,7 +1799,9 @@
         payment_date: document.getElementById("payDate").value,
         service_name: document.getElementById("payService").value.trim(),
         amount: parseInt(document.getElementById("payAmount").value, 10),
-        doctor_name: document.getElementById("payDoctor").value
+        doctor_name: document.getElementById("payDoctor").value,
+        lead_source: document.getElementById("payLeadSource").value,
+        customer_type: document.getElementById("payCustomerType").value
       };
 
       if (supabaseClient) await supabaseClient.from('payments').insert([payload]);

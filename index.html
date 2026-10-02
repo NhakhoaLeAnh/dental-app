@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nha Khoa Lê Anh - Lâm Sàng, Lịch Hẹn & Phân Hạng Thành Viên</title>
+  <title>Nha Khoa Lê Anh - Lâm Sàng, Lịch Hẹn & Quản Trị</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
@@ -36,7 +36,7 @@
     <header class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
         <h1 class="text-2xl font-bold text-teal-800">Nha Khoa Lê Anh</h1>
-        <p class="text-xs md:text-sm text-slate-500 mt-1">Phòng Khám Chuyên Khoa Răng Hàm Mặt • Lâm Sàng & Quản Trị Thành Viên</p>
+        <p class="text-xs md:text-sm text-slate-500 mt-1">Phòng Khám Chuyên Khoa Răng Hàm Mặt • Lâm Sàng & Quản Trị Toàn Diện</p>
       </div>
       
       <!-- Chuyển Tab -->
@@ -247,12 +247,12 @@
             </div>
           </div>
 
-          <!-- LẬP PHIẾU THU TỰ ĐỘNG ÁP DỤNG GIẢM GIÁ THEO HẠNG -->
+          <!-- LẬP PHIẾU THU: TÍCH HỢP GIẢM GIÁ LINH HOẠT & THẺ REFERRAL -->
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-3 gap-2">
               <div>
                 <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Lập Phiếu Thu Viện Phí</h2>
-                <p class="text-xs text-slate-400">Tự động tính chiết khấu theo Hạng thành viên của Nha khoa Lê Anh</p>
+                <p class="text-xs text-slate-400">Áp dụng Hạng thành viên, Thẻ Referral hoặc Bác sĩ chủ động chiết khấu</p>
               </div>
               <span id="patientTotalPaid" class="text-xs font-bold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-lg">Tổng nộp: 0 đ</span>
             </div>
@@ -272,38 +272,66 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-700 mb-1">Phân loại dịch vụ (Tính ưu đãi) *</label>
-                  <select id="payServiceCategory" onchange="calculateBillingDiscount()" class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800">
-                    <option value="general">Điều trị Tổng quát</option>
-                    <option value="specialized">Điều trị Chuyên sâu (Implant, Chỉnh nha, Sứ...)</option>
-                    <option value="other">Dịch vụ khác / Không giảm giá</option>
+                  <label class="block font-medium text-slate-700 mb-1">Chế độ ưu đãi áp dụng *</label>
+                  <select id="payDiscountType" onchange="toggleDiscountInputs()" class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800">
+                    <option value="tier">1. Theo Hạng Thành Viên (Tự động)</option>
+                    <option value="referral">2. Thẻ Referral Giới Thiệu (Giảm 20% cạo vôi...)</option>
+                    <option value="custom_percent">3. Bác sĩ giảm giá theo % tùy chỉnh</option>
+                    <option value="custom_fixed">4. Bác sĩ bớt trực tiếp số tiền (VNĐ)</option>
+                    <option value="none">5. Không áp dụng giảm giá</option>
                   </select>
+                </div>
+              </div>
+
+              <!-- Tùy chọn linh hoạt theo từng chế độ ưu đãi -->
+              <div id="tierCategoryBox" class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white p-2.5 rounded-lg border border-slate-200">
+                <div>
+                  <label class="block font-medium text-slate-600 mb-1">Nhóm dịch vụ tính ưu đãi</label>
+                  <select id="payServiceCategory" onchange="calculateBillingDiscount()" class="w-full p-1.5 border rounded-lg bg-slate-50">
+                    <option value="general">Điều trị Tổng quát (Silver: 5%, Gold: 7%, Diamond: 10%)</option>
+                    <option value="specialized">Điều trị Chuyên sâu (Implant, Chỉnh nha...: Gold: 3%, Diamond: 5%)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-600 mb-1">Ghi chú phân hạng</label>
+                  <input type="text" id="tierNoteDisplay" readonly class="w-full p-1.5 border rounded-lg bg-slate-100 text-slate-600 text-xs" value="Áp dụng ưu đãi thành viên tự động" />
+                </div>
+              </div>
+
+              <div id="customDiscountBox" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 bg-amber-50 p-2.5 rounded-lg border border-amber-200">
+                <div>
+                  <label id="customDiscountLabel" class="block font-medium text-amber-900 mb-1">Mức giảm tùy chỉnh</label>
+                  <input type="number" id="customDiscountValue" oninput="calculateBillingDiscount()" placeholder="Nhập % hoặc số tiền bớt..." class="w-full p-1.5 border rounded-lg bg-white font-bold text-rose-700" />
+                </div>
+                <div>
+                  <label class="block font-medium text-amber-900 mb-1">Lý do giảm giá (Lưu vết kế toán) *</label>
+                  <input type="text" id="customDiscountReason" placeholder="Ví dụ: Bạn BS Anh, Người thân giới thiệu..." class="w-full p-1.5 border rounded-lg bg-white" />
                 </div>
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label class="block font-medium text-slate-700 mb-1">Nội dung thu *</label>
+                  <label class="block font-medium text-slate-700 mb-1">Nội dung thu dịch vụ *</label>
                   <input type="text" id="payService" required placeholder="Cấy Implant R46 (Đợt 1)..." class="w-full p-2 border rounded-lg bg-white" />
                 </div>
                 <div>
                   <label class="block font-medium text-slate-700 mb-1">Phương thức thanh toán</label>
                   <select id="payMethod" class="w-full p-2 border rounded-lg bg-white">
-                    <option value="Chuyển khoản">Chuyển khoản</option>
-                    <option value="Tiền mặt">Tiền mặt</option>
+                    <option value="Chuyển khoản">Chuyển khoản ngân hàng</option>
+                    <option value="Tiền mặt">Tiền mặt tại quầy</option>
                     <option value="Quẹt thẻ">Quẹt thẻ POS</option>
                   </select>
                 </div>
               </div>
 
-              <!-- Tính toán chiết khấu tự động -->
+              <!-- Bảng tính minh bạch -->
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white p-3 rounded-lg border border-slate-200">
                 <div>
-                  <label class="block font-medium text-slate-600 mb-1">Giá gốc dịch vụ (VNĐ) *</label>
+                  <label class="block font-medium text-slate-600 mb-1">Giá niêm yết ban đầu (VNĐ) *</label>
                   <input type="number" id="payOriginalAmount" oninput="calculateBillingDiscount()" required min="1000" step="1000" placeholder="10000000" class="w-full p-2 border rounded-lg font-bold text-slate-800" />
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-600 mb-1">Ưu đãi thành viên (<span id="discountRateLabel">0%</span>)</label>
+                  <label class="block font-medium text-slate-600 mb-1">Tiền được giảm trừ</label>
                   <input type="text" id="payDiscountAmount" readonly class="w-full p-2 border rounded-lg bg-slate-50 text-rose-600 font-bold" value="0 đ" />
                 </div>
                 <div>
@@ -329,7 +357,6 @@
     <!-- ============================================== -->
     <main id="scheduleTab" class="hidden space-y-6">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Đặt hẹn -->
         <div class="lg:col-span-5 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
           <div class="border-b pb-3">
             <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Đặt Lịch Hẹn Bệnh Nhân</h2>
@@ -402,7 +429,6 @@
           </form>
         </div>
 
-        <!-- Danh sách lịch hẹn -->
         <div class="lg:col-span-7 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3">
             <div>
@@ -440,7 +466,6 @@
         </div>
       </div>
 
-      <!-- Lịch trực nhân sự -->
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
         <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Lịch Trực & Đăng Ký Nghỉ Của Nhân Sự</h2>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -535,7 +560,6 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Doanh thu Bác sĩ -->
         <div class="lg:col-span-6 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
           <div class="flex justify-between items-center border-b pb-3">
             <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Doanh Thu Theo Bác Sĩ (Tháng)</h3>
@@ -558,7 +582,6 @@
           </div>
         </div>
 
-        <!-- Chốt két cuối ngày -->
         <div class="lg:col-span-6 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
           <div class="flex justify-between items-center border-b pb-3">
             <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Chốt Két Cuối Ngày (Hôm Nay)</h3>
@@ -608,7 +631,6 @@
         </div>
       </div>
 
-      <!-- Sổ nhật ký thu chi -->
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
         <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Sổ Nhật Ký Giao Dịch Thu - Chi</h3>
         <div class="overflow-x-auto">
@@ -847,19 +869,15 @@
       `).join('');
     }
 
-    // ========================================================
-    // CHỌN BỆNH NHÂN & TỰ ĐỘNG TÍNH PHÂN HẠNG THÀNH VIÊN
-    // ========================================================
+    // CHỌN BỆNH NHÂN & TỰ ĐỘNG TÍNH HẠNG
     async function selectPatient(id) {
       const { data, error } = await supabaseClient.from('patients').select('*').eq('id', id).single();
       if (error || !data) return;
       currentPatient = data;
 
-      // 1. Tải toàn bộ chi phí đã nộp để tính Hạng Thành Viên
       const { data: payHistory } = await supabaseClient.from('payments').select('amount').eq('patient_id', String(id));
       const totalSpent = (payHistory || []).reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
 
-      // 2. Logic phân hạng theo chính sách Nha Khoa Lê Anh
       let tierInfo = {
         name: "MEMBER",
         badgeClass: "bg-slate-200 text-slate-700",
@@ -900,7 +918,6 @@
 
       currentPatientTier = tierInfo;
 
-      // 3. Cập nhật Banner chính & Thẻ Thành Viên
       document.getElementById("activePatientBanner").innerHTML = `
         <span>Đang khám: <strong class="text-teal-800 uppercase">${data.full_name}</strong> (${data.phone})</span>
         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase ${tierInfo.badgeClass}">
@@ -916,41 +933,83 @@
       document.getElementById("tierBenefits").innerHTML = `🎁 <strong>Quyền lợi:</strong> ${tierInfo.desc}`;
       card.classList.remove("hidden");
 
+      document.getElementById("tierNoteDisplay").value = `Hạng ${tierInfo.name} (Tổng quát: -${tierInfo.generalDiscount}%, Chuyên sâu: -${tierInfo.specialDiscount}%)`;
       document.getElementById("patientTotalPaid").innerText = "Tổng nộp: " + totalSpent.toLocaleString('vi-VN') + " đ";
 
-      // Điền sẵn thông tin sang tab Lịch hẹn
       document.getElementById("apptPatientName").value = data.full_name + " (" + data.phone + ") - [" + tierInfo.name + "]";
       document.getElementById("apptPatientId").value = data.id;
 
       loadPatients(document.getElementById("searchInput").value);
       await loadDentalChart(currentPatient.id);
+      toggleDiscountInputs();
       calculateBillingDiscount();
     }
 
     // ========================================================
-    // TỰ ĐỘNG TÍNH GIẢM GIÁ THÀNH VIÊN KHI THU TIỀN
+    // ĐIỀU KHIỂN & TÍNH TOÁN GIẢM GIÁ LINH HOẠT
     // ========================================================
+    function toggleDiscountInputs() {
+      const mode = document.getElementById("payDiscountType").value;
+      const tierBox = document.getElementById("tierCategoryBox");
+      const customBox = document.getElementById("customDiscountBox");
+      const customLabel = document.getElementById("customDiscountLabel");
+      const customInput = document.getElementById("customDiscountValue");
+
+      if (mode === 'tier') {
+        tierBox.classList.remove("hidden");
+        customBox.classList.add("hidden");
+      } else if (mode === 'referral') {
+        tierBox.classList.add("hidden");
+        customBox.classList.remove("hidden");
+        customLabel.innerText = "Mức giảm thẻ Referral (%)";
+        customInput.value = "20"; // Mặc định 20% cho ca cạo vôi hoặc theo chính sách
+        document.getElementById("customDiscountReason").value = "Thẻ Referral giới thiệu (Khách mới)";
+      } else if (mode === 'custom_percent') {
+        tierBox.classList.add("hidden");
+        customBox.classList.remove("hidden");
+        customLabel.innerText = "Bác sĩ giảm theo tỷ lệ (%)";
+        customInput.placeholder = "Ví dụ: 10, 15, 20...";
+        document.getElementById("customDiscountReason").value = "";
+      } else if (mode === 'custom_fixed') {
+        tierBox.classList.add("hidden");
+        customBox.classList.remove("hidden");
+        customLabel.innerText = "Bác sĩ bớt trực tiếp số tiền (VNĐ)";
+        customInput.placeholder = "Ví dụ: 500000, 1000000...";
+        document.getElementById("customDiscountReason").value = "";
+      } else {
+        tierBox.classList.add("hidden");
+        customBox.classList.add("hidden");
+      }
+      calculateBillingDiscount();
+    }
+
     function calculateBillingDiscount() {
       const origInput = document.getElementById("payOriginalAmount");
       const origVal = parseInt(origInput.value, 10) || 0;
-      const category = document.getElementById("payServiceCategory").value;
-      const rateLabel = document.getElementById("discountRateLabel");
+      const mode = document.getElementById("payDiscountType").value;
       const discountInput = document.getElementById("payDiscountAmount");
       const finalInput = document.getElementById("payFinalAmount");
 
-      let discountRate = 0;
-      if (category === 'general') {
-        discountRate = currentPatientTier.generalDiscount;
-      } else if (category === 'specialized') {
-        discountRate = currentPatientTier.specialDiscount;
+      let discountAmount = 0;
+
+      if (mode === 'tier') {
+        const category = document.getElementById("payServiceCategory").value;
+        const rate = (category === 'general') ? currentPatientTier.generalDiscount : currentPatientTier.specialDiscount;
+        discountAmount = Math.round(origVal * (rate / 100));
+      } else if (mode === 'referral') {
+        const rate = parseFloat(document.getElementById("customDiscountValue").value) || 20;
+        discountAmount = Math.round(origVal * (rate / 100));
+      } else if (mode === 'custom_percent') {
+        const rate = parseFloat(document.getElementById("customDiscountValue").value) || 0;
+        discountAmount = Math.round(origVal * (rate / 100));
+      } else if (mode === 'custom_fixed') {
+        discountAmount = parseInt(document.getElementById("customDiscountValue").value, 10) || 0;
+        if (discountAmount > origVal) discountAmount = origVal; // Không cho giảm quá giá gốc
       } else {
-        discountRate = 0;
+        discountAmount = 0;
       }
 
-      rateLabel.innerText = discountRate + "%";
-      const discountAmount = Math.round(origVal * (discountRate / 100));
-      const finalAmount = origVal - discountAmount;
-
+      const finalAmount = Math.max(0, origVal - discountAmount);
       discountInput.value = discountAmount > 0 ? "- " + discountAmount.toLocaleString('vi-VN') + " đ" : "0 đ";
       finalInput.value = finalAmount.toLocaleString('vi-VN') + " đ";
     }
@@ -1277,7 +1336,7 @@
       }
     });
 
-    // LẬP PHIẾU THU TIỀN (LƯU SỐ TIỀN THỰC THU)
+    // LẬP PHIẾU THU TIỀN VỚI MÔ TẢ ƯU ĐÃI CHI TIẾT
     document.getElementById("paymentForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!currentPatient) {
@@ -1286,18 +1345,36 @@
       }
 
       const origVal = parseInt(document.getElementById("payOriginalAmount").value, 10);
-      const category = document.getElementById("payServiceCategory").value;
-      let discountRate = 0;
-      if (category === 'general') discountRate = currentPatientTier.generalDiscount;
-      else if (category === 'specialized') discountRate = currentPatientTier.specialDiscount;
+      const mode = document.getElementById("payDiscountType").value;
+      let discountAmount = 0;
+      let discountNote = "";
 
-      const discountAmount = Math.round(origVal * (discountRate / 100));
-      const finalAmount = origVal - discountAmount;
+      if (mode === 'tier') {
+        const category = document.getElementById("payServiceCategory").value;
+        const rate = (category === 'general') ? currentPatientTier.generalDiscount : currentPatientTier.specialDiscount;
+        discountAmount = Math.round(origVal * (rate / 100));
+        if (rate > 0) discountNote = `[Ưu đãi ${rate}% Hạng ${currentPatientTier.name}]`;
+      } else if (mode === 'referral') {
+        const rate = parseFloat(document.getElementById("customDiscountValue").value) || 20;
+        discountAmount = Math.round(origVal * (rate / 100));
+        discountNote = `[Thẻ Referral giảm ${rate}%]`;
+      } else if (mode === 'custom_percent') {
+        const rate = parseFloat(document.getElementById("customDiscountValue").value) || 0;
+        discountAmount = Math.round(origVal * (rate / 100));
+        const reason = document.getElementById("customDiscountReason").value.trim() || "Bác sĩ ưu đãi";
+        discountNote = `[BS giảm ${rate}%: ${reason}]`;
+      } else if (mode === 'custom_fixed') {
+        discountAmount = parseInt(document.getElementById("customDiscountValue").value, 10) || 0;
+        const reason = document.getElementById("customDiscountReason").value.trim() || "Bác sĩ bớt giá";
+        discountNote = `[BS bớt ${discountAmount.toLocaleString('vi-VN')}đ: ${reason}]`;
+      }
+
+      const finalAmount = Math.max(0, origVal - discountAmount);
 
       const payload = {
         patient_id: String(currentPatient.id),
         payment_date: document.getElementById("payDate").value,
-        service_name: document.getElementById("payService").value.trim() + (discountRate > 0 ? ` (Ưu đãi ${discountRate}% [${currentPatientTier.name}])` : ''),
+        service_name: document.getElementById("payService").value.trim() + (discountNote ? ` ${discountNote}` : ''),
         amount: finalAmount,
         payment_method: document.getElementById("payMethod").value,
         doctor_name: document.getElementById("payDoctor").value
@@ -1307,11 +1384,11 @@
       if (error) {
         alert("Lỗi thu tiền: " + error.message);
       } else {
-        alert(`Đã lập phiếu thu thành công!\nGiá gốc: ${origVal.toLocaleString('vi-VN')} đ\nƯu đãi ${discountRate}%: -${discountAmount.toLocaleString('vi-VN')} đ\nThực thu: ${finalAmount.toLocaleString('vi-VN')} đ`);
+        alert(`Đã lập phiếu thu thành công!\nGiá gốc: ${origVal.toLocaleString('vi-VN')} đ\nGiảm trừ: -${discountAmount.toLocaleString('vi-VN')} đ\nThực thu: ${finalAmount.toLocaleString('vi-VN')} đ`);
         document.getElementById("payService").value = "";
         document.getElementById("payOriginalAmount").value = "";
         calculateBillingDiscount();
-        // Cập nhật lại tích lũy và nâng hạng ngay lập tức
+        // Cập nhật lại phân hạng và tích lũy
         selectPatient(currentPatient.id);
       }
     });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nha Khoa Lê Anh - Lâm Sàng, Bảng Giá & Quản Trị</title>
+  <title>Nha Khoa Lê Anh - Lâm Sàng, Kho Vật Tư & Quản Trị Toàn Diện</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
@@ -39,23 +39,27 @@
         <p class="text-xs md:text-sm text-slate-500 mt-1">Phòng Khám Chuyên Khoa Răng Hàm Mặt • Lâm Sàng & Quản Trị Toàn Diện</p>
       </div>
       
-      <!-- Chuyển Tab 5 Phân Hệ -->
-      <div class="flex flex-wrap items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-        <button onclick="switchTab('clinical')" id="tabBtnClinical" class="px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all">
-          🏥 Lâm Sàng & Bệnh Án
+      <!-- Chuyển Tab 6 Phân Hệ -->
+      <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+        <button onclick="switchTab('clinical')" id="tabBtnClinical" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all">
+          🏥 Lâm Sàng
         </button>
-        <button onclick="switchTab('pricing')" id="tabBtnPricing" class="px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
-          📋 Bảng Giá Dịch Vụ
+        <button onclick="switchTab('pricing')" id="tabBtnPricing" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
+          📋 Bảng Giá
         </button>
-        <button onclick="switchTab('schedule')" id="tabBtnSchedule" class="px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
-          📅 Lịch Hẹn & Ca Trực
+        <button onclick="switchTab('inventory')" id="tabBtnInventory" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1">
+          <span>📦 Kho Vật Tư</span>
+          <span id="inventoryAlertBadge" class="bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full hidden">0</span>
         </button>
-        <button onclick="switchTab('crm')" id="tabBtnCrm" class="px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5">
-          <span>🤝 Chăm Sóc BN (CRM)</span>
+        <button onclick="switchTab('schedule')" id="tabBtnSchedule" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
+          📅 Lịch Hẹn
+        </button>
+        <button onclick="switchTab('crm')" id="tabBtnCrm" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1">
+          <span>🤝 CSKH</span>
           <span id="crmBadgeCount" class="bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full hidden">0</span>
         </button>
-        <button onclick="switchTab('finance')" id="tabBtnFinance" class="px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
-          📊 Kế Toán & Dòng Tiền
+        <button onclick="switchTab('finance')" id="tabBtnFinance" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">
+          📊 Kế Toán
         </button>
       </div>
     </header>
@@ -259,7 +263,7 @@
             </div>
           </div>
 
-          <!-- LẬP PHIẾU THU: TÍCH HỢP CHỌN TỪ BẢNG GIÁ DỊCH VỤ -->
+          <!-- Thu tiền -->
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-3 gap-2">
               <div>
@@ -308,7 +312,6 @@
                 </div>
               </div>
 
-              <!-- Tùy chọn linh hoạt theo từng chế độ ưu đãi -->
               <div id="tierCategoryBox" class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white p-2.5 rounded-lg border border-slate-200">
                 <div>
                   <label class="block font-medium text-slate-600 mb-1">Nhóm dịch vụ tính ưu đãi</label>
@@ -365,18 +368,15 @@
               </div>
             </form>
           </div>
-
         </div>
       </div>
     </main>
 
     <!-- ============================================== -->
-    <!-- TAB 2: BẢNG GIÁ DỊCH VỤ (PRICE LIST) (MỚI)     -->
+    <!-- TAB 2: BẢNG GIÁ DỊCH VỤ                        -->
     <!-- ============================================== -->
     <main id="pricingTab" class="hidden space-y-6">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-        <!-- CỘT TRÁI: FORM THÊM DỊCH VỤ MỚI (4 Cột) -->
         <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
           <div class="border-b pb-3">
             <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Thêm Dịch Vụ Mới</h2>
@@ -390,9 +390,9 @@
             </div>
 
             <div>
-              <label class="block font-semibold text-slate-700 mb-1">Phân nhóm dịch vụ (Để tính ưu đãi) *</label>
+              <label class="block font-semibold text-slate-700 mb-1">Phân nhóm dịch vụ *</label>
               <select id="serviceCategory" required class="w-full p-2 border rounded-lg bg-white font-semibold text-teal-800">
-                <option value="specialized">1. Điều trị Chuyên sâu (Implant, Chỉnh nha, Phục hình sứ...)</option>
+                <option value="specialized">1. Điều trị Chuyên sâu (Implant, Chỉnh nha, Sứ...)</option>
                 <option value="general">2. Điều trị Tổng quát (Trám răng, Cạo vôi, Nhổ răng, Tủy...)</option>
                 <option value="other">3. Dịch vụ khác / Khám chụp</option>
               </select>
@@ -410,8 +410,8 @@
             </div>
 
             <div>
-              <label class="block font-semibold text-slate-700 mb-1">Mô tả / Ghi chú kỹ thuật</label>
-              <textarea id="serviceDesc" rows="2" placeholder="Bao gồm khớp nối Abutment chính hãng, bảo hành trọn đời..." class="w-full p-2 border rounded-lg bg-white"></textarea>
+              <label class="block font-semibold text-slate-700 mb-1">Mô tả / Ghi chú</label>
+              <textarea id="serviceDesc" rows="2" placeholder="Ghi chú chi tiết dịch vụ..." class="w-full p-2 border rounded-lg bg-white"></textarea>
             </div>
 
             <button type="submit" id="btnSaveService" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 rounded-lg text-xs transition-colors shadow">
@@ -420,7 +420,6 @@
           </form>
         </div>
 
-        <!-- CỘT PHẢI: DANH SÁCH BẢNG GIÁ DỊCH VỤ (8 Cột) -->
         <div class="lg:col-span-8 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3">
             <div>
@@ -454,12 +453,164 @@
             </table>
           </div>
         </div>
-
       </div>
     </main>
 
     <!-- ============================================== -->
-    <!-- TAB 3: LỊCH HẸN & CA TRỰC                     -->
+    <!-- TAB 3: KHO VẬT TƯ NHA KHOA (MỚI)               -->
+    <!-- ============================================== -->
+    <main id="inventoryTab" class="hidden space-y-6">
+      
+      <!-- Thẻ KPI Thống Kê Kho -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+          <span class="text-[11px] font-bold uppercase text-slate-400 block">Tổng Danh Mục Mặt Hàng</span>
+          <span id="invKpiTotalItems" class="text-2xl font-extrabold text-slate-900 mt-1 block">0</span>
+        </div>
+        <div class="bg-rose-50 p-4 rounded-2xl border border-rose-200 shadow-xs">
+          <span class="text-[11px] font-bold uppercase text-rose-700 block">⚠️ Mặt Hàng Sắp Hết Kho</span>
+          <span id="invKpiLowStock" class="text-2xl font-extrabold text-rose-900 mt-1 block">0</span>
+        </div>
+        <div class="bg-teal-50 p-4 rounded-2xl border border-teal-200 shadow-xs">
+          <span class="text-[11px] font-bold uppercase text-teal-700 block">Trụ Implant & Phẫu Thuật</span>
+          <span id="invKpiImplantCount" class="text-2xl font-extrabold text-teal-900 mt-1 block">0</span>
+        </div>
+        <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 shadow-xs">
+          <span class="text-[11px] font-bold uppercase text-amber-700 block">Ước Tính Giá Trị Kho</span>
+          <span id="invKpiTotalValue" class="text-2xl font-extrabold text-amber-900 mt-1 block">0 đ</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- CỘT TRÁI: FORM KHAI BÁO MẶT HÀNG MỚI (4 Cột) -->
+        <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <div class="border-b pb-3">
+            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Khai Báo Mặt Hàng Mới</h2>
+            <p class="text-xs text-slate-400">Quản lý Implant, vật liệu tiêu hao & ngưỡng cảnh báo</p>
+          </div>
+
+          <form id="inventoryItemForm" class="space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tên mặt hàng / Quy cách *</label>
+              <input type="text" id="invItemName" required placeholder="Ví dụ: Trụ Straumann BLT 4.1x10mm, Tê Septanest..." class="w-full p-2 border rounded-lg bg-white outline-none focus:ring-2 focus:ring-teal-500 font-medium" />
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Phân loại mặt hàng *</label>
+              <select id="invItemCategory" required class="w-full p-2 border rounded-lg bg-white font-semibold text-teal-800">
+                <option value="Implant & Phẫu thuật">1. Trụ Implant & Vật liệu phẫu thuật (Xương, Màng)</option>
+                <option value="Vật liệu trám/nội nha">2. Vật liệu trám & Nội nha (Composite, Côn Gutta...)</option>
+                <option value="Vật tư tiêu hao">3. Vật tư tiêu hao (Thuốc tê, Găng tay, Kim, Gạc...)</option>
+                <option value="Dụng cụ & Khác">4. Dụng cụ & Hóa chất vô trùng</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Tồn ban đầu</label>
+                <input type="number" id="invItemStock" min="0" value="0" class="w-full p-2 border rounded-lg bg-white font-bold text-center" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Cảnh báo tối thiểu</label>
+                <input type="number" id="invItemMinStock" min="1" value="5" class="w-full p-2 border rounded-lg bg-white font-bold text-center text-rose-600" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Đơn vị</label>
+                <input type="text" id="invItemUnit" value="Hộp" placeholder="Trụ, Hộp, Ống..." class="w-full p-2 border rounded-lg bg-white text-center" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Giá vốn nhập (VNĐ)</label>
+                <input type="number" id="invItemCost" min="0" step="1000" placeholder="Giá nhập ước tính..." class="w-full p-2 border rounded-lg bg-white font-bold" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Hạn sử dụng (EXP)</label>
+                <input type="date" id="invItemExpiry" class="w-full p-2 border rounded-lg bg-white" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Ghi chú nhà cung cấp / Lô hàng</label>
+              <input type="text" id="invItemNotes" placeholder="Hãng Straumann VN, Cty thiết bị y tế..." class="w-full p-2 border rounded-lg bg-white" />
+            </div>
+
+            <button type="submit" id="btnSaveInventoryItem" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 rounded-lg text-xs transition-colors shadow">
+              + Khai Báo Mặt Hàng
+            </button>
+          </form>
+        </div>
+
+        <!-- CỘT PHẢI: BẢNG THEO DÕI TỒN KHO & NHẬP XUẤT NHANH (8 Cột) -->
+        <div class="lg:col-span-8 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3">
+            <div>
+              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Danh Sách Tồn Kho & Nhập Xuất Nhanh</h2>
+              <p class="text-xs text-slate-400">Bấm nút Nhập/Xuất để cập nhật số lượng tức thì</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <select id="invFilterCategory" onchange="loadInventoryItems()" class="p-1.5 border rounded-lg text-xs bg-slate-50 font-medium">
+                <option value="all">Tất cả danh mục</option>
+                <option value="low_stock">⚠️ Chỉ xem hàng sắp hết</option>
+                <option value="Implant & Phẫu thuật">Implant & Phẫu thuật</option>
+                <option value="Vật liệu trám/nội nha">Vật liệu trám/nội nha</option>
+                <option value="Vật tư tiêu hao">Vật tư tiêu hao</option>
+                <option value="Dụng cụ & Khác">Dụng cụ & Khác</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
+                <tr>
+                  <th class="py-2.5 px-3">Tên mặt hàng / Quy cách</th>
+                  <th class="py-2.5 px-3">Phân loại</th>
+                  <th class="py-2.5 px-3 text-center">Tồn kho</th>
+                  <th class="py-2.5 px-3 text-center">Hạn dùng</th>
+                  <th class="py-2.5 px-3 text-right">Thao tác kho</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryTableBody" class="divide-y divide-slate-100">
+                <tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Đang tải danh sách kho...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SỔ NHẬT KÝ NHẬP - XUẤT KHO -->
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+        <div class="flex justify-between items-center border-b pb-3">
+          <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Sổ Nhật Ký Nhập - Xuất Kho Gần Đây</h2>
+          <button onclick="loadInventoryTransactions()" class="text-xs text-teal-600 hover:underline">Làm mới sổ</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
+              <tr>
+                <th class="py-2.5 px-3">Ngày thao tác</th>
+                <th class="py-2.5 px-3">Loại giao dịch</th>
+                <th class="py-2.5 px-3">Mặt hàng</th>
+                <th class="py-2.5 px-3 text-center">Số lượng</th>
+                <th class="py-2.5 px-3">Người thực hiện</th>
+                <th class="py-2.5 px-3">Lý do / Ca điều trị</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTxBody" class="divide-y divide-slate-100">
+              <tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Chưa có giao dịch nhập xuất nào.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ============================================== -->
+    <!-- TAB 4: LỊCH HẸN & CA TRỰC                     -->
     <!-- ============================================== -->
     <main id="scheduleTab" class="hidden space-y-6">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -630,7 +781,7 @@
     </main>
 
     <!-- ============================================== -->
-    <!-- TAB 4: CHĂM SÓC KHÁCH HÀNG (CRM)              -->
+    <!-- TAB 5: CHĂM SÓC KHÁCH HÀNG (CRM)              -->
     <!-- ============================================== -->
     <main id="crmTab" class="hidden space-y-6">
       <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -749,7 +900,7 @@
     </main>
 
     <!-- ============================================== -->
-    <!-- TAB 5: KẾ TOÁN & DÒNG TIỀN                     -->
+    <!-- TAB 6: KẾ TOÁN & DÒNG TIỀN                     -->
     <!-- ============================================== -->
     <main id="financeTab" class="hidden space-y-6">
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
@@ -880,14 +1031,58 @@
 
   </div>
 
-  <!-- MODAL: CẬP NHẬT KẾT QUẢ CHĂM SÓC (CRM RESULT MODAL) -->
+  <!-- MODAL: NHẬP / XUẤT KHO VẬT TƯ (INVENTORY TRANSACTION MODAL) -->
+  <div id="invTxModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-base font-bold text-slate-900" id="invModalTitle">Nhập / Xuất Kho</h3>
+        <button type="button" onclick="closeInvTxModal()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold leading-none">&times;</button>
+      </div>
+
+      <form id="invTxForm" class="space-y-3 text-xs sm:text-sm">
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Mặt hàng thao tác:</label>
+          <div id="invModalItemName" class="font-bold text-teal-800 text-sm bg-slate-50 p-2 rounded-lg border">--</div>
+          <input type="hidden" id="invModalItemId" />
+          <input type="hidden" id="invModalTxType" />
+          <input type="hidden" id="invModalCurrentStock" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Số lượng *</label>
+            <input type="number" id="invModalQty" min="1" required value="1" class="w-full p-2 border rounded-lg bg-white font-extrabold text-base text-center outline-none focus:ring-2 focus:ring-teal-500" />
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Người thực hiện</label>
+            <select id="invModalUser" class="w-full p-2 border rounded-lg bg-white">
+              <option value="Phụ tá / Trợ thủ">Phụ tá / Trợ thủ</option>
+              <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh</option>
+              <option value="Lễ tân / Quản lý">Lễ tân / Quản lý</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Lý do / Ca điều trị bệnh nhân</label>
+          <input type="text" id="invModalNotes" placeholder="Nhập thêm từ hãng, Xuất dùng ca cấy trụ BN A..." class="w-full p-2 border rounded-lg outline-none" />
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeInvTxModal()" class="px-3 py-1.5 rounded-lg border text-slate-600 hover:bg-slate-50 text-xs font-medium">Hủy</button>
+          <button type="submit" id="btnSubmitInvTx" class="px-4 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-medium text-xs shadow-sm">Xác Nhận</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CRM RESULT -->
   <div id="crmResultModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200">
       <div class="flex justify-between items-center border-b pb-3">
         <h3 class="text-base font-bold text-slate-900">Ghi Nhận Kết Quả Chăm Sóc</h3>
         <button type="button" onclick="closeCrmResultModal()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold leading-none">&times;</button>
       </div>
-      
       <div class="space-y-3 text-xs sm:text-sm">
         <div>
           <label class="block font-medium text-slate-700 mb-1">Trạng thái xử lý *</label>
@@ -897,13 +1092,11 @@
             <option value="Hủy">❌ Không liên lạc được / Hủy nhiệm vụ</option>
           </select>
         </div>
-
         <div>
           <label class="block font-medium text-slate-700 mb-1">Ghi chú kết quả cuộc gọi / giải pháp *</label>
-          <textarea id="crmModalNotes" rows="3" placeholder="Ví dụ: Bệnh nhân bớt đau nhiều, ăn nhai ổn; hoặc Đã giải thích lại chi phí..." class="w-full p-2 border rounded-lg outline-none"></textarea>
+          <textarea id="crmModalNotes" rows="3" placeholder="Ví dụ: Bệnh nhân bớt đau nhiều..." class="w-full p-2 border rounded-lg outline-none"></textarea>
         </div>
       </div>
-
       <div class="flex justify-end gap-2 pt-2 border-t">
         <button type="button" onclick="closeCrmResultModal()" class="px-3 py-1.5 rounded-lg border text-slate-600 hover:bg-slate-50 text-xs font-medium">Hủy</button>
         <button type="button" onclick="saveCrmTaskResult()" class="px-4 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-medium text-xs shadow-sm">Lưu Kết Quả</button>
@@ -911,14 +1104,13 @@
     </div>
   </div>
 
-  <!-- MODAL: CẬP NHẬT TÌNH TRẠNG RĂNG -->
+  <!-- MODAL: CHI TIẾT RĂNG -->
   <div id="toothModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-slate-200">
       <div class="flex justify-between items-center border-b pb-3">
         <h3 class="text-base font-bold text-slate-900">Khám Răng Số <span id="modalToothNumber" class="text-teal-600 text-xl font-extrabold">--</span></h3>
         <button type="button" onclick="closeToothModal()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold leading-none">&times;</button>
       </div>
-      
       <div class="space-y-3 text-xs sm:text-sm">
         <div>
           <label class="block font-medium text-slate-700 mb-1">Chẩn đoán / Bệnh lý</label>
@@ -931,12 +1123,10 @@
             <option value="Răng khôn ngầm / lệch">Răng khôn ngầm / lệch</option>
           </select>
         </div>
-
         <div>
           <label class="block font-medium text-slate-700 mb-1">Kế hoạch điều trị cụ thể</label>
           <input type="text" id="modalPlan" placeholder="Ví dụ: Cấy Straumann + Ghép xương..." class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-teal-500" />
         </div>
-
         <div>
           <label class="block font-medium text-slate-700 mb-1">Trạng thái tiến độ</label>
           <select id="modalStatus" class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-teal-500 bg-white">
@@ -946,7 +1136,6 @@
           </select>
         </div>
       </div>
-
       <div class="flex justify-end gap-2 pt-2 border-t">
         <button type="button" onclick="closeToothModal()" class="px-3 py-1.5 rounded-lg border text-slate-600 hover:bg-slate-50 text-xs font-medium">Hủy</button>
         <button type="button" onclick="saveToothData()" class="px-4 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-medium text-xs shadow-sm">Lưu Dữ Liệu</button>
@@ -1060,39 +1249,46 @@
     const q4 = [48, 47, 46, 45, 44, 43, 42, 41];
     const q3 = [31, 32, 33, 34, 35, 36, 37, 38];
 
-    // CHUYỂN TAB 5 PHÂN HỆ
+    // CHUYỂN TAB 6 PHÂN HỆ
     function switchTab(tab) {
       document.getElementById('clinicalTab').classList.add('hidden');
       document.getElementById('pricingTab').classList.add('hidden');
+      document.getElementById('inventoryTab').classList.add('hidden');
       document.getElementById('scheduleTab').classList.add('hidden');
       document.getElementById('crmTab').classList.add('hidden');
       document.getElementById('financeTab').classList.add('hidden');
 
-      document.getElementById('tabBtnClinical').className = "px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all";
-      document.getElementById('tabBtnPricing').className = "px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all";
-      document.getElementById('tabBtnSchedule').className = "px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all";
-      document.getElementById('tabBtnCrm').className = "px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5";
-      document.getElementById('tabBtnFinance').className = "px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all";
+      document.getElementById('tabBtnClinical').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all";
+      document.getElementById('tabBtnPricing').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all";
+      document.getElementById('tabBtnInventory').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1";
+      document.getElementById('tabBtnSchedule').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all";
+      document.getElementById('tabBtnCrm').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1";
+      document.getElementById('tabBtnFinance').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all";
 
       if (tab === 'clinical') {
         document.getElementById('clinicalTab').classList.remove('hidden');
-        document.getElementById('tabBtnClinical').className = "px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all";
+        document.getElementById('tabBtnClinical').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all";
       } else if (tab === 'pricing') {
         document.getElementById('pricingTab').classList.remove('hidden');
-        document.getElementById('tabBtnPricing').className = "px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all";
+        document.getElementById('tabBtnPricing').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all";
         loadServiceCatalog();
+      } else if (tab === 'inventory') {
+        document.getElementById('inventoryTab').classList.remove('hidden');
+        document.getElementById('tabBtnInventory').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all flex items-center gap-1";
+        loadInventoryItems();
+        loadInventoryTransactions();
       } else if (tab === 'schedule') {
         document.getElementById('scheduleTab').classList.remove('hidden');
-        document.getElementById('tabBtnSchedule').className = "px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all";
+        document.getElementById('tabBtnSchedule').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all";
         loadAppointments();
         loadStaffSchedules();
       } else if (tab === 'crm') {
         document.getElementById('crmTab').classList.remove('hidden');
-        document.getElementById('tabBtnCrm').className = "px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all flex items-center gap-1.5";
+        document.getElementById('tabBtnCrm').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all flex items-center gap-1";
         loadCrmTasks();
       } else if (tab === 'finance') {
         document.getElementById('financeTab').classList.remove('hidden');
-        document.getElementById('tabBtnFinance').className = "px-3.5 py-2 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all";
+        document.getElementById('tabBtnFinance').className = "px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold bg-white text-teal-800 shadow-sm transition-all";
         loadFinancialData();
       }
     }
@@ -1219,22 +1415,234 @@
     }
 
     // ========================================================
-    // PHÂN HỆ: BẢNG GIÁ DỊCH VỤ (PRICE LIST & CATALOG) (MỚI)
+    // PHÂN HỆ: KHO VẬT TƯ NHA KHOA (INVENTORY) (MỚI)
     // ========================================================
+    async function loadInventoryItems() {
+      const filter = document.getElementById("invFilterCategory")?.value || 'all';
+      const tbody = document.getElementById("inventoryTableBody");
+
+      let query = supabaseClient.from('inventory_items').select('*').order('item_name', { ascending: true });
+
+      if (filter === 'low_stock') {
+        // Lọc vật tư có số tồn <= min_stock
+      } else if (filter !== 'all') {
+        query = query.eq('category', filter);
+      }
+
+      const { data, error } = await query;
+      const items = data || [];
+
+      // Cập nhật các chỉ số KPI Kho
+      const totalItems = items.length;
+      const lowStockItems = items.filter(i => (Number(i.current_stock) <= Number(i.min_stock)));
+      const implantItems = items.filter(i => (i.category === 'Implant & Phẫu thuật'));
+      const totalVal = items.reduce((sum, i) => sum + (Number(i.current_stock || 0) * Number(i.cost_price || 0)), 0);
+
+      document.getElementById("invKpiTotalItems").innerText = totalItems;
+      document.getElementById("invKpiLowStock").innerText = lowStockItems.length;
+      document.getElementById("invKpiImplantCount").innerText = implantItems.reduce((sum, i) => sum + Number(i.current_stock || 0), 0) + " trụ";
+      document.getElementById("invKpiTotalValue").innerText = totalVal.toLocaleString('vi-VN') + " đ";
+
+      const alertBadge = document.getElementById("inventoryAlertBadge");
+      if (lowStockItems.length > 0) {
+        alertBadge.innerText = lowStockItems.length;
+        alertBadge.classList.remove('hidden');
+      } else {
+        alertBadge.classList.add('hidden');
+      }
+
+      // Lọc danh sách hiển thị
+      let displayItems = items;
+      if (filter === 'low_stock') {
+        displayItems = lowStockItems;
+      }
+
+      if (error || !displayItems || displayItems.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Chưa có mặt hàng nào phù hợp trong kho.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = displayItems.map(item => {
+        const isLow = Number(item.current_stock) <= Number(item.min_stock);
+        return `
+          <tr class="hover:bg-slate-50 ${isLow ? 'bg-rose-50/50' : ''}">
+            <td class="py-2.5 px-3">
+              <span class="font-bold text-slate-900">${item.item_name}</span>
+              ${item.notes ? `<span class="block text-[11px] text-slate-400 font-normal">${item.notes}</span>` : ''}
+            </td>
+            <td class="py-2.5 px-3">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.category.includes('Implant') ? 'bg-sky-100 text-sky-800' : 'bg-slate-100 text-slate-700'}">
+                ${item.category}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 text-center">
+              <span class="font-extrabold text-sm ${isLow ? 'text-rose-600' : 'text-teal-800'}">
+                ${item.current_stock}
+              </span>
+              <span class="text-xs text-slate-500 font-medium ml-0.5">${item.unit || ''}</span>
+              ${isLow ? `<span class="block text-[9px] text-rose-500 font-bold uppercase tracking-wider">Tối thiểu: ${item.min_stock}</span>` : ''}
+            </td>
+            <td class="py-2.5 px-3 text-center text-slate-600 text-xs">
+              ${item.expiry_date ? item.expiry_date : '—'}
+            </td>
+            <td class="py-2.5 px-3 text-right space-x-1 whitespace-nowrap">
+              <button onclick="openInvTxModal('${item.id}', '${item.item_name}', 'Nhập kho', ${item.current_stock})" class="text-[11px] bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-semibold px-2 py-1 rounded">
+                ⬇ Nhập
+              </button>
+              <button onclick="openInvTxModal('${item.id}', '${item.item_name}', 'Xuất dùng', ${item.current_stock})" class="text-[11px] bg-amber-100 hover:bg-amber-200 text-amber-800 font-semibold px-2 py-1 rounded">
+                ⬆ Xuất
+              </button>
+              <button onclick="deleteInventoryItem('${item.id}')" class="text-[11px] text-rose-500 hover:underline px-1">
+                Xóa
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Khai báo mặt hàng mới
+    document.getElementById("inventoryItemForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        item_name: document.getElementById("invItemName").value.trim(),
+        category: document.getElementById("invItemCategory").value,
+        current_stock: parseInt(document.getElementById("invItemStock").value, 10) || 0,
+        min_stock: parseInt(document.getElementById("invItemMinStock").value, 10) || 5,
+        unit: document.getElementById("invItemUnit").value.trim() || "Hộp",
+        cost_price: parseInt(document.getElementById("invItemCost").value, 10) || 0,
+        expiry_date: document.getElementById("invItemExpiry").value || null,
+        notes: document.getElementById("invItemNotes").value.trim() || null
+      };
+
+      const { error } = await supabaseClient.from('inventory_items').insert([payload]);
+      if (error) {
+        alert("Lỗi lưu mặt hàng: " + error.message);
+      } else {
+        alert("Đã khai báo mặt hàng vào kho thành công!");
+        document.getElementById("invItemName").value = "";
+        document.getElementById("invItemStock").value = "0";
+        document.getElementById("invItemCost").value = "";
+        document.getElementById("invItemNotes").value = "";
+        loadInventoryItems();
+      }
+    });
+
+    async function deleteInventoryItem(id) {
+      if (!confirm("Bạn có chắc muốn xóa mặt hàng này khỏi kho?")) return;
+      await supabaseClient.from('inventory_items').delete().eq('id', id);
+      loadInventoryItems();
+    }
+
+    // Modal Nhập / Xuất kho nhanh
+    function openInvTxModal(itemId, itemName, txType, currentStock) {
+      document.getElementById("invModalItemId").value = itemId;
+      document.getElementById("invModalItemName").innerText = itemName;
+      document.getElementById("invModalTxType").value = txType;
+      document.getElementById("invModalCurrentStock").value = currentStock;
+      document.getElementById("invModalTitle").innerText = (txType === 'Nhập kho') ? "⬇ Nhập Kho Vật Tư" : "⬆ Xuất Dùng Vật Tư";
+      document.getElementById("btnSubmitInvTx").innerText = (txType === 'Nhập kho') ? "+ Xác Nhận Nhập" : "- Xác Nhận Xuất";
+      document.getElementById("btnSubmitInvTx").className = (txType === 'Nhập kho') ? "px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-sm" : "px-4 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs shadow-sm";
+      document.getElementById("invModalQty").value = "1";
+      document.getElementById("invModalNotes").value = "";
+      document.getElementById("invTxModal").classList.remove("hidden");
+    }
+
+    function closeInvTxModal() {
+      document.getElementById("invTxModal").classList.add("hidden");
+    }
+
+    // Xử lý thực hiện Nhập / Xuất kho
+    document.getElementById("invTxForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const itemId = document.getElementById("invModalItemId").value;
+      const itemName = document.getElementById("invModalItemName").innerText;
+      const txType = document.getElementById("invModalTxType").value;
+      const currentStock = parseInt(document.getElementById("invModalCurrentStock").value, 10);
+      const qty = parseInt(document.getElementById("invModalQty").value, 10);
+      const performedBy = document.getElementById("invModalUser").value;
+      const notes = document.getElementById("invModalNotes").value.trim();
+
+      if (txType === 'Xuất dùng' && qty > currentStock) {
+        alert(`Số lượng xuất (${qty}) vượt quá số lượng tồn kho hiện tại (${currentStock})!`);
+        return;
+      }
+
+      const newStock = (txType === 'Nhập kho') ? (currentStock + qty) : (currentStock - qty);
+
+      // 1. Cập nhật số tồn trong bảng inventory_items
+      const { error: stockErr } = await supabaseClient
+        .from('inventory_items')
+        .update({ current_stock: newStock })
+        .eq('id', itemId);
+
+      if (stockErr) {
+        alert("Lỗi cập nhật số tồn: " + stockErr.message);
+        return;
+      }
+
+      // 2. Ghi nhật ký vào bảng inventory_transactions
+      const txPayload = {
+        item_id: String(itemId),
+        item_name: itemName,
+        type: txType,
+        quantity: qty,
+        action_date: new Date().toISOString().split('T')[0],
+        performed_by: performedBy,
+        notes: notes || null
+      };
+
+      await supabaseClient.from('inventory_transactions').insert([txPayload]);
+
+      closeInvTxModal();
+      loadInventoryItems();
+      loadInventoryTransactions();
+    });
+
+    // Tải Sổ nhật ký Nhập - Xuất kho
+    async function loadInventoryTransactions() {
+      const tbody = document.getElementById("inventoryTxBody");
+      const { data, error } = await supabaseClient
+        .from('inventory_transactions')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      if (error || !data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">Chưa có giao dịch nhập xuất nào gần đây.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = data.map(tx => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 px-3 text-slate-600">${tx.action_date}</td>
+          <td class="py-2.5 px-3">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${tx.type === 'Nhập kho' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+              ${tx.type}
+            </span>
+          </td>
+          <td class="py-2.5 px-3 font-semibold text-slate-900">${tx.item_name}</td>
+          <td class="py-2.5 px-3 text-center font-bold ${tx.type === 'Nhập kho' ? 'text-emerald-700' : 'text-amber-700'}">
+            ${tx.type === 'Nhập kho' ? '+' : '-'}${tx.quantity}
+          </td>
+          <td class="py-2.5 px-3 text-slate-600">${tx.performed_by}</td>
+          <td class="py-2.5 px-3 text-slate-500">${tx.notes || '—'}</td>
+        </tr>
+      `).join('');
+    }
+
+    // BẢNG GIÁ DỊCH VỤ
     async function loadServiceCatalog() {
       const filterCat = document.getElementById("pricingFilterCategory")?.value || 'all';
       const tbody = document.getElementById("serviceCatalogBody");
       const selectPay = document.getElementById("payServiceSelect");
 
       let query = supabaseClient.from('services').select('*').order('name', { ascending: true });
-      if (filterCat !== 'all') {
-        query = query.eq('category', filterCat);
-      }
+      if (filterCat !== 'all') query = query.eq('category', filterCat);
 
       const { data, error } = await query;
       cachedServices = data || [];
 
-      // 1. Cập nhật bảng quản lý giá
       if (tbody) {
         if (error || !data || data.length === 0) {
           tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 text-xs">Chưa có dịch vụ nào trong bảng giá. Hãy thêm dịch vụ mới bên trái!</td></tr>`;
@@ -1260,7 +1668,6 @@
         }
       }
 
-      // 2. Cập nhật Menu Dropdown chọn dịch vụ ở Form Thu Tiền
       if (selectPay) {
         const { data: allServices } = await supabaseClient.from('services').select('*').order('name', { ascending: true });
         selectPay.innerHTML = '<option value="">-- Chọn dịch vụ niêm yết --</option>' + 
@@ -1272,7 +1679,6 @@
       }
     }
 
-    // Khi chọn dịch vụ từ dropdown thu tiền -> tự nhảy giá và nhóm dịch vụ
     function onSelectServiceCatalog() {
       const select = document.getElementById("payServiceSelect");
       const selectedOption = select.options[select.selectedIndex];
@@ -1284,13 +1690,10 @@
 
       document.getElementById("payService").value = name;
       document.getElementById("payOriginalAmount").value = price;
-      if (category) {
-        document.getElementById("payServiceCategory").value = category;
-      }
+      if (category) document.getElementById("payServiceCategory").value = category;
       calculateBillingDiscount();
     }
 
-    // Thêm dịch vụ mới vào Bảng Giá
     document.getElementById("serviceForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const payload = {
@@ -1302,9 +1705,8 @@
       };
 
       const { error } = await supabaseClient.from('services').insert([payload]);
-      if (error) {
-        alert("Lỗi lưu dịch vụ: " + error.message);
-      } else {
+      if (error) alert("Lỗi lưu dịch vụ: " + error.message);
+      else {
         alert("Đã thêm dịch vụ vào bảng giá niêm yết thành công!");
         document.getElementById("serviceName").value = "";
         document.getElementById("servicePrice").value = "";
@@ -1582,9 +1984,8 @@
       };
 
       const { error } = await supabaseClient.from('appointments').insert([payload]);
-      if (error) {
-        alert("Lỗi lưu lịch hẹn: " + error.message);
-      } else {
+      if (error) alert("Lỗi lưu lịch hẹn: " + error.message);
+      else {
         alert("Đã tạo lịch hẹn thành công!");
         document.getElementById("apptProcedure").value = "";
         document.getElementById("appointmentValidationBox").classList.add("hidden");
@@ -1602,9 +2003,7 @@
         .lte('appointment_time', `${filterDate}T23:59:59+07:00`)
         .order('appointment_time', { ascending: true });
 
-      if (filterDoc !== "Tất cả") {
-        query = query.eq('doctor_name', filterDoc);
-      }
+      if (filterDoc !== "Tất cả") query = query.eq('doctor_name', filterDoc);
 
       const { data, error } = await query;
       if (error || !data || data.length === 0) {
@@ -1640,9 +2039,8 @@
       };
 
       const { error } = await supabaseClient.from('staff_schedules').insert([payload]);
-      if (error) {
-        alert("Lỗi lưu lịch trực: " + error.message);
-      } else {
+      if (error) alert("Lỗi lưu lịch trực: " + error.message);
+      else {
         alert("Đã cập nhật lịch làm việc / nghỉ!");
         document.getElementById("scheduleNotes").value = "";
         loadStaffSchedules();

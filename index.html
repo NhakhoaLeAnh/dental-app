@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản Lý Phòng Khám Nha Khoa</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase JS Client CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen">
+
+  <div class="max-w-6xl mx-auto p-4 md:p-8">
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 border-b border-slate-200 mb-8">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold text-teal-800">Nha Khoa - Quản Lý Bệnh Án</h1>
+        <p class="text-sm text-slate-500 mt-1">Hệ thống hồ sơ bệnh nhân & lịch sử điều trị</p>
+      </div>
+      <div class="mt-4 md:mt-0 flex items-center space-x-2">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+          ● Kết nối máy chủ trực tuyến
+        </span>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Cột Trái: Form tiếp nhận bệnh nhân mới -->
+      <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 h-fit">
+        <h2 class="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b">Tiếp Nhận Bệnh Nhân Mới</h2>
+        
+        <form id="patientForm" class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1">Họ và tên *</label>
+            <input type="text" id="fullName" required placeholder="Nguyễn Văn A" 
+              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-slate-700 mb-1">Số điện thoại *</label>
+              <input type="tel" id="phone" required placeholder="0901234567" 
+                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-700 mb-1">Ngày sinh</label>
+              <input type="date" id="dob" 
+                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1">Tiền sử toàn thân & Cảnh báo</label>
+            <textarea id="medicalHistory" rows="3" placeholder="Ví dụ: Tim mạch, tiểu đường, dị ứng Penicillin..." 
+              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm"></textarea>
+          </div>
+
+          <button type="submit" id="btnSubmit"
+            class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors text-sm shadow">
+            Lưu Hồ Sơ Bệnh Nhân
+          </button>
+        </form>
+      </section>
+
+      <!-- Cột Phải: Danh sách bệnh nhân & Tìm kiếm -->
+      <section class="lg:col-span-2 space-y-4">
+        
+        <!-- Thanh tìm kiếm nhanh -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+          <input type="text" id="searchInput" placeholder="Tìm theo tên hoặc số điện thoại..." 
+            class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm" />
+          <button id="btnSearch" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-slate-900 transition-colors">
+            Tìm kiếm
+          </button>
+        </div>
+
+        <!-- Bảng danh sách -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-slate-900">Danh Sách Hồ Sơ</h2>
+            <button onclick="fetchPatients()" class="text-xs text-teal-600 hover:underline">Làm mới dữ liệu</button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-medium">
+                <tr>
+                  <th class="py-3 px-4">Bệnh nhân</th>
+                  <th class="py-3 px-4">Số điện thoại</th>
+                  <th class="py-3 px-4">Tiền sử cảnh báo</th>
+                  <th class="py-3 px-4">Ngày tạo</th>
+                </tr>
+              </thead>
+              <tbody id="patientTableBody" class="divide-y divide-slate-100">
+                <tr>
+                  <td colspan="4" class="text-center py-8 text-slate-400">Đang tải dữ liệu...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    // 1. CẤU HÌNH KẾT NỐI SUPABASE
+    const SUPABASE_URL = "https://eqifvioqxgvnwhmxqtnx.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxaWZ2aW9xeGd2bndobXhxdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5MTA5NjksImV4cCI6MjEwNjQ4Njk2OX0.24tg4fbKNxeJ1kYSa1R8YcL27hKK0ga-dyEnP759aV8";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // 2. HÀM TẢI DANH SÁCH BỆNH NHÂN
+    async function fetchPatients(keyword = "") {
+      const tbody = document.getElementById("patientTableBody");
+      
+      let query = supabaseClient
+        .from('patients')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (keyword.trim()) {
+        query = query.or(`full_name.ilike.%${keyword}%,phone.ilike.%${keyword}%`);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-rose-500">Lỗi: ${error.message}</td></tr>`;
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-8 text-slate-400">Chưa có dữ liệu bệnh nhân nào.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = data.map(pt => `
+        <tr class="hover:bg-slate-50 transition-colors">
+          <td class="py-3 px-4 font-medium text-slate-900">
+            ${pt.full_name}
+            ${pt.dob ? `<div class="text-xs text-slate-400 font-normal">NS: ${pt.dob}</div>` : ''}
+          </td>
+          <td class="py-3 px-4 text-slate-600">${pt.phone}</td>
+          <td class="py-3 px-4">
+            ${pt.medical_history 
+              ? `<span class="inline-block bg-amber-50 text-amber-700 px-2 py-0.5 rounded text-xs border border-amber-200">${pt.medical_history}</span>` 
+              : '<span class="text-slate-400 text-xs">Không</span>'}
+          </td>
+          <td class="py-3 px-4 text-slate-400 text-xs">
+            ${new Date(pt.created_at).toLocaleDateString('vi-VN')}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // 3. XỬ LÝ LƯU BỆNH NHÂN
+    document.getElementById("patientForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("btnSubmit");
+      btn.disabled = true;
+      btn.innerText = "Đang lưu...";
+
+      const newPatient = {
+        full_name: document.getElementById("fullName").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        dob: document.getElementById("dob").value || null,
+        medical_history: document.getElementById("medicalHistory").value.trim() || null
+      };
+
+      const { error } = await supabaseClient.from('patients').insert([newPatient]);
+
+      if (error) {
+        alert("Lỗi khi thêm bệnh nhân: " + error.message);
+      } else {
+        document.getElementById("patientForm").reset();
+        fetchPatients();
+      }
+
+      btn.disabled = false;
+      btn.innerText = "Lưu Hồ Sơ Bệnh Nhân";
+    });
+
+    // 4. XỬ LÝ TÌM KIẾM
+    document.getElementById("btnSearch").addEventListener("click", () => {
+      const val = document.getElementById("searchInput").value;
+      fetchPatients(val);
+    });
+    
+    document.getElementById("searchInput").addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        fetchPatients(e.target.value);
+      }
+    });
+
+    // Tự động tải dữ liệu ban đầu khi mở trang
+    fetchPatients();
+  </script>
+</body>
+</html>

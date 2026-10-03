@@ -1,3 +1,6 @@
+# Mã Nguồn Full 100% index.html - Nha Khoa Lê Anh (Bản Chuẩn Nguyên Khối Pure HTML)
+
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -36,7 +39,7 @@
       body.print-mode-installment #installmentContractPrintPage { display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px 30px; background: white !important; font-family: "Times New Roman", Times, serif; font-size: 10.5pt; line-height: 1.35; color: #000 !important; }
 
       body.print-mode-quote #quotePrintPage, body.print-mode-quote #quotePrintPage * { visibility: visible !important; }
-      body.print-mode-quote #quotePrintPage { display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 25px 35px; background: white !important; font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.4; color: #000 !important; }
+      body.print-mode-quote #quotePrintPage { display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 25px 35px; background: white !important; font-family: "Times New Roman", Times, serif; font-size: 11pt; line-height: 1.4; color: #000 !important; }
       
       body.print-mode-consent #consentPrintPage, body.print-mode-consent #consentPrintPage * { visibility: visible !important; }
       body.print-mode-consent #consentPrintPage { display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px 30px; background: white !important; font-family: "Times New Roman", Times, serif; font-size: 11pt; line-height: 1.35; color: #000 !important; }
@@ -53,7 +56,7 @@
     <!-- HEADER & NAVIGATION -->
     <header class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div class="flex items-center gap-3">
-        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Nha Khoa Lê Anh Logo" class="h-14 w-auto object-contain" />
+        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Nha Khoa Lê Anh Logo" class="h-12 w-auto object-contain" />
         <div>
           <h1 class="text-2xl font-bold text-teal-800">Nha Khoa Lê Anh</h1>
           <p class="text-xs md:text-sm text-slate-500 mt-0.5">Phòng Khám Chuyên Khoa Răng Hàm Mặt • Lâm Sàng & Quản Trị Vận Hành</p>
@@ -71,7 +74,7 @@
         <button type="button" onclick="switchTab('schedule')" id="tabBtnSchedule" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">📅 Lịch Hẹn & Trực</button>
         <button type="button" onclick="switchTab('crm')" id="tabBtnCrm" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">🤝 CSKH</button>
         <button type="button" onclick="switchTab('analytics')" id="tabBtnAnalytics" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">📈 Báo Cáo</button>
-        <button type="button" onclick="switchTab('finance')" id="tabBtnFinance" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">📊 Kế Toán & Chi Phí</button>
+        <button type="button" onclick="switchTab('finance')" id="tabBtnFinance" class="px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all">📊 Kế Toán</button>
       </div>
     </header>
 
@@ -87,11 +90,11 @@
             <option value="">🖨️ In Văn Bản / Hợp Đồng...</option>
             <option value="quote">1. Bảng Báo Giá & Kế Hoạch Điều Trị</option>
             <option value="consent">2. Giấy Cam Kết Phẫu Thuật (MS: 01/BV2)</option>
-            <option value="prescription">3. In Đơn Thuốc Đang Kê (Có Logo)</option>
-            <option value="record">4. Bệnh Án Ngoại Trú RHM (MS: 16/BV-01 BYT)</option>
-            <option value="tracking">5. Phiếu Theo Dõi Điều Trị (MS: 36/BV2)</option>
+            <option value="prescription">3. Đơn Thuốc Bệnh Nhân (Có Logo)</option>
+            <option value="record">4. Bệnh Án Ngoại Trú RHM (Mẫu BYT MS: 16/BV-01)</option>
+            <option value="tracking">5. Phiếu Theo Dõi Điều Trị (Mẫu MS: 36/BV2)</option>
             <option value="consultation">6. Phiếu Tư Vấn Bệnh Án Ngoại Trú RHM</option>
-            <option value="installment">7. Hợp Đồng Trả Góp Viện Phí</option>
+            <option value="installment">7. Hợp Đồng Trả Góp Viện Phí (.../HĐTG-NK)</option>
             <option value="ortho">8. Hợp Đồng Chỉnh Nha</option>
           </select>
         </div>
@@ -140,17 +143,18 @@
                   <select id="patientTarget" class="w-full px-3 py-2 border rounded-lg text-sm bg-white font-medium">
                     <option value="Thu Phí">Thu Phí</option>
                     <option value="BHYT">BHYT</option>
-                    <option value="Miễn phí">Miễn phí</option>
+                    <option value="Miễn">Miễn</option>
+                    <option value="Khác">Khác</option>
                   </select>
                 </div>
                 <div>
                   <label class="block text-xs text-slate-600 mb-1">Số thẻ BHYT (nếu có)</label>
-                  <input type="text" id="bhytNumber" placeholder="DN401..." class="w-full px-3 py-2 border rounded-lg text-sm" />
+                  <input type="text" id="bhytCardNo" placeholder="DN401..." class="w-full px-3 py-2 border rounded-lg text-sm outline-none" />
                 </div>
               </div>
               <div>
-                <label class="block text-xs text-slate-600 mb-1">Người nhà báo tin (Họ tên - SĐT)</label>
-                <input type="text" id="contactPerson" placeholder="Ví dụ: Mẹ - Nguyễn Thị B (0908...)" class="w-full px-3 py-2 border rounded-lg text-sm" />
+                <label class="block text-xs text-slate-600 mb-1">Thân nhân báo tin khi cần (Họ tên - SĐT)</label>
+                <input type="text" id="relativeContact" placeholder="Ví dụ: Anh Nguyễn Văn B - 0988123456" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" />
               </div>
               <div>
                 <label class="block text-xs text-slate-600 mb-1">Tiền sử toàn thân & Cảnh báo</label>
@@ -178,23 +182,23 @@
         <!-- Cột Phải: Khám bệnh, sơ đồ răng, đơn thuốc, thu tiền -->
         <div class="lg:col-span-8 space-y-6">
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Thông Tin Khám Ngoại Trú (Chuẩn BYT MS: 16/BV-01)</h2>
+            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Thông Tin Khám Ngoại Trú (Chuẩn BYT)</h2>
             <div id="activePatientNotesBanner" class="hidden bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-xl text-xs text-amber-900 shadow-xs">
               <span class="font-bold block mb-0.5">⚠️ Lưu ý đặc biệt từ CSKH / Lễ tân:</span>
               <p id="bannerNotesText" class="font-semibold italic"></p>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
               <div><label class="block text-slate-600 mb-1">Mạch (lần/p)</label><input type="text" id="vitalPulse" value="80" class="w-full p-1.5 border rounded bg-white text-center font-bold" /></div>
               <div><label class="block text-slate-600 mb-1">Huyết áp (mmHg)</label><input type="text" id="vitalBP" value="120/80" class="w-full p-1.5 border rounded bg-white text-center font-bold" /></div>
               <div><label class="block text-slate-600 mb-1">Nhiệt độ (°C)</label><input type="text" id="vitalTemp" value="36.8" class="w-full p-1.5 border rounded bg-white text-center font-bold" /></div>
               <div><label class="block text-slate-600 mb-1">Nhịp thở (lần/p)</label><input type="text" id="vitalResp" value="18" class="w-full p-1.5 border rounded bg-white text-center font-bold" /></div>
-              <div><label class="block text-slate-600 mb-1">Cân nặng (kg)</label><input type="text" id="vitalWeight" placeholder="55" class="w-full p-1.5 border rounded bg-white text-center font-bold" /></div>
+              <div><label class="block text-slate-600 mb-1">Cân nặng (kg)</label><input type="text" id="vitalWeight" value="55" class="w-full p-1.5 border rounded bg-white text-center font-bold" /></div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div><label class="block font-semibold text-slate-700 mb-1">Lý do vào khám</label><input type="text" id="examReason" placeholder="Đau nhức răng, nhổ răng khôn, bọc sứ..." class="w-full p-2 border rounded-lg outline-none" /></div>
-              <div><label class="block font-semibold text-slate-700 mb-1">Chẩn đoán xác định</label><input type="text" id="examDiagnosis" placeholder="K08.1 Mất răng / K02 Sâu răng / K04 Viêm tủy..." class="w-full p-2 border rounded-lg outline-none font-bold text-teal-900" /></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Lý do vào khám</label><input type="text" id="examReason" placeholder="Đau nhức răng, phục hình sứ..." class="w-full p-2 border rounded-lg outline-none" /></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Chẩn đoán xác định</label><input type="text" id="examDiagnosis" placeholder="K08.1 Mất răng / K02 Sâu răng..." class="w-full p-2 border rounded-lg outline-none font-bold text-teal-900" /></div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -220,7 +224,7 @@
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-100 mb-4 gap-2">
               <div>
                 <h2 class="text-base font-bold text-slate-900">Sơ Đồ Răng FDI (32 Răng)</h2>
-                <p class="text-xs text-slate-400">Nhấp vào từng răng để cập nhật Chẩn đoán & Tình trạng thực tế</p>
+                <p class="text-xs text-slate-400">Nhấp vào từng răng để cập nhật riêng phần Chẩn đoán & Tình trạng thực tế</p>
               </div>
               <div class="flex flex-wrap gap-2 text-[11px]">
                 <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span> Sâu/Tủy</span>
@@ -248,23 +252,24 @@
             </div>
           </div>
 
-          <!-- BẢNG KẾ HOẠCH THEO RĂNG (ĐÃ TÁCH CHẨN ĐOÁN & TÌNH TRẠNG) -->
+          <!-- BẢNG KẾ HOẠCH THEO RĂNG -->
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-            <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Chi Tiết Theo Răng (Đã Tách Chẩn Đoán & Tình Trạng)</h2>
+            <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Chi Tiết Kế Hoạch Theo Răng</h2>
             <div class="overflow-x-auto">
               <table class="w-full text-left text-xs sm:text-sm">
                 <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
                   <tr>
                     <th class="py-2.5 px-3">Răng</th>
-                    <th class="py-2.5 px-3">Chẩn đoán Bác sĩ</th>
-                    <th class="py-2.5 px-3">Tình trạng thực tế (Mô tả)</th>
-                    <th class="py-2.5 px-3">Kế hoạch điều trị</th>
+                    <th class="py-2.5 px-3">Chẩn đoán</th>
+                    <th class="py-2.5 px-3">Tình trạng thực tế</th>
+                    <th class="py-2.5 px-3">Kế hoạch</th>
+                    <th class="py-2.5 px-3">Đơn giá dự kiến</th>
                     <th class="py-2.5 px-3">Trạng thái</th>
                     <th class="py-2.5 px-3 text-right">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="treatmentPlanBody" class="divide-y divide-slate-100">
-                  <tr><td colspan="6" class="text-center py-4 text-slate-400 text-xs">Chưa chọn bệnh nhân.</td></tr>
+                  <tr><td colspan="7" class="text-center py-4 text-slate-400 text-xs">Chưa chọn bệnh nhân.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -279,10 +284,14 @@
                   <label class="block font-semibold text-slate-700 mb-1">⚡ Đơn Thuốc Mẫu:</label>
                   <select id="rxTemplateSelect" onchange="applyRxTemplate()" class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800 outline-none">
                     <option value="">-- Chọn đơn thuốc mẫu --</option>
-                    <option value="post_surgery">1. Sau Tiểu Phẫu (Augmentin 1g, Medrol 16, Efferalgan Codein, Nexium 40)</option>
-                    <option value="occlusal_trauma">2. Chấn thương khớp cắn (Medrol 16, Ibuprofen 400, Nexium 40)</option>
-                    <option value="pulpitis">3. Viêm tủy cấp (Dorogyne + Ibuprofen)</option>
-                    <option value="gingivitis">4. Viêm nướu (Dorogyne, Vitamin C, Nước súc Kin)</option>
+                    <option value="post_surgery">1. Sau Nhổ Răng Khôn / Tiểu Phẫu (Augmentin 1g, Medrol 16, Efferalgan, Nexium 40)</option>
+                    <option value="implant">2. Cấy Ghép Implant (Augmentin 1g, Medrol 16, Efferalgan, Nexium 40)</option>
+                    <option value="extraction">3. Nhổ Răng Thường (Ibuprofen 400mg, Nexium 40mg)</option>
+                    <option value="vis">4. Sau Cắm Vít Chỉnh Nha (Ibuprofen 400mg, Nexium 40mg)</option>
+                    <option value="gingivectomy">5. Sau Cắt Nướu (Ibuprofen 400mg, Nexium 40mg)</option>
+                    <option value="pulpitis">6. Điều Trị Tủy (Ibuprofen 400mg, Prednisone 5mg, Nexium 40mg)</option>
+                    <option value="pulp_capping">7. Che Tủy Trực Tiếp (Ibuprofen 400mg, Nexium 40mg)</option>
+                    <option value="pedo_abscess">8. Áp Xe Do Răng Trẻ Em (Augmentin 500mg, Prednisone 5mg, Hapacol 250mg)</option>
                   </select>
                 </div>
                 <div>
@@ -300,11 +309,13 @@
               <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-1.5">
                 <span class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider">Thêm nhanh từng thuốc vào toa:</span>
                 <div class="flex flex-wrap gap-1.5">
-                  <button type="button" onclick="appendDrug('Augmentin 500mg (gói)', '12 gói', 'Uống 1 gói x 2 lần/ngày sau ăn')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Augmentin 500mg</button>
-                  <button type="button" onclick="appendDrug('Hapacol 250mg (gói)', '10 gói', 'Uống 1 gói khi đau/sốt')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Hapacol 250mg</button>
-                  <button type="button" onclick="appendDrug('Prednisone 5mg', '10 viên', 'Uống 2 viên sáng sau ăn no')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Prednisone 5mg</button>
-                  <button type="button" onclick="appendDrug('Ultracet', '10 viên', 'Uống 1 viên khi đau nhiều')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Ultracet</button>
-                  <button type="button" onclick="appendDrug('Vitamin 3B', '20 viên', 'Uống 1 viên x 2 lần/ngày')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Vitamin 3B</button>
+                  <button type="button" onclick="appendDrug('Augmentin 1g', '14 viên', 'Uống 1v x 2 lần/ngày (Sáng - tối sau ăn)')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Augmentin 1g</button>
+                  <button type="button" onclick="appendDrug('Augmentin 500mg (gói)', '12 gói', 'Uống 1/2 gói x 2 lần/ngày sau ăn')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Augmentin 500mg gói</button>
+                  <button type="button" onclick="appendDrug('Medrol 16mg', '04 viên', 'Uống 1v x 1 lần/ngày (Sáng sau ăn)')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Medrol 16mg</button>
+                  <button type="button" onclick="appendDrug('Ibuprofen 400mg', '12 viên', 'Uống 1v x 3 lần/ngày (Sáng - Trưa - Tối)')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Ibuprofen 400mg</button>
+                  <button type="button" onclick="appendDrug('Efferalgan 500mg', '09 viên', 'Uống 1v x 3 lần/ngày (Sáng - Trưa - Tối)')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Efferalgan 500mg</button>
+                  <button type="button" onclick="appendDrug('Nexium 40mg', '05 viên', 'Uống 1v x 1 lần/ngày (Sáng sau ăn)')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Nexium 40mg</button>
+                  <button type="button" onclick="appendDrug('Prednisone 5mg', '10 viên', 'Uống 3v x 1 lần/ngày (Sáng sau ăn)')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Prednisone 5mg</button>
                   <button type="button" onclick="appendDrug('Nước súc miệng Kin 0.12%', '1 chai', 'Súc 15ml x 2 lần/ngày')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Kin 0.12%</button>
                 </div>
               </div>
@@ -315,7 +326,7 @@
               </div>
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Lời dặn của Bác sĩ</label>
-                <input type="text" id="rxAdvice" placeholder="Dặn dò dùng thuốc..." class="w-full p-2 border rounded-lg bg-white text-xs outline-none" />
+                <input type="text" id="rxAdvice" value="Chườm lạnh 5 phút/1 lần trong 24-48 giờ đầu. Uống thuốc theo toa, sau khi ăn no. Khi hết đau có thể ngừng uống thuốc giảm đau." class="w-full p-2 border rounded-lg bg-white text-xs outline-none" />
               </div>
               <div class="flex justify-end pt-1">
                 <button type="submit" id="btnSaveRx" class="bg-slate-800 hover:bg-slate-900 text-white font-medium px-5 py-2 rounded-lg text-xs transition-colors shadow">+ Lưu Vào Hồ Sơ Đơn Thuốc</button>
@@ -384,7 +395,7 @@
 
               <div>
                 <label class="block font-medium text-slate-700 mb-1">Ghi chú trả góp</label>
-                <input type="text" id="payInstallmentNote" placeholder="Ví dụ: Đợt 1/12, Hẹn tái khám đóng đợt 2..." class="w-full p-2 border rounded-lg bg-white" />
+                <input type="text" id="payInstallmentNote" placeholder="Ví dụ: Đợt 1/6, Hẹn tái khám đóng đợt 2..." class="w-full p-2 border rounded-lg bg-white" />
               </div>
 
               <div class="text-right pt-2">
@@ -438,7 +449,7 @@
           <form id="laboOrderForm" class="space-y-3 text-xs">
             <div>
               <label class="block font-semibold text-slate-700 mb-1">Bệnh nhân *</label>
-              <input type="text" id="laboPatientName" required placeholder="Họ tên bệnh nhân..." class="w-full p-2 border rounded-lg bg-white outline-none focus:ring-2 focus:ring-teal-500 font-medium" />
+              <input type="text" id="laboPatientName" required placeholder="Họ tên bệnh nhân..." class="w-full p-2 border rounded-lg bg-white outline-none font-medium" />
               <input type="hidden" id="laboPatientId" />
             </div>
             <div class="grid grid-cols-2 gap-2">
@@ -528,21 +539,28 @@
       </div>
     </main>
 
-    <!-- TAB 3: BẢNG GIÁ -->
+    <!-- TAB 3: BẢNG GIÁ DỊCH VỤ -->
     <main id="pricingTab" class="hidden space-y-6">
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Bảng Giá Dịch Vụ Niêm Yết</h2>
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3">
+          <div>
+            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Bảng Giá Dịch Vụ Niêm Yết (Chuẩn Nha Khoa Lê Anh)</h2>
+            <p class="text-xs text-slate-400">Đã cập nhật theo BẢNG GIÁ NHA KHOA.docx chính thức</p>
+          </div>
+          <input type="text" id="pricingSearchInput" onkeyup="filterPricingTable()" placeholder="Tìm tên dịch vụ..." class="px-3 py-1.5 border rounded-lg text-xs outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm">
             <thead class="bg-slate-50 text-slate-500 uppercase text-[10px]">
               <tr>
+                <th class="py-2.5 px-3">Phân nhóm / Danh mục</th>
                 <th class="py-2.5 px-3">Tên dịch vụ</th>
-                <th class="py-2.5 px-3">Phân nhóm</th>
-                <th class="py-2.5 px-3 text-right">Đơn giá niêm yết</th>
+                <th class="py-2.5 px-3 text-center">ĐVT</th>
+                <th class="py-2.5 px-3 text-right">Đơn giá niêm yết (VNĐ)</th>
               </tr>
             </thead>
             <tbody id="serviceCatalogBody" class="divide-y divide-slate-100">
-              <tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">Đang tải bảng giá...</td></tr>
+              <tr><td colspan="4" class="text-center py-6 text-slate-400 text-xs">Đang tải bảng giá...</td></tr>
             </tbody>
           </table>
         </div>
@@ -788,7 +806,7 @@
       </div>
     </main>
 
-    <!-- TAB 8: KẾ TOÁN & QUẢN LÝ PHIẾU CHI -->
+    <!-- TAB 8: KẾ TOÁN & PHIẾU CHI -->
     <main id="financeTab" class="hidden space-y-6">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl shadow-xs">
@@ -873,17 +891,17 @@
 
   </div>
 
-  <!-- MODAL CẬP NHẬT RĂNG (ĐÃ TÁCH TÌNH TRẠNG VÀ CHẨN ĐOÁN) -->
+  <!-- MODAL CẬP NHẬT RĂNG (ĐÃ TÁCH CHẨN ĐOÁN & TÌNH TRẠNG THỰC TẾ) -->
   <div id="toothModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
       <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-slate-800 text-base">Cập nhật Răng <span id="modalToothNumber" class="text-teal-700">--</span></h3>
+        <h3 class="font-bold text-slate-800 text-base">Cập nhật Răng <span id="modalToothNumber" class="text-teal-700 font-extrabold">--</span></h3>
         <button onclick="closeToothModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">&times;</button>
       </div>
       <div class="space-y-3 text-xs">
         <div>
           <label class="block font-semibold text-slate-700 mb-1">1. Chẩn đoán lâm sàng *</label>
-          <select id="modalDiagnosisSelect" class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800">
+          <select id="modalDiagnosisSelect" class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800 outline-none">
             <option value="Bình thường / Khỏe mạnh">1. Bình thường / Khỏe mạnh</option>
             <option value="Sâu răng (K02)">2. Sâu răng (K02)</option>
             <option value="Viêm tủy / Tủy hoại tử (K04)">3. Viêm tủy / Tủy hoại tử (K04)</option>
@@ -891,24 +909,27 @@
             <option value="Viêm nha chu / Tụt nướu (K05.3)">5. Viêm nha chu / Tụt nướu (K05.3)</option>
             <option value="Còn chân răng / Sót chân răng (K08.1)">6. Còn chân răng / Sót chân răng (K08.1)</option>
             <option value="Mất răng toàn bộ / Bán phần">7. Mất răng toàn bộ / Bán phần</option>
-            <option value="Có miếng trám Composite">8. Có miếng trám Composite (Cần trám lại/Theo dõi)</option>
-            <option value="Có miếng trám GIC">9. Có miếng trám GIC (Cần trám lại/Theo dõi)</option>
+            <option value="Có miếng trám Composite (Cần trám lại/Theo dõi)">8. Có miếng trám Composite (Cần trám lại/Theo dõi)</option>
+            <option value="Có miếng trám GIC (Cần trám lại/Theo dõi)">9. Có miếng trám GIC (Cần trám lại/Theo dõi)</option>
             <option value="Bọc mão sứ / Cầu răng sứ">10. Bọc mão sứ / Cầu răng sứ</option>
             <option value="Trồng Implant">11. Trồng Implant</option>
-            <option value="Răng mọc lệch / Mọc ngầm / Răng 8">12. Răng mọc lệch / Mọc ngầm / Răng 8</option>
-            <option value="Chẩn đoán khác">13. Chẩn đoán khác...</option>
+            <option value="Răng mọc lệch / Mọc ngầm / Răng 8 khôn">12. Răng mọc lệch / Mọc ngầm / Răng 8 khôn</option>
           </select>
         </div>
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">2. Tình trạng thực tế (Bác sĩ tự điền mô tả)</label>
-          <input type="text" id="modalConditionNote" placeholder="Ví dụ: Lỗ sâu lớn D2 đau ngọt, hở bờ miếng trám..." class="w-full p-2 border rounded-lg outline-none font-medium" />
+          <label class="block font-semibold text-slate-700 mb-1">2. Tình trạng thực tế (Bác sĩ tự mô tả)</label>
+          <input type="text" id="modalConditionNote" placeholder="Ví dụ: Lỗ sâu lớn mặt xa, đọng thức ăn, trám cũ hở bờ..." class="w-full p-2 border rounded-lg bg-white font-medium outline-none" />
         </div>
         <div>
           <label class="block font-semibold text-slate-700 mb-1">3. Kế hoạch điều trị dự kiến</label>
-          <input type="text" id="modalPlan" placeholder="Ví dụ: Chữa tủy, Trám Composite, Nhổ chân răng, Cấy Implant..." class="w-full p-2 border rounded-lg outline-none" />
+          <input type="text" id="modalPlan" placeholder="Ví dụ: Chữa tủy, Trám composite, Cấy Implant Osstem..." class="w-full p-2 border rounded-lg bg-white outline-none font-medium" />
         </div>
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">4. Trạng thái thực hiện</label>
+          <label class="block font-semibold text-slate-700 mb-1">4. Đơn giá dự kiến (VNĐ)</label>
+          <input type="number" id="modalEstimatedPrice" min="0" step="50000" placeholder="Nhập đơn giá cho răng này..." class="w-full p-2 border rounded-lg bg-white outline-none font-bold text-teal-800" />
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">5. Trạng thái thực hiện</label>
           <select id="modalStatus" class="w-full p-2 border rounded-lg bg-white font-semibold">
             <option value="Chưa làm">Chưa làm</option>
             <option value="Đang điều trị">Đang điều trị</option>
@@ -923,215 +944,263 @@
     </div>
   </div>
 
-  <!-- PHÔI IN VĂN BẢN (CÓ LOGO TẢI TỪ DRIVER) -->
+  <!-- PHÔI IN VĂN BẢN (ẨN KHI KHÔNG IN) -->
+
+  <!-- 1. BẢNG BÁO GIÁ & KẾ HOẠCH ĐIỀU TRỊ (ĐÃ THIẾT KẾ LẠI ĐẸP & CÓ CỘT BÁO GIÁ) -->
   <div id="quotePrintPage" class="print-document">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #0f766e; padding-bottom:8px;">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:55px; width:auto;" />
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #0f766e; padding-bottom:10px; margin-bottom:12px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Nha Khoa Lê Anh Logo" style="height:60px; width:auto; object-fit:contain;" />
         <div>
-          <div style="font-weight:bold; font-size:14pt; color:#0f766e;">NHA KHOA LÊ ANH</div>
-          <div style="font-size:9pt;">42A Đường số 11, P. Tân Thuận, TP.HCM • ĐT: 034.447.1414</div>
+          <div style="font-weight:bold; font-size:14pt; color:#0f766e; text-transform:uppercase;">NHA KHOA LÊ ANH</div>
+          <div style="font-size:9.5pt;">42A Đường số 11, Phường Tân Thuận, TP.HCM</div>
+          <div style="font-size:9.5pt;">Điện thoại: 034.447.1414 • Hotline CSKH</div>
         </div>
       </div>
-      <div style="text-align:right;"><div id="qPrintDate">--/--/----</div></div>
+      <div style="text-align:right; font-size:9.5pt;">
+        <div style="font-weight:bold;">MẪU BÁO GIÁ & KẾ HOẠCH</div>
+        <div id="qPrintDate">Ngày: --/--/----</div>
+      </div>
     </div>
-    <div style="text-align:center; margin:15px 0;"><div style="font-size:16pt; font-weight:bold; color:#0f766e;">BẢNG BÁO GIÁ & KẾ HOẠCH ĐIỀU TRỊ</div></div>
-    <div style="margin-bottom:15px;"><div>Bệnh nhân: <strong id="qFullName">--</strong></div><div>Chẩn đoán chung: <span id="qDiagnosis">--</span></div></div>
-    <table style="width:100%; border:1px solid #000; border-collapse:collapse;">
+
+    <div style="text-align:center; margin:12px 0 10px 0;">
+      <div style="font-size:15pt; font-weight:bold; color:#0f766e; text-transform:uppercase;">BẢNG BÁO GIÁ & KẾ HOẠCH ĐIỀU TRỊ</div>
+      <div style="font-size:9.5pt; font-style:italic; color:#555;">(Căn cứ theo kết quả khám lâm sàng & phim X-quang)</div>
+    </div>
+
+    <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:8px 12px; margin-bottom:12px; border-radius:6px; font-size:10pt; line-height:1.45;">
+      <div style="display:flex; justify-content:space-between;">
+        <div>Họ và tên bệnh nhân: <strong id="qFullName" style="text-transform:uppercase; font-size:11pt;">--</strong></div>
+        <div>SĐT: <strong id="qPhone">--</strong></div>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-top:3px;">
+        <div>Địa chỉ: <span id="qAddress">--</span></div>
+        <div>Bác sĩ tư vấn: <strong id="qDoctor">BS. Nguyễn Thị Kim Oanh</strong></div>
+      </div>
+      <div style="margin-top:3px;">Chẩn đoán chung: <strong id="qDiagnosis" style="color:#0f766e;">--</strong></div>
+    </div>
+
+    <table style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:9.5pt; margin-bottom:12px;">
       <thead>
-        <tr style="background:#f1f5f9;">
-          <th style="border:1px solid #000; padding:6px;">Răng</th>
-          <th style="border:1px solid #000; padding:6px;">Chẩn đoán</th>
-          <th style="border:1px solid #000; padding:6px;">Tình trạng thực tế</th>
-          <th style="border:1px solid #000; padding:6px;">Kế hoạch</th>
-          <th style="border:1px solid #000; padding:6px;">Tiến độ</th>
+        <tr style="background:#0f766e; color:white; text-align:center;">
+          <th style="border:1px solid #000; padding:6px; width:6%;">STT</th>
+          <th style="border:1px solid #000; padding:6px; width:10%;">Vị trí</th>
+          <th style="border:1px solid #000; padding:6px; width:22%;">Chẩn đoán & Tình trạng</th>
+          <th style="border:1px solid #000; padding:6px; width:28%;">Kế hoạch điều trị</th>
+          <th style="border:1px solid #000; padding:6px; width:8%;">SL</th>
+          <th style="border:1px solid #000; padding:6px; width:13%;">Đơn giá (VNĐ)</th>
+          <th style="border:1px solid #000; padding:6px; width:13%;">Thành tiền (VNĐ)</th>
         </tr>
       </thead>
-      <tbody id="qTeethTableBody"><tr><td colspan="5" style="border:1px solid #000; padding:8px; text-align:center;">Chưa có dữ liệu.</td></tr></tbody>
+      <tbody id="qTeethTableBody">
+        <tr><td colspan="7" style="border:1px solid #000; padding:10px; text-align:center; color:#666;">Chưa có dữ liệu răng.</td></tr>
+      </tbody>
+      <tfoot>
+        <tr style="background:#f1f5f9; font-weight:bold;">
+          <td colspan="6" style="border:1px solid #000; padding:6px; text-align:right; text-transform:uppercase;">TỔNG CỘNG DỰ TOÁN CHI PHÍ:</td>
+          <td style="border:1px solid #000; padding:6px; text-align:right; color:#0f766e; font-size:10.5pt;" id="qTotalAmount">0 đ</td>
+        </tr>
+      </tfoot>
     </table>
+
+    <div style="font-size:9.5pt; line-height:1.4; margin-bottom:15px; background:#fff; border:1px border-dashed #94a3b8; padding:8px; border-radius:4px;">
+      <div style="font-weight:bold; color:#0f766e;">📌 Ghi chú & Điều khoản thanh toán:</div>
+      <div>• Báo giá trên đã bao gồm chi phí thăm khám, phim chụp kiểm tra và bảo hành theo chính sách Nha Khoa Lê Anh.</div>
+      <div>• Hỗ trợ thanh toán **Trả góp 0% lãi suất** linh hoạt theo từng đợt tái khám.</div>
+    </div>
+
+    <div style="margin-top:15px; display:flex; justify-content:space-between; text-align:center; font-size:9.5pt;">
+      <div style="width:45%;">
+        <div style="font-weight:bold; text-transform:uppercase;">BỆNH NHÂN / THÂN NHÂN</div>
+        <div style="font-style:italic; font-size:8.5pt;">(Ký và ghi rõ họ tên)</div>
+        <div style="height:50px;"></div>
+      </div>
+      <div style="width:45%;">
+        <div>Ngày ..... tháng ..... năm 20....</div>
+        <div style="font-weight:bold; text-transform:uppercase;">BÁC SĨ TƯ VẤN & ĐIỀU TRỊ</div>
+        <div style="font-style:italic; font-size:8.5pt;">(Ký và ghi rõ họ tên)</div>
+        <div style="height:50px;"></div>
+        <div style="font-weight:bold;" id="qDoctorSign">BS. Nguyễn Thị Kim Oanh</div>
+      </div>
+    </div>
   </div>
 
-  <!-- GIẤY CAM KẾT PHẪU THUẬT (MS: 01/BV2 - CHUẨN TỪ GIẤY CAM ĐOAN.DOCX + LOGO) -->
+  <!-- 2. ĐƠN THUỐC CÓ LOGO NHA KHOA LÊ ANH (ĐÃ XÓA QUỐC HIỆU THEO YÊU CẦU CỦA BẠN) -->
+  <div id="prescriptionPrintPage" class="print-document">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #0f766e; padding-bottom:10px; margin-bottom:12px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Nha Khoa Lê Anh" style="height:65px; width:auto; object-fit:contain;" />
+        <div>
+          <div style="font-weight:bold; font-size:15pt; color:#0f766e; text-transform:uppercase;">NHA KHOA LÊ ANH</div>
+          <div style="font-size:9.5pt;">42A Đường số 11, Phường Tân Thuận, TP.HCM</div>
+          <div style="font-size:9.5pt;">Điện thoại: 034.447.1414</div>
+        </div>
+      </div>
+      <div style="text-align:right; font-size:9pt; color:#555;">
+        <div style="font-weight:bold; font-size:10pt; color:#0f766e;">MẪU ĐƠN THUỐC ĐIỀU TRỊ</div>
+        <div>Mã đơn: <span id="rxDocCode">RX-2026</span></div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin:12px 0 10px 0;">
+      <div style="font-size:17pt; font-weight:bold; color:#0f766e; text-transform:uppercase;">ĐƠN THUỐC</div>
+    </div>
+
+    <div style="margin-bottom:12px; font-size:11pt; line-height:1.5;">
+      <div>Họ và tên bệnh nhân: <strong id="printRxPatientName" style="text-transform:uppercase; font-size:12pt;">--</strong> &nbsp;&nbsp;&nbsp;&nbsp; Tuổi: <span id="printRxAge">--</span> &nbsp;&nbsp;&nbsp;&nbsp; Giới tính: <span id="printRxGender">Nam</span></div>
+      <div>Địa chỉ: <span id="printRxAddress">--</span></div>
+      <div>Chẩn đoán: <strong id="printRxDiagnosis" style="color:#0f766e;">--</strong></div>
+    </div>
+
+    <div id="printRxDrugsList" style="min-height:200px; font-size:11pt; line-height:1.6; border-top:1px solid #ccc; border-bottom:1px solid #ccc; padding:10px 0;"></div>
+
+    <div style="margin-top:10px; font-size:10pt; font-style:italic;" id="printRxAdvice">📌 Lời dặn Bác sĩ: Chườm lạnh 5 phút/1 lần trong 24-48 giờ đầu. Uống thuốc theo toa, sau khi ăn no. Khi hết đau có thể ngừng uống thuốc giảm đau.</div>
+
+    <div style="margin-top:20px; display:flex; justify-content:space-between; text-align:center; font-size:10pt;">
+      <div style="width:40%;"></div>
+      <div style="width:50%;">
+        <div>Ngày ..... tháng ..... năm 20....</div>
+        <div style="font-weight:bold; text-transform:uppercase; margin-top:3px;">BÁC SĨ KÊ ĐƠN</div>
+        <div style="font-style:italic; font-size:8.5pt;">(Ký và ghi rõ họ tên)</div>
+        <div style="height:55px;"></div>
+        <div style="font-weight:bold;" id="printRxDoctorName">BS. Nguyễn Thị Kim Oanh</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. GIẤY CAM KẾT PHẪU THUẬT (MS: 01/BV2) -->
   <div id="consentPrintPage" class="print-document">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:12px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:10px;">
       <div style="display:flex; align-items:center; gap:10px;">
-        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:50px; width:auto;" />
-        <div style="font-size:10pt; line-height:1.3;">
+        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Nha Khoa Lê Anh" style="height:50px; width:auto; object-fit:contain;" />
+        <div style="font-size:9.5pt; line-height:1.3;">
           <div style="font-weight:bold; text-transform:uppercase;">NHA KHOA LÊ ANH</div>
           <div>42A Đường 11, Phường Tân Thuận, TP.HCM</div>
           <div>Điện thoại: 034.447.1414</div>
         </div>
       </div>
-      <div style="text-align:right; font-size:10pt; line-height:1.3;">
+      <div style="text-align:right; font-size:9.5pt; line-height:1.3;">
         <div style="font-weight:bold;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
         <div>Độc lập - Tự do - Hạnh phúc</div>
         <div style="font-weight:bold; font-size:9pt; margin-top:2px;">MS: 01/BV2</div>
       </div>
     </div>
 
-    <div style="text-align:center; margin:12px 0 10px 0;">
-      <div style="font-size:13.5pt; font-weight:bold; text-transform:uppercase;">GIẤY CAM KẾT CHẤP THUẬN PHẪU THUẬT, THỦ THUẬT VÀ GÂY MÊ HỒI SỨC</div>
-      <div style="font-size:10pt; margin-top:4px;">
+    <div style="text-align:center; margin:10px 0 8px 0;">
+      <div style="font-size:13pt; font-weight:bold; text-transform:uppercase;">GIẤY CAM KẾT CHẤP THUẬN PHẪU THUẬT, THỦ THUẬT VÀ GÂY MÊ HỒI SỨC</div>
+      <div style="font-size:9.5pt; margin-top:3px;">
         [ &nbsp; ] Cấp cứu &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] Bán cấp &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] Chương trình/Phiên
       </div>
     </div>
 
-    <div style="font-size:10.5pt; line-height:1.45; text-align:justify;">
-      <div style="font-weight:bold; margin-top:8px;">I. BÁC SỸ PHẪU THUẬT / THỦ THUẬT / GÂY MÊ HỒI SỨC:</div>
-      <div style="margin-left:10px;">
+    <div style="font-size:10pt; line-height:1.4; text-align:justify;">
+      <div style="font-weight:bold;">I. BÁC SỸ PHẪU THUẬT / THỦ THUẬT / GÂY MÊ HỒI SỨC:</div>
+      <div style="margin-left:8px;">
         <div>Bác sĩ thực hiện: <strong id="cDoctorName">--</strong> &nbsp;&nbsp;&nbsp;&nbsp; Chức danh: Bác sĩ Răng Hàm Mặt</div>
-        <div>Phân công thực hiện phẫu thuật / thủ thuật cho người bệnh: <strong id="cPatientName">--</strong> &nbsp;&nbsp; SĐT: <strong id="cPhone">--</strong></div>
+        <div>Phân công thực hiện cho người bệnh: <strong id="cPatientName">--</strong> &nbsp;&nbsp; SĐT: <strong id="cPhone">--</strong></div>
         <div>Địa chỉ: <span id="cAddress">--</span></div>
         <div>Chẩn đoán xác định: <strong id="cDiagnosis">--</strong></div>
-        <div style="margin-top:4px;">Chúng tôi đã tư vấn, giải thích đầy đủ, rõ ràng những thông tin liên quan đến cuộc phẫu thuật/thủ thuật cho người bệnh/thân nhân về các vấn đề: Chẩn đoán, Lý do thực hiện, Rủi ro nguy cơ nếu không phẫu thuật, Kết quả dự kiến.</div>
-        <div>• <strong>Phương pháp phẫu thuật/thủ thuật dự kiến:</strong> [ &nbsp; ] Phẫu thuật mở &nbsp;&nbsp; [ &nbsp; ] Nội soi &nbsp;&nbsp; [ &nbsp; ] Thủ thuật chuyên khoa</div>
-        <div>• <strong>Phương pháp gây mê/vô cảm dự kiến:</strong> [ &nbsp; ] Tê tại chỗ &nbsp;&nbsp; [ &nbsp; ] Tiền mê + Tê tại chỗ &nbsp;&nbsp; [ &nbsp; ] Gây mê tĩnh mạch &nbsp;&nbsp; [ &nbsp; ] Khác</div>
-        <div>• <strong>Nguy cơ, tai biến có thể xảy ra:</strong> [ &nbsp; ] Phản ứng thuốc / Sốc &nbsp;&nbsp; [ &nbsp; ] Chảy máu &nbsp;&nbsp; [ &nbsp; ] Nhiễm trùng &nbsp;&nbsp; [ &nbsp; ] Rủi ro khác</div>
-        <div style="margin-top:4px;">Chúng tôi cam kết phục vụ người bệnh bằng lương tâm và trách nhiệm của người thầy thuốc cùng với tất cả kiến thức, sự hiểu biết về chuyên môn và phương tiện hiện có của <strong>Nha Khoa Lê Anh</strong> để nỗ lực đem lại kết quả tốt nhất.</div>
+        <div style="margin-top:3px;">Chúng tôi đã tư vấn, giải thích đầy đủ những thông tin liên quan đến phẫu thuật/thủ thuật: Chẩn đoán, Lý do thực hiện, Nguy cơ tai biến có thể xảy ra.</div>
+        <div>• <strong>Phương pháp gây mê/vô cảm dự kiến:</strong> [ &nbsp; ] Tê tại chỗ &nbsp;&nbsp; [ &nbsp; ] Tiền mê + Tê tại chỗ &nbsp;&nbsp; [ &nbsp; ] Khác</div>
+        <div>• <strong>Nguy cơ tai biến có thể xảy ra:</strong> Phản ứng thuốc tê, chảy máu, nhiễm trùng, sưng đau sau thủ thuật...</div>
       </div>
 
-      <div style="font-weight:bold; margin-top:10px;">II. NGƯỜI BỆNH / THÂN NHÂN:</div>
-      <div style="margin-left:10px;">
+      <div style="font-weight:bold; margin-top:8px;">II. NGƯỜI BỆNH / THÂN NHÂN:</div>
+      <div style="margin-left:8px;">
         <div>Họ và tên người bệnh: <strong id="cPatientName2">--</strong> &nbsp;&nbsp;&nbsp;&nbsp; Năm sinh: <span id="cDob">--</span></div>
-        <div>Họ và tên thân nhân (nếu có): ........................................................... Quan hệ với người bệnh: ..........................</div>
-        <div style="margin-top:4px;">Tôi đã được nghe các Bác sỹ giải thích và trao đổi về tất cả thông tin của cuộc phẫu thuật/thủ thuật, những nguy cơ tai biến thường gặp và dự toán chi phí điều trị. Tôi đã hiểu rõ lý do, tự nguyện đồng ý thực hiện và cam kết chi trả viện phí ngoài phạm vi bảo hiểm theo quy định.</div>
-        <div>Tôi hiểu rằng các Bác sỹ Nha Khoa Lê Anh sẽ làm hết lương tâm, trách nhiệm cùng năng lực chuyên môn hiện có. Tôi xin hoàn toàn chịu trách nhiệm với quyết định tự nguyện này.</div>
-        <div style="margin-top:6px; font-style:italic;">Sau khi nghe Bác sỹ tư vấn, tôi tự nguyện viết giấy cam đoan (Đồng ý hoặc Không đồng ý thực hiện):</div>
-        <div style="margin:4px 0 0 15px;">
+        <div style="margin-top:3px;">Tôi đã nghe Bác sĩ tư vấn giải thích đầy đủ, hiểu rõ nguy cơ và tự nguyện viết giấy cam đoan này:</div>
+        <div style="margin:3px 0 0 10px;">
           1. Đồng ý xin phẫu thuật, thủ thuật, gây mê hồi sức và để giấy này làm bằng chứng.<br/>
           2. Không đồng ý phẫu thuật, thủ thuật, gây mê hồi sức và để giấy này làm bằng chứng.
         </div>
       </div>
     </div>
 
-    <div style="margin-top:20px; display:flex; justify-content:space-between; text-align:center; font-size:10pt;">
+    <div style="margin-top:15px; display:flex; justify-content:space-between; text-align:center; font-size:9.5pt;">
       <div style="width:30%;">
-        <div style="font-weight:bold; text-transform:uppercase;">BÁC SỸ PHẪU THUẬT / THỦ THUẬT</div>
-        <div style="font-style:italic; font-size:9pt;">(Ký và ghi rõ họ tên)</div>
-        <div style="height:60px;"></div>
+        <div style="font-weight:bold; text-transform:uppercase;">BÁC SỸ PHẪU THUẬT</div>
+        <div style="font-style:italic; font-size:8.5pt;">(Ký và ghi rõ họ tên)</div>
+        <div style="height:50px;"></div>
       </div>
       <div style="width:30%;">
-        <div style="font-weight:bold; text-transform:uppercase;">BÁC SỸ GÂY MÊ / CHUYÊN KHOA</div>
-        <div style="font-style:italic; font-size:9pt;">(Ký và ghi rõ họ tên)</div>
-        <div style="height:60px;"></div>
+        <div style="font-weight:bold; text-transform:uppercase;">BÁC SỸ GÂY MÊ</div>
+        <div style="font-style:italic; font-size:8.5pt;">(Ký và ghi rõ họ tên)</div>
+        <div style="height:50px;"></div>
       </div>
       <div style="width:35%;">
-        <div style="font-style:italic;">Ngày ..... tháng ..... năm 20....</div>
-        <div style="font-weight:bold; text-transform:uppercase;">NGƯỜI BỆNH / THÂN NHÂN</div>
-        <div style="font-style:italic; font-size:9pt;">(Ký và ghi rõ họ tên)</div>
-        <div style="height:60px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ĐƠN THUỐC CÓ LOGO CÔNG TY -->
-  <div id="prescriptionPrintPage" class="print-document">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #0f766e; padding-bottom:10px; margin-bottom:15px;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Nha Khoa Lê Anh" style="height:60px; width:auto; object-fit:contain;" />
-        <div>
-          <div style="font-weight:bold; font-size:14pt; color:#0f766e; text-transform:uppercase;">NHA KHOA LÊ ANH</div>
-          <div style="font-size:9.5pt;">Địa chỉ: 42A Đường số 11, P. Tân Thuận, TP.HCM</div>
-          <div style="font-size:9.5pt;">Điện thoại: 034.447.1414</div>
-        </div>
-      </div>
-      <div style="text-align:right; font-size:9.5pt;">
-        <div style="font-weight:bold;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-        <div>Độc lập - Tự do - Hạnh phúc</div>
-      </div>
-    </div>
-
-    <div style="text-align:center; margin:15px 0 10px 0;">
-      <div style="font-size:16pt; font-weight:bold; color:#0f766e; text-transform:uppercase;">ĐƠN THUỐC</div>
-    </div>
-
-    <div style="margin-bottom:15px; font-size:11pt; line-height:1.5;">
-      <div>Họ và tên bệnh nhân: <strong id="printRxPatientName" style="text-transform:uppercase;">--</strong> &nbsp;&nbsp;&nbsp;&nbsp; Tuổi: <span id="printRxAge">--</span></div>
-      <div>Địa chỉ: <span id="printRxAddress">--</span></div>
-      <div>Chẩn đoán: <strong id="printRxDiagnosis">--</strong></div>
-    </div>
-
-    <div id="printRxDrugsList" style="min-height:220px; font-size:11pt; line-height:1.6; border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding:10px 0;"></div>
-
-    <div style="margin-top:10px; font-size:10.5pt; font-style:italic;" id="printRxAdvice">📌 Lời dặn: Uống thuốc theo toa sau ăn no. Chườm lạnh 24h đầu.</div>
-
-    <div style="margin-top:20px; display:flex; justify-content:space-between; text-align:center; font-size:10.5pt;">
-      <div style="width:40%;"></div>
-      <div style="width:50%;">
         <div>Ngày ..... tháng ..... năm 20....</div>
-        <div style="font-weight:bold; text-transform:uppercase; margin-top:3px;">BÁC SĨ KÊ ĐƠN</div>
-        <div style="font-style:italic; font-size:9pt;">(Ký và ghi rõ họ tên)</div>
-        <div style="height:60px;"></div>
-        <div style="font-weight:bold;" id="printRxDoctorName">BS. Nguyễn Thị Kim Oanh</div>
+        <div style="font-weight:bold; text-transform:uppercase;">NGƯỜI BỆNH / THÂN NHÂN</div>
+        <div style="font-style:italic; font-size:8.5pt;">(Ký và ghi rõ họ tên)</div>
+        <div style="height:50px;"></div>
       </div>
     </div>
   </div>
 
-  <!-- BỆNH ÁN NGOẠI TRÚ RHM (MẪU BYT MS: 16/BV-01) -->
+  <!-- 4. BỆNH ÁN NGOẠI TRÚ RHM (MẪU BYT MS: 16/BV-01) -->
   <div id="medicalRecordPrintPage" class="print-document">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #000; padding-bottom:4px; font-size:9.5pt;">
+    <div style="display:flex; justify-content:space-between; border-bottom:1px solid #000; padding-bottom:4px; font-size:9pt;">
       <div style="display:flex; align-items:center; gap:8px;">
-        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:45px; width:auto;" />
+        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:40px; width:auto;" />
         <div>
-          <div>Sở Y Tế TP.HCM • CTY TNHH Nha Khoa Lê Anh</div>
-          <div>42A Đường số 11, P. Tân Thuận, TP.HCM • ĐT: 034.447.1414</div>
+          <div style="font-weight:bold;">Sở Y Tế TP.HCM • CTY TNHH Nha Khoa Lê Anh</div>
+          <div>Địa chỉ: 42A Đường số 11, P. Tân Thuận, TP.HCM • ĐT: 034.447.1414</div>
         </div>
       </div>
       <div style="text-align:right;">
-        <div style="font-weight:bold;">BỆNH ÁN NGOẠI TRÚ RHM</div>
+        <div style="font-weight:bold; font-size:10pt;">BỆNH ÁN NGOẠI TRÚ RHM</div>
         <div>MS: 16/BV-01 | Số ngoại trú: <span id="mrNo">......</span></div>
       </div>
     </div>
 
-    <div style="text-align:center; font-size:13pt; font-weight:bold; margin:8px 0; text-transform:uppercase;">I. HÀNH CHÍNH</div>
-    <div style="font-size:10.5pt; line-height:1.4;">
+    <div style="text-align:center; font-size:12pt; font-weight:bold; margin:6px 0; text-transform:uppercase;">I. HÀNH CHÍNH</div>
+    <div style="font-size:10pt; line-height:1.35;">
       <div>1. Họ và tên: <strong id="mrName" style="text-transform:uppercase;">--</strong> &nbsp;&nbsp;&nbsp;&nbsp; 2. Sinh ngày: <span id="mrDob">--</span> &nbsp;&nbsp;&nbsp;&nbsp; 3. Giới tính: <span id="mrGender">--</span></div>
       <div>4. Nghề nghiệp: <span id="mrJob">--</span> &nbsp;&nbsp;&nbsp;&nbsp; 5. Địa chỉ: <span id="mrAddress">--</span></div>
       <div>6. Đối tượng: <span id="mrTarget">Thu Phí</span> &nbsp;&nbsp;&nbsp;&nbsp; 7. Số thẻ BHYT: <span id="mrBhyt">--</span></div>
       <div>8. Báo tin cho thân nhân: <span id="mrContact">--</span></div>
     </div>
 
-    <div style="font-size:11pt; font-weight:bold; margin-top:8px;">II. LÝ DO VÀO VIỆN: <span style="font-weight:normal;" id="mrReason">--</span></div>
+    <div style="font-size:10.5pt; font-weight:bold; margin-top:6px;">II. LÝ DO VÀO VIỆN: <span style="font-weight:normal;" id="mrReason">--</span></div>
 
-    <div style="font-size:11pt; font-weight:bold; margin-top:6px;">III. HỎI BỆNH & TIỀN SỬ:</div>
-    <div style="font-size:10pt; line-height:1.35; padding-left:10px;">
-      <div>• Quá trình bệnh lý: <span id="mrHistory">--</span></div>
+    <div style="font-size:10.5pt; font-weight:bold; margin-top:6px;">III. HỎI BỆNH & TIỀN SỬ:</div>
+    <div style="font-size:9.5pt; line-height:1.3; padding-left:8px;">
+      <div>• Quá trình bệnh lý: <span id="mrHistory">Khám kiểm tra sức khỏe răng miệng</span></div>
       <div>• Tiền sử bản thân / dị ứng: <span id="mrPersonalHistory">Chưa ghi nhận bất thường</span></div>
     </div>
 
-    <div style="font-size:11pt; font-weight:bold; margin-top:6px;">IV. KHÁM BỆNH & SINH HIỆU:</div>
-    <div style="font-size:10pt; display:flex; gap:15px; background:#f8fafc; padding:4px 8px; border:1px solid #ccc; margin:4px 0;">
+    <div style="font-size:10.5pt; font-weight:bold; margin-top:6px;">IV. KHÁM BỆNH & SINH HIỆU:</div>
+    <div style="font-size:9.5pt; display:flex; gap:12px; background:#f8fafc; padding:4px 8px; border:1px solid #ccc; margin:3px 0;">
       <div>Mạch: <strong id="mrPulse">80</strong> lần/p</div>
       <div>Huyết áp: <strong id="mrBp">120/80</strong> mmHg</div>
       <div>Nhiệt độ: <strong id="mrTemp">36.8</strong> °C</div>
-      <div>Cân nặng: <strong id="mrWeight">--</strong> kg</div>
+      <div>Nhịp thở: <strong id="mrResp">18</strong> lần/p</div>
+      <div>Cân nặng: <strong id="mrWeight">55</strong> kg</div>
     </div>
 
-    <div style="font-size:11pt; font-weight:bold; margin-top:8px;">V. TỔNG KẾT BỆNH ÁN & CHẨN ĐOÁN RA VIỆN:</div>
-    <div style="font-size:10pt; line-height:1.35; padding-left:10px;">
+    <div style="font-size:10.5pt; font-weight:bold; margin-top:6px;">V. TỔNG KẾT BỆNH ÁN & CHẨN ĐOÁN RA VIỆN:</div>
+    <div style="font-size:9.5pt; line-height:1.3; padding-left:8px;">
       <div>1. Chẩn đoán ra viện: <strong id="mrDiagnosisOut">--</strong></div>
-      <div>2. Phương pháp điều trị: <span id="mrTreatmentMethod">--</span></div>
-      <div>3. Tình trạng người bệnh ra viện: <span id="mrStatusOut">Đỡ / Hoàn tất thủ thuật</span></div>
-      <div>4. Hướng điều trị tiếp theo: <span id="mrNextPlan">Tái khám theo hẹn</span></div>
+      <div>2. Phương pháp điều trị: <span id="mrTreatmentMethod">Điều trị nha khoa theo phác đồ</span></div>
+      <div>3. Tình trạng ra viện: Đỡ / Hoàn tất thủ thuật &nbsp;&nbsp;&nbsp;&nbsp; 4. Hướng điều trị tiếp theo: Tái khám theo hẹn</div>
     </div>
 
-    <div style="margin-top:15px; display:flex; justify-content:space-between; text-align:center; font-size:10pt;">
+    <div style="margin-top:12px; display:flex; justify-content:space-between; text-align:center; font-size:9.5pt;">
       <div style="width:45%;">
         <div style="font-weight:bold;">NGƯỜI GIAO HỒ SƠ</div>
-        <div style="height:45px;"></div>
+        <div style="height:40px;"></div>
       </div>
       <div style="width:45%;">
         <div>Ngày ..... tháng ..... năm 20....</div>
         <div style="font-weight:bold;">BÁC SĨ ĐIỀU TRỊ</div>
-        <div style="height:45px;"></div>
+        <div style="height:40px;"></div>
         <div style="font-weight:bold;" id="mrDoctor">BS. Nguyễn Thị Kim Oanh</div>
       </div>
     </div>
   </div>
 
-  <!-- PHIẾU THEO DÕI ĐIỀU TRỊ (MẪU BYT MS: 36/BV2) -->
+  <!-- 5. PHIẾU THEO DÕI ĐIỀU TRỊ (MẪU MS: 36/BV2) -->
   <div id="trackingPrintPage" class="print-document">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #000; padding-bottom:4px; font-size:9.5pt;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #000; padding-bottom:4px; font-size:9pt;">
       <div style="display:flex; align-items:center; gap:8px;">
         <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:40px; width:auto;" />
         <div>
@@ -1140,44 +1209,44 @@
         </div>
       </div>
       <div style="text-align:right;">
-        <div style="font-weight:bold;">PHIẾU THEO DÕI ĐIỀU TRỊ</div>
+        <div style="font-weight:bold; font-size:10pt;">PHIẾU THEO DÕI ĐIỀU TRỊ</div>
         <div>MS: 36/BV2 | Tờ số: ......</div>
       </div>
     </div>
 
-    <div style="margin:10px 0; font-size:10.5pt;">
+    <div style="margin:8px 0; font-size:10pt;">
       Họ tên người bệnh: <strong id="trName" style="text-transform:uppercase;">--</strong> &nbsp;&nbsp;&nbsp;&nbsp; Tuổi: <span id="trAge">--</span> &nbsp;&nbsp;&nbsp;&nbsp; Giới tính: <span id="trGender">--</span><br/>
       Chẩn đoán: <strong id="trDiagnosis">--</strong>
     </div>
 
-    <table style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:10pt;">
+    <table style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:9.5pt;">
       <thead>
         <tr style="background:#f1f5f9; text-align:center;">
-          <th style="border:1px solid #000; padding:6px; width:18%;">Thời gian (Ngày/Giờ)</th>
-          <th style="border:1px solid #000; padding:6px; width:45%;">Diễn biến bệnh (Cấu trúc SOAP)</th>
-          <th style="border:1px solid #000; padding:6px; width:25%;">Chỉ định điều trị</th>
-          <th style="border:1px solid #000; padding:6px; width:12%;">Bác sĩ ký</th>
+          <th style="border:1px solid #000; padding:5px; width:18%;">Thời gian (Ngày/Giờ)</th>
+          <th style="border:1px solid #000; padding:5px; width:45%;">Diễn biến bệnh (Cấu trúc SOAP)</th>
+          <th style="border:1px solid #000; padding:5px; width:25%;">Chỉ định điều trị</th>
+          <th style="border:1px solid #000; padding:5px; width:12%;">Bác sĩ ký</th>
         </tr>
       </thead>
       <tbody id="trTableBody">
         <tr>
-          <td style="border:1px solid #000; padding:8px; text-align:center;" id="trDateCell">--</td>
-          <td style="border:1px solid #000; padding:8px;" id="trSoapCell">Tình trạng răng miệng ổn định, không sưng đau.</td>
-          <td style="border:1px solid #000; padding:8px;" id="trPlanCell">Điều trị theo phác đồ.</td>
-          <td style="border:1px solid #000; padding:8px; text-align:center;" id="trDocSign">BS</td>
+          <td style="border:1px solid #000; padding:6px; text-align:center;" id="trDateCell">--</td>
+          <td style="border:1px solid #000; padding:6px;" id="trSoapCell">Tình trạng răng miệng ổn định, thực hiện đúng phác đồ điều trị.</td>
+          <td style="border:1px solid #000; padding:6px;" id="trPlanCell">Điều trị theo kế hoạch chuyên khoa.</td>
+          <td style="border:1px solid #000; padding:6px; text-align:center;" id="trDocSign">BS</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- PHIẾU TƯ VẤN BỆNH ÁN NGOẠI TRÚ RHM -->
+  <!-- 6. PHIẾU TƯ VẤN BỆNH ÁN NGOẠI TRÚ RHM -->
   <div id="consultationPrintPage" class="print-document">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #000; padding-bottom:6px; font-size:9.5pt;">
       <div style="display:flex; align-items:center; gap:8px;">
         <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:45px; width:auto;" />
         <div>
           <div style="font-weight:bold; text-transform:uppercase;">NHA KHOA LÊ ANH</div>
-          <div>42A Đường số 11, P. Tân Thuận, TP.HCM • ĐT: 034.447.1414</div>
+          <div>42A Đường 11, Phường Tân Thuận, TP.HCM • ĐT: 034.447.1414</div>
         </div>
       </div>
       <div style="text-align:right;">
@@ -1191,76 +1260,117 @@
       <div>Địa chỉ: <span id="csAddress">--</span></div>
     </div>
 
-    <div style="font-size:11pt; font-weight:bold; margin-top:8px;">NỘI DUNG TƯ VẤN - GIẢI THÍCH:</div>
-    <div style="font-size:10.5pt; line-height:1.45; padding-left:10px;">
+    <div style="font-size:10.5pt; font-weight:bold; margin-top:6px;">NỘI DUNG TƯ VẤN - GIẢI THÍCH:</div>
+    <div style="font-size:10pt; line-height:1.45; padding-left:8px;">
       <div>1. <strong>Chẩn đoán:</strong> <span id="csDiagnosis">--</span></div>
-      <div>2. <strong>Phương pháp điều trị dự kiến:</strong> <span id="csPlan">--</span></div>
+      <div>2. <strong>Phương pháp điều trị dự kiến:</strong> <span id="csPlan">Điều trị theo phác đồ Răng Hàm Mặt</span></div>
       <div>3. <strong>Tiên lượng & nguy cơ:</strong> Có thể chảy máu nhẹ, sưng đau sau thủ thuật, phản ứng thuốc tê...</div>
       <div>4. <strong>Ước tính chi phí điều trị:</strong> <span id="csCost">Theo bảng giá niêm yết</span></div>
     </div>
 
-    <div style="margin-top:15px; font-size:10.5pt; line-height:1.4;">
+    <div style="margin-top:12px; font-size:10pt; line-height:1.4;">
       <strong>Ý kiến người bệnh / thân nhân:</strong> Tôi đã nghe Bác sĩ tư vấn giải thích đầy đủ, hiểu rõ bệnh lý, chi phí và tự nguyện đồng ý thực hiện điều trị.
-    </div>
-
-    <div style="margin-top:20px; display:flex; justify-content:space-between; text-align:center; font-size:10pt;">
-      <div style="width:45%;">
-        <div style="font-weight:bold;">BÁC SĨ TƯ VẤN</div>
-        <div style="height:50px;"></div>
-      </div>
-      <div style="width:45%;">
-        <div style="font-weight:bold;">NGƯỜI BỆNH / THÂN NHÂN</div>
-        <div style="height:50px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- HỢP ĐỒNG TRẢ GÓP DỊCH VỤ NHA KHOA -->
-  <div id="installmentContractPrintPage" class="print-document">
-    <div style="text-align:center; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:10px;">
-      <div style="font-weight:bold; font-size:10pt;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-      <div style="font-size:9.5pt;">Độc lập - Tự do - Hạnh phúc</div>
-      <div style="font-weight:bold; font-size:13pt; margin-top:6px; color:#0f766e;">HỢP ĐỒNG TRẢ GÓP DỊCH VỤ NHA KHOA</div>
-      <div style="font-size:9pt; font-style:italic;">(Số: ....../HĐTG-NK)</div>
-    </div>
-
-    <div style="font-size:10pt; line-height:1.4;">
-      <div style="font-weight:bold;">BÊN A (NHA KHOA): CÔNG TY TNHH NHA KHOA LÊ ANH</div>
-      <div>• Địa chỉ: 42A Đường số 11, KP 53, P. Tân Thuận, TP.HCM • MST: 0319083272</div>
-      <div>• Đại diện: <strong>BS. NGUYỄN THỊ KIM OANH</strong> — Chức vụ: Giám đốc</div>
-
-      <div style="font-weight:bold; margin-top:6px;">BÊN B (KHÁCH HÀNG):</div>
-      <div>• Họ và tên: <strong id="insPatientName" style="text-transform:uppercase;">--</strong> &nbsp;&nbsp;&nbsp;&nbsp; SĐT: <strong id="insPhone">--</strong></div>
-      <div>• Địa chỉ: <span id="insAddress">--</span></div>
-
-      <div style="font-weight:bold; margin-top:6px;">ĐIỀU KHOẢN THANH TOÁN TRẢ GÓP:</div>
-      <div>• Nội dung dịch vụ: <strong id="insService">Điều trị Chỉnh nha / Implant</strong></div>
-      <div>• Tổng chi phí trọn gói: <strong id="insTotalCost">0 đ</strong></div>
-      <div>• Tiến độ thanh toán: Trả trước 30%, số tiền còn lại chia nhỏ trả góp định kỳ theo đợt tái khám.</div>
     </div>
 
     <div style="margin-top:15px; display:flex; justify-content:space-between; text-align:center; font-size:9.5pt;">
       <div style="width:45%;">
-        <div style="font-weight:bold;">ĐẠI DIỆN BÊN A (NHA KHOA)</div>
+        <div style="font-weight:bold;">BÁC SĨ TƯ VẤN</div>
         <div style="height:45px;"></div>
+      </div>
+      <div style="width:45%;">
+        <div style="font-weight:bold;">NGƯỜI BỆNH / THÂN NHÂN</div>
+        <div style="height:45px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. HỢP ĐỒNG TRẢ GÓP DỊCH VỤ NHA KHOA -->
+  <div id="installmentContractPrintPage" class="print-document">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:8px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:45px; width:auto;" />
+        <div style="font-size:9pt;">
+          <div style="font-weight:bold;">CÔNG TY TNHH NHA KHOA LÊ ANH</div>
+          <div>MST: 0319083272 • Hotline: 034.447.1414</div>
+        </div>
+      </div>
+      <div style="text-align:right; font-size:9pt;">
+        <div style="font-weight:bold;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+        <div>Độc lập - Tự do - Hạnh phúc</div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin:8px 0;">
+      <div style="font-weight:bold; font-size:13pt; color:#0f766e; text-transform:uppercase;">HỢP ĐỒNG TRẢ GÓP DỊCH VỤ NHA KHOA</div>
+      <div style="font-size:9pt; font-style:italic;">(Số: ....../HĐTG-NK)</div>
+    </div>
+
+    <div style="font-size:9.5pt; line-height:1.4;">
+      <div style="font-weight:bold;">BÊN A (NHA KHOA): CÔNG TY TNHH NHA KHOA LÊ ANH</div>
+      <div>• Địa chỉ: 42A Đường số 11, Khu phố 53, P. Tân Thuận, TP.HCM • MST: 0319083272</div>
+      <div>• Đại diện: <strong>BS. NGUYỄN THỊ KIM OANH</strong> — Chức vụ: Giám đốc</div>
+
+      <div style="font-weight:bold; margin-top:4px;">BÊN B (KHÁCH HÀNG / BỆNH NHÂN):</div>
+      <div>• Họ và tên: <strong id="insPatientName" style="text-transform:uppercase;">--</strong> &nbsp;&nbsp;&nbsp;&nbsp; SĐT: <strong id="insPhone">--</strong></div>
+      <div>• Địa chỉ: <span id="insAddress">--</span></div>
+
+      <div style="font-weight:bold; margin-top:4px;">ĐIỀU KHOẢN THANH TOÁN TRẢ GÓP:</div>
+      <div>• Nội dung dịch vụ: <strong id="insService">Điều trị Chỉnh nha / Implant / Phục hình sứ</strong></div>
+      <div>• Tổng chi phí trọn gói: <strong id="insTotalCost">0 đ</strong></div>
+      <div>• Tiến độ thanh toán: Trả trước 30% tổng chi phí, phần còn lại chia nhỏ trả góp định kỳ theo đợt tái khám.</div>
+    </div>
+
+    <div style="margin-top:12px; display:flex; justify-content:space-between; text-align:center; font-size:9pt;">
+      <div style="width:45%;">
+        <div style="font-weight:bold;">ĐẠI DIỆN BÊN A (NHA KHOA)</div>
+        <div style="height:40px;"></div>
         <div style="font-weight:bold;">BS. Nguyễn Thị Kim Oanh</div>
       </div>
       <div style="width:45%;">
         <div style="font-weight:bold;">BÊN B (KHÁCH HÀNG)</div>
+        <div style="height:40px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. HỢP ĐỒNG DỊCH VỤ CHỈNH NHA -->
+  <div id="orthoContractPrintPage" class="print-document">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #000; padding-bottom:6px; margin-bottom:10px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:45px; width:auto;" />
+        <div style="font-size:9.5pt;">
+          <div style="font-weight:bold;">NHA KHOA LÊ ANH</div>
+          <div>42A Đường 11, P. Tân Thuận, TP.HCM • ĐT: 034.447.1414</div>
+        </div>
+      </div>
+      <div style="text-align:right; font-size:9.5pt;">
+        <div style="font-weight:bold;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+        <div>Độc lập - Tự do - Hạnh phúc</div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin:10px 0;">
+      <div style="font-size:14pt; font-weight:bold; color:#0f766e; text-transform:uppercase;">HỢP ĐỒNG DỊCH VỤ CHỈNH NHA / NIỀNG RĂNG</div>
+    </div>
+
+    <div style="font-size:10pt; line-height:1.45;">
+      <div>Khách hàng: <strong id="orthoName" style="text-transform:uppercase;">--</strong> • SĐT: <strong id="orthoPhone">--</strong></div>
+      <div style="margin-top:6px;">Hai bên thống nhất cam kết tuân thủ phác đồ điều trị chỉnh nha chuyên khoa của Nha Khoa Lê Anh.</div>
+    </div>
+
+    <div style="margin-top:20px; display:flex; justify-content:space-between; text-align:center; font-size:9.5pt;">
+      <div style="width:45%;">
+        <div style="font-weight:bold;">ĐẠI DIỆN NHA KHOA</div>
+        <div style="height:45px;"></div>
+      </div>
+      <div style="width:45%;">
+        <div style="font-weight:bold;">KHÁCH HÀNG</div>
         <div style="height:45px;"></div>
       </div>
     </div>
   </div>
 
-  <div id="orthoContractPrintPage" class="print-document">
-    <div style="text-align:center; margin:15px 0;"><div style="font-size:16pt; font-weight:bold; color:#0f766e;">HỢP ĐỒNG DỊCH VỤ NIỀNG RĂNG / CHỈNH NHA</div></div>
-    <div style="font-size:11pt; line-height:1.5;">
-      <div>Khách hàng: <strong id="orthoName">--</strong> • SĐT: <strong id="orthoPhone">--</strong></div>
-      <div style="margin-top:10px;">Hai bên thỏa thuận điều trị chỉnh nha theo đúng phác đồ chuyên khoa của Nha khoa Lê Anh.</div>
-    </div>
-  </div>
-
-  <!-- SCRIPT HỆ THỐNG -->
+  <!-- SCRIPT HỆ THỐNG SỬ DỤNG REST API VÀ SUPABASE -->
   <script>
     const SUPABASE_URL = "https://eqifvioqxgvnwhmxqtnx.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxaWZ2aW9xeGd2bndobXhxdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5MTA5NjksImV4cCI6MjEwNjQ4Njk2OX0.24tg4fbKNxeJ1kYSa1R8YcL27hKK0ga-dyEnP759aV8";
@@ -1274,7 +1384,50 @@
     let currentTeethData = {};
     let activeToothNum = null;
 
-    // 1. SƠ ĐỒ RĂNG FDI
+    // DANH MỤC BẢNG GIÁ CHUẨN TỪ FILE BẢNG GIÁ NHA KHOA.DOCX
+    const MASTER_PRICE_LIST = [
+      { category: "KHÁM & CHẨN ĐOÁN", name: "Khám và tư vấn tổng quát", unit: "Lần", price: 200000 },
+      { category: "KHÁM & CHẨN ĐOÁN", name: "Khám và điều trị nội khoa bệnh lý miệng- hàm mặt", unit: "Lần", price: 300000 },
+      { category: "KHÁM & CHẨN ĐOÁN", name: "Khám và tư vấn chuyên khoa sâu (implant, phục hình)", unit: "Lần", price: 600000 },
+      { category: "KHÁM & CHẨN ĐOÁN", name: "Khám và tư vấn chỉnh nha (lấy dữ liệu & tư vấn phác đồ)", unit: "Lần", price: 1000000 },
+      { category: "KHÁM & CHẨN ĐOÁN", name: "Chụp phim cận chóp", unit: "Lần", price: 50000 },
+      { category: "KHÁM & CHẨN ĐOÁN", name: "Chụp phim toàn cảnh Panorama", unit: "Lần", price: 200000 },
+      { category: "KHÁM & CHẨN ĐOÁN", name: "Chụp phim Cephalo", unit: "Lần", price: 200000 },
+      { category: "KHÁM & CHẨN ĐOÁN", name: "Chụp phim CT-conebeam 1 vị trí", unit: "Lần", price: 350000 },
+      { category: "KHÁM & CHẨN ĐOÁN", name: "Chụp phim CT-conebeam 2 hàm", unit: "Lần", price: 600000 },
+      { category: "NHA CHU", name: "Lấy cao răng, đánh bóng độ I - II - III", unit: "2 Hàm", price: 400000 },
+      { category: "NHA CHU", name: "Điều trị viêm nướu chuyên sâu", unit: "2 Hàm", price: 700000 },
+      { category: "NHA CHU", name: "Đánh bóng - Thổi cát", unit: "2 Hàm", price: 200000 },
+      { category: "NHA CHU", name: "Điều trị viêm quanh răng", unit: "Răng", price: 300000 },
+      { category: "NHA CHU", name: "Phẫu thuật làm dài thân răng (Cắt nướu)", unit: "Răng", price: 1500000 },
+      { category: "CHỮA RĂNG – NỘI NHA", name: "Điều trị sâu ngà răng phục hồi bằng GIC", unit: "Răng", price: 300000 },
+      { category: "CHỮA RĂNG – NỘI NHA", name: "Điều trị sâu ngà răng phục hồi bằng Composite", unit: "Răng", price: 400000 },
+      { category: "CHỮA RĂNG – NỘI NHA", name: "Điều trị sâu ngà phục hồi bằng GIC kết hợp Composite", unit: "Răng", price: 800000 },
+      { category: "CHỮA RĂNG – NỘI NHA", name: "Che tủy trực tiếp bằng vật liệu sinh học Biodentine", unit: "Răng", price: 1000000 },
+      { category: "CHỮA RĂNG – NỘI NHA", name: "Phục hồi thân răng bằng chốt kim loại (gồm trám tái tạo)", unit: "Răng", price: 800000 },
+      { category: "CHỮA RĂNG – NỘI NHA", name: "Phục hồi thân răng bằng chốt sợi (gồm trám tái tạo)", unit: "Răng", price: 1500000 },
+      { category: "CHỮA RĂNG – NỘI NHA", name: "Điều trị tủy răng vĩnh viễn", unit: "Răng", price: 2000000 },
+      { category: "CHỮA RĂNG – NỘI NHA", name: "Điều trị tủy răng vĩnh viễn khó / chữa tủy lại", unit: "Răng", price: 3000000 },
+      { category: "NHỔ RĂNG – TIỂU PHẨU", name: "Nhổ răng vĩnh viễn lung lay", unit: "Răng", price: 300000 },
+      { category: "NHỔ RĂNG – TIỂU PHẨU", name: "Nhổ chân răng / Nhổ răng vĩnh viễn", unit: "Răng", price: 400000 },
+      { category: "NHỔ RĂNG – TIỂU PHẨU", name: "Nhổ răng vĩnh viễn khó / răng chỉnh nha", unit: "Răng", price: 700000 },
+      { category: "NHỔ RĂNG – TIỂU PHẨU", name: "Nhổ răng khôn mọc thẳng / nghiêng / ngầm", unit: "Răng", price: 1000000 },
+      { category: "NHỔ RĂNG – TIỂU PHẨU", name: "Tẩy trắng răng tại phòng khám (2 hàm)", unit: "2 Hàm", price: 3000000 },
+      { category: "PHỤC HÌNH CỐ ĐỊNH", name: "Răng sứ - Titan", unit: "Răng", price: 3000000 },
+      { category: "PHỤC HÌNH CỐ ĐỊNH", name: "Răng sứ - Cr-Co", unit: "Răng", price: 3500000 },
+      { category: "PHỤC HÌNH CỐ ĐỊNH", name: "Răng toàn sứ Zirconia (DD-Bio Đức)", unit: "Răng", price: 5000000 },
+      { category: "PHỤC HÌNH CỐ ĐỊNH", name: "Răng toàn sứ Cercon HT", unit: "Răng", price: 6000000 },
+      { category: "PHỤC HÌNH CỐ ĐỊNH", name: "Răng toàn sứ Ceramill Zolid / E.max Press", unit: "Răng", price: 7000000 },
+      { category: "PHỤC HÌNH CỐ ĐỊNH", name: "Răng toàn sứ Lava (3M - Mỹ)", unit: "Răng", price: 8500000 },
+      { category: "IMPLANT", name: "Implant Osstem (Hàn Quốc)", unit: "Trụ", price: 20000000 },
+      { category: "IMPLANT", name: "Implant HiOssen (Mỹ)", unit: "Trụ", price: 25000000 },
+      { category: "CHỈNH NHA MẮC CÀI", name: "Chỉnh nha mắc cài kim loại tự buộc", unit: "2 Hàm", price: 35000000 },
+      { category: "CHỈNH NHA INVISALIGN", name: "Invisalign Comprehensive", unit: "Gói", price: 115000000 },
+      { category: "SẢN PHẨM CHĂM SÓC", name: "Nước súc miệng Kin 0.12%", unit: "Chai", price: 150000 },
+      { category: "SẢN PHẨM CHĂM SÓC", name: "Máy tăm nước Panasonic du lịch", unit: "Bộ", price: 2700000 }
+    ];
+
+    // 1. BÀN RĂNG 32 VỊ TRÍ
     const q1 = [18, 17, 16, 15, 14, 13, 12, 11];
     const q2 = [21, 22, 23, 24, 25, 26, 27, 28];
     const q4 = [48, 47, 46, 45, 44, 43, 42, 41];
@@ -1303,7 +1456,7 @@
       }
     }
 
-    // 2. TẢI DANH SÁCH BỆNH NHÂN
+    // 2. TẢI BỆNH NHÂN
     async function loadPatients(search = "") {
       const listEl = document.getElementById("patientList");
       if (!listEl) return;
@@ -1428,7 +1581,7 @@
       await loadPatientPayments(patient.id);
     }
 
-    // 5. SƠ ĐỒ RĂNG
+    // 5. TẢI SƠ ĐỒ RĂNG
     async function loadDentalChart(patientId) {
       document.querySelectorAll('.tooth-box').forEach(el => {
         el.className = "tooth-box w-8 h-10 sm:w-10 sm:h-12 border-2 border-slate-200 rounded-lg flex flex-col items-center justify-center bg-white text-slate-700 font-semibold text-xs shadow-xs";
@@ -1445,13 +1598,13 @@
           });
           if (res.ok) chartData = await res.json();
         }
-      } catch(e){}
+      } catch(e) {}
 
       currentTeethData = {};
       const planBody = document.getElementById("treatmentPlanBody");
 
       if (!chartData || chartData.length === 0) {
-        if (planBody) planBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 text-xs">Tất cả răng bình thường hoặc chưa lập kế hoạch.</td></tr>`;
+        if (planBody) planBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400 text-xs">Tất cả răng bình thường hoặc chưa lập kế hoạch.</td></tr>`;
         return;
       }
 
@@ -1460,21 +1613,25 @@
         currentTeethData[item.tooth_number] = item;
         const toothEl = document.getElementById(`tooth-${item.tooth_number}`);
         if (toothEl) {
-          const diag = item.diagnosis || item.condition || '';
+          const cond = item.condition || '';
+          const diag = item.diagnosis || '';
           if (item.status === 'Đã hoàn thành') toothEl.classList.add('tooth-done');
-          else if (diag.includes('Implant')) toothEl.classList.add('tooth-implant');
-          else if (diag.includes('Sâu') || diag.includes('tủy') || diag.includes('chân răng')) toothEl.classList.add('tooth-decay');
-          else if (diag.includes('Mất răng')) toothEl.classList.add('tooth-missing');
-          else if (diag.includes('mão') || diag.includes('Cầu')) toothEl.classList.add('tooth-crown');
+          else if (diag.includes('Implant') || cond.includes('Implant')) toothEl.classList.add('tooth-implant');
+          else if (diag.includes('Sâu') || diag.includes('tủy') || cond.includes('Sâu') || cond.includes('tủy')) toothEl.classList.add('tooth-decay');
+          else if (diag.includes('Mất') || cond.includes('Mất')) toothEl.classList.add('tooth-missing');
+          else if (diag.includes('mão') || cond.includes('mão')) toothEl.classList.add('tooth-crown');
           else toothEl.classList.add('bg-slate-100');
         }
+
+        const estPrice = item.estimated_price ? (Number(item.estimated_price).toLocaleString('vi-VN') + " đ") : '—';
 
         planRows += `
           <tr class="hover:bg-slate-50">
             <td class="py-2.5 px-3 font-bold text-teal-700">Răng ${item.tooth_number}</td>
-            <td class="py-2.5 px-3 font-bold text-slate-800">${item.diagnosis || '—'}</td>
-            <td class="py-2.5 px-3 text-slate-600">${item.condition_note || item.condition || '—'}</td>
-            <td class="py-2.5 px-3 font-medium text-slate-800">${item.treatment_plan || '—'}</td>
+            <td class="py-2.5 px-3 font-semibold text-slate-800">${item.diagnosis || 'Bình thường'}</td>
+            <td class="py-2.5 px-3 text-slate-600">${item.condition || '—'}</td>
+            <td class="py-2.5 px-3 font-medium text-teal-900">${item.treatment_plan || '—'}</td>
+            <td class="py-2.5 px-3 font-bold text-teal-800">${estPrice}</td>
             <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100">${item.status || 'Chưa làm'}</span></td>
             <td class="py-2.5 px-3 text-right"><button type="button" onclick="openToothModal(${item.tooth_number})" class="text-teal-600 hover:underline font-medium">Sửa</button></td>
           </tr>
@@ -1492,10 +1649,10 @@
       activeToothNum = toothNum;
       document.getElementById("modalToothNumber").innerText = toothNum;
       const exist = currentTeethData[toothNum] || {};
-      
       document.getElementById("modalDiagnosisSelect").value = exist.diagnosis || "Bình thường / Khỏe mạnh";
-      document.getElementById("modalConditionNote").value = exist.condition_note || exist.condition || "";
+      document.getElementById("modalConditionNote").value = exist.condition || "";
       document.getElementById("modalPlan").value = exist.treatment_plan || "";
+      document.getElementById("modalEstimatedPrice").value = exist.estimated_price || "";
       document.getElementById("modalStatus").value = exist.status || "Chưa làm";
       document.getElementById("toothModal").classList.remove("hidden");
     }
@@ -1507,41 +1664,36 @@
     async function saveToothData() {
       if (!currentPatient || !activeToothNum) return;
       const diagnosis = document.getElementById("modalDiagnosisSelect").value;
-      const condition_note = document.getElementById("modalConditionNote").value.trim();
+      const condition = document.getElementById("modalConditionNote").value.trim();
       const plan = document.getElementById("modalPlan").value.trim();
+      const estPrice = parseFloat(document.getElementById("modalEstimatedPrice").value) || 0;
       const status = document.getElementById("modalStatus").value;
+
+      const payload = {
+        patient_id: String(currentPatient.id),
+        tooth_number: activeToothNum,
+        diagnosis: diagnosis,
+        condition: condition,
+        treatment_plan: plan,
+        estimated_price: estPrice,
+        status: status
+      };
 
       try {
         if (supabaseClient) {
           await supabaseClient.from('dental_chart').delete().match({ patient_id: String(currentPatient.id), tooth_number: activeToothNum });
-          if (diagnosis !== "Bình thường / Khỏe mạnh" || condition_note || plan) {
-            await supabaseClient.from('dental_chart').insert([{
-              patient_id: String(currentPatient.id), 
-              tooth_number: activeToothNum, 
-              diagnosis: diagnosis,
-              condition_note: condition_note,
-              condition: diagnosis + (condition_note ? ` (${condition_note})` : ''), 
-              treatment_plan: plan, 
-              status: status
-            }]);
+          if (diagnosis !== "Bình thường / Khỏe mạnh" || plan || condition) {
+            await supabaseClient.from('dental_chart').insert([payload]);
           }
         } else {
           await fetch(`${SUPABASE_URL}/rest/v1/dental_chart?patient_id=eq.${currentPatient.id}&tooth_number=eq.${activeToothNum}`, {
             method: "DELETE", headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
           });
-          if (diagnosis !== "Bình thường / Khỏe mạnh" || condition_note || plan) {
+          if (diagnosis !== "Bình thường / Khỏe mạnh" || plan || condition) {
             await fetch(`${SUPABASE_URL}/rest/v1/dental_chart`, {
               method: "POST",
               headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
-              body: JSON.stringify({ 
-                patient_id: String(currentPatient.id), 
-                tooth_number: activeToothNum, 
-                diagnosis: diagnosis,
-                condition_note: condition_note,
-                condition: diagnosis + (condition_note ? ` (${condition_note})` : ''),
-                treatment_plan: plan, 
-                status: status 
-              })
+              body: JSON.stringify(payload)
             });
           }
         }
@@ -1724,73 +1876,66 @@
       } catch(e){}
     }
 
-    // 7. IN ĐƠN THUỐC VÀ CÁC GIẤY TỜ PHÂN HỆ LÂM SÀNG
-    function printPrescription(rxData = null) {
-      if (!currentPatient && !rxData) {
-        alert("Vui lòng chọn một bệnh nhân ở danh sách bên trái trước!");
-        return;
-      }
-      
-      const patientName = rxData ? rxData.patient_name : currentPatient?.full_name;
-      const age = currentPatient?.dob ? (new Date().getFullYear() - new Date(currentPatient.dob).getFullYear()) : "--";
-      const address = currentPatient?.address || "--";
-      const diag = rxData ? rxData.diagnosis : (document.getElementById("examDiagnosis")?.value.trim() || "Bệnh lý răng hàm mặt");
-      const doctor = rxData ? rxData.doctor_name : (document.getElementById("rxDoctor")?.value || "BS. Nguyễn Thị Kim Oanh");
-      const drugs = rxData ? rxData.drugs_list : (document.getElementById("rxDrugsList")?.value.trim() || "");
-      const advice = rxData ? rxData.advice : (document.getElementById("rxAdvice")?.value.trim() || "");
-
-      if (!drugs) {
-        alert("Chưa có nội dung đơn thuốc! Vui lòng nhập kê đơn hoặc bấm nút 'In đơn này' ở lịch sử đơn thuốc.");
-        return;
-      }
-
-      document.getElementById("printRxPatientName").innerText = patientName;
-      document.getElementById("printRxAge").innerText = age;
-      document.getElementById("printRxAddress").innerText = address;
-      document.getElementById("printRxDiagnosis").innerText = diag;
-      document.getElementById("printRxDoctorName").innerText = doctor;
-      document.getElementById("printRxDrugsList").innerText = drugs;
-      if (document.getElementById("printRxAdvice")) document.getElementById("printRxAdvice").innerText = "📌 Lời dặn: " + (advice || "Uống thuốc theo toa sau ăn no. Chườm lạnh 24h đầu.");
-      
-      document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-rx";
-      window.print();
-      document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
-    }
-
+    // 7. THIẾT KẾ LẠI IN BÁO GIÁ VÀ CÁC VĂN BẢN
     function triggerPrintDoc(docType) {
       if (!docType) return;
-      if (docType === 'prescription') {
-        printPrescription();
-        return;
-      }
-
       if (!currentPatient) {
         alert("Vui lòng chọn một bệnh nhân ở danh sách bên trái trước khi in!");
         return;
       }
 
       const docName = document.getElementById("examDoctor")?.value || "BS. Nguyễn Thị Kim Oanh";
-      const diag = document.getElementById("examDiagnosis")?.value.trim() || "Bệnh lý răng hàm mặt";
+      const diag = document.getElementById("examDiagnosis")?.value.trim() || "Bệnh lý Răng Hàm Mặt";
       const age = currentPatient.dob ? (new Date().getFullYear() - new Date(currentPatient.dob).getFullYear()) : "--";
       const teethEntries = Object.values(currentTeethData);
 
       if (docType === 'quote') {
         document.getElementById("qPrintDate").innerText = "Ngày: " + new Date().toLocaleDateString('vi-VN');
         document.getElementById("qFullName").innerText = currentPatient.full_name;
+        document.getElementById("qPhone").innerText = currentPatient.phone || "--";
+        document.getElementById("qAddress").innerText = currentPatient.address || "--";
         document.getElementById("qDiagnosis").innerText = diag;
+        document.getElementById("qDoctor").innerText = docName;
+        document.getElementById("qDoctorSign").innerText = docName;
+
         const tbody = document.getElementById("qTeethTableBody");
-        tbody.innerHTML = teethEntries.length === 0
-          ? `<tr><td colspan="5" style="border:1px solid #000; padding:8px; text-align:center;">Chưa có dữ liệu răng.</td></tr>`
-          : teethEntries.map(t => `
-            <tr>
-              <td style="border:1px solid #000; padding:6px; text-align:center; font-weight:bold;">Răng ${t.tooth_number}</td>
-              <td style="border:1px solid #000; padding:6px; font-weight:bold;">${t.diagnosis || '—'}</td>
-              <td style="border:1px solid #000; padding:6px;">${t.condition_note || t.condition || '—'}</td>
-              <td style="border:1px solid #000; padding:6px;">${t.treatment_plan || 'Theo dõi'}</td>
-              <td style="border:1px solid #000; padding:6px; text-align:center;">${t.status || 'Chưa làm'}</td>
-            </tr>
-          `).join('');
+        let grandTotal = 0;
+
+        if (teethEntries.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="border:1px solid #000; padding:10px; text-align:center;">Chưa có dữ liệu răng được lập kế hoạch.</td></tr>`;
+        } else {
+          tbody.innerHTML = teethEntries.map((t, idx) => {
+            const price = Number(t.estimated_price) || 0;
+            grandTotal += price;
+            return `
+              <tr>
+                <td style="border:1px solid #000; padding:6px; text-align:center;">${idx + 1}</td>
+                <td style="border:1px solid #000; padding:6px; text-align:center; font-weight:bold; color:#0f766e;">Răng ${t.tooth_number}</td>
+                <td style="border:1px solid #000; padding:6px;"><strong>${t.diagnosis || 'Bình thường'}</strong>${t.condition ? `<br/><span style="font-size:8.5pt; color:#555;">${t.condition}</span>` : ''}</td>
+                <td style="border:1px solid #000; padding:6px; font-weight:bold;">${t.treatment_plan || 'Theo dõi'}</td>
+                <td style="border:1px solid #000; padding:6px; text-align:center;">1</td>
+                <td style="border:1px solid #000; padding:6px; text-align:right;">${price ? price.toLocaleString('vi-VN') : '—'}</td>
+                <td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold;">${price ? price.toLocaleString('vi-VN') + ' đ' : '—'}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+        document.getElementById("qTotalAmount").innerText = grandTotal.toLocaleString('vi-VN') + " đ";
+
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-quote";
+        window.print();
+        document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
+      } else if (docType === 'prescription') {
+        document.getElementById("printRxPatientName").innerText = currentPatient.full_name;
+        document.getElementById("printRxAge").innerText = age;
+        document.getElementById("printRxGender").innerText = currentPatient.gender || "Nam";
+        document.getElementById("printRxAddress").innerText = currentPatient.address || "--";
+        document.getElementById("printRxDiagnosis").innerText = diag;
+        document.getElementById("printRxDoctorName").innerText = docName;
+        document.getElementById("printRxDrugsList").innerText = document.getElementById("rxDrugsList")?.value.trim() || "Chưa có danh mục thuốc";
+        document.getElementById("printRxAdvice").innerText = "📌 Lời dặn Bác sĩ: " + (document.getElementById("rxAdvice")?.value.trim() || "Uống thuốc đúng liều lượng.");
+
+        document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-rx";
         window.print();
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
       } else if (docType === 'consent') {
@@ -1801,7 +1946,7 @@
         document.getElementById("cAddress").innerText = currentPatient.address || "--";
         document.getElementById("cDob").innerText = currentPatient.dob ? new Date(currentPatient.dob).getFullYear() : "--";
         document.getElementById("cDiagnosis").innerText = diag;
-        
+
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-consent";
         window.print();
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
@@ -1811,16 +1956,18 @@
         document.getElementById("mrGender").innerText = currentPatient.gender || "Nam";
         document.getElementById("mrJob").innerText = currentPatient.occupation || "--";
         document.getElementById("mrAddress").innerText = currentPatient.address || "--";
-        if(document.getElementById("mrTarget")) document.getElementById("mrTarget").innerText = document.getElementById("patientTarget")?.value || "Thu Phí";
-        if(document.getElementById("mrBhyt")) document.getElementById("mrBhyt").innerText = document.getElementById("bhytNumber")?.value || "--";
-        if(document.getElementById("mrContact")) document.getElementById("mrContact").innerText = document.getElementById("contactPerson")?.value || "--";
+        document.getElementById("mrTarget").innerText = document.getElementById("patientTarget")?.value || "Thu Phí";
+        document.getElementById("mrBhyt").innerText = document.getElementById("bhytCardNo")?.value.trim() || "--";
+        document.getElementById("mrContact").innerText = document.getElementById("relativeContact")?.value.trim() || "--";
         document.getElementById("mrReason").innerText = document.getElementById("examReason")?.value.trim() || "Khám và điều trị RHM";
         document.getElementById("mrPulse").innerText = document.getElementById("vitalPulse")?.value || "80";
         document.getElementById("mrBp").innerText = document.getElementById("vitalBP")?.value || "120/80";
         document.getElementById("mrTemp").innerText = document.getElementById("vitalTemp")?.value || "36.8";
-        document.getElementById("mrWeight").innerText = document.getElementById("vitalWeight")?.value || "--";
+        document.getElementById("mrResp").innerText = document.getElementById("vitalResp")?.value || "18";
+        document.getElementById("mrWeight").innerText = document.getElementById("vitalWeight")?.value || "55";
         document.getElementById("mrDiagnosisOut").innerText = diag;
         document.getElementById("mrDoctor").innerText = docName;
+
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-record";
         window.print();
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
@@ -1831,6 +1978,7 @@
         document.getElementById("trDiagnosis").innerText = diag;
         document.getElementById("trDateCell").innerText = new Date().toLocaleDateString('vi-VN');
         document.getElementById("trDocSign").innerText = docName;
+
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-tracking";
         window.print();
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
@@ -1840,31 +1988,38 @@
         document.getElementById("csPhone").innerText = currentPatient.phone || "--";
         document.getElementById("csAddress").innerText = currentPatient.address || "--";
         document.getElementById("csDiagnosis").innerText = diag;
+
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-consultation";
-        window.print();
-        document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
-      } else if (docType === 'ortho') {
-        document.getElementById("orthoName").innerText = currentPatient.full_name;
-        document.getElementById("orthoPhone").innerText = currentPatient.phone || "--";
-        document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-ortho";
         window.print();
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
       } else if (docType === 'installment') {
         document.getElementById("insPatientName").innerText = currentPatient.full_name;
         document.getElementById("insPhone").innerText = currentPatient.phone || "--";
         document.getElementById("insAddress").innerText = currentPatient.address || "--";
+
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-installment";
+        window.print();
+        document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
+      } else if (docType === 'ortho') {
+        document.getElementById("orthoName").innerText = currentPatient.full_name;
+        document.getElementById("orthoPhone").innerText = currentPatient.phone || "--";
+
+        document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-ortho";
         window.print();
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
       }
     }
 
-    // ĐƠN THUỐC MẪU
+    // ĐƠN THUỐC MẪU CHUẨN TỪ TOA THUỐC NK LÊ ANH
     const RX_TEMPLATES = {
-      post_surgery: { drugs: `1. Augmentin 1g x 14 viên (Uống 1v x 2 lần/ngày sau ăn)\n2. Medrol 16mg x 04 viên (Uống 1v sáng sau ăn no)\n3. Efferalgan Codein 500mg (sủi) x 09 viên (Uống 1v x 3 lần/ngày khi đau)\n4. Nexium 40mg x 04 viên (Uống 1v trước ăn sáng 30p)`, advice: "Uống thuốc đúng cữ; cắn chặt gạc 60-90p; chườm lạnh 24h đầu." },
-      occlusal_trauma: { drugs: `1. Medrol 16mg x 04 viên (Uống 1v sáng sau ăn no)\n2. Ibuprofen 400mg x 12 viên (Uống 1v x 3 lần/ngày sau ăn no)\n3. Nexium 40mg x 04 viên (Uống 1v trước ăn sáng 30p)`, advice: "Ăn thức ăn mềm, tránh nhai đồ cứng; mài chỉnh khớp cắn theo hẹn." },
-      pulpitis: { drugs: `1. Dorogyne x 16 viên (Uống 2v x 2 lần/ngày sau ăn)\n2. Ibuprofen 400mg x 12 viên (Uống 1v x 3 lần/ngày sau ăn)\n3. Nexium 40mg x 04 viên`, advice: "Tái khám theo hẹn để làm sạch tủy dứt điểm." },
-      gingivitis: { drugs: `1. Dorogyne x 14 viên (Uống 2v x 2 lần/ngày)\n2. Vitamin C 500mg x 10 viên\n3. Nước súc miệng Kin 0.12% x 1 chai`, advice: "Dùng chỉ nha khoa sau ăn; chải răng đúng cách." }
+      post_surgery: { drugs: `1. Augmentin 1g x 14 viên (Uống 1v x 2 lần/ngày - Sáng - Tối sau ăn)\n2. Medrol 16mg x 04 viên (Uống 1v x 1 lần/ngày - Sáng sau ăn)\n3. Efferalgan 500mg x 09 viên (Uống 1v x 3 lần/ngày khi đau)\n4. Nexium 40mg x 05 viên (Uống 1v x 1 lần/ngày - Sáng sau ăn)`, advice: "Chườm lạnh 5 phút/1 lần trong 24-48 giờ đầu. Uống thuốc theo toa, sau khi ăn no. Khi hết đau có thể ngừng uống thuốc giảm đau." },
+      implant: { drugs: `1. Augmentin 1g x 14 viên (Uống 1v x 2 lần/ngày - Sáng - Tối sau ăn)\n2. Medrol 16mg x 04 viên (Uống 1v x 1 lần/ngày - Sáng sau ăn)\n3. Efferalgan 500mg x 09 viên (Uống 1v x 3 lần/ngày - Sáng - Trưa - Tối)\n4. Nexium 40mg x 05 viên (Uống 1v x 1 lần/ngày - Sáng sau ăn)`, advice: "Chườm lạnh 5 phút/1 lần trong 24-48 giờ đầu. Uống thuốc theo toa, sau khi ăn no. Khi hết đau có thể ngừng uống thuốc giảm đau." },
+      extraction: { drugs: `1. Ibuprofen 400mg x 09 viên (Uống 1v x 3 lần/ngày - Sáng - Trưa - Tối)\n2. Nexium 40mg x 03 viên (Uống 1v x 1 lần/ngày - Sáng sau ăn)`, advice: "Chườm lạnh 5 phút/1 lần trong 24-48 giờ đầu. Uống thuốc theo toa, sau khi ăn no." },
+      vis: { drugs: `1. Ibuprofen 400mg x 09 viên (Uống 1v x 3 lần/ngày - Sáng - Trưa - Tối)\n2. Nexium 40mg x 05 viên (Uống 1v x 1 lần/ngày - Sáng sau ăn)`, advice: "Chườm lạnh 5 phút/1 lần trong 24-48 giờ đầu. Vệ sinh kẽ vít đúng hướng dẫn." },
+      gingivectomy: { drugs: `1. Ibuprofen 400mg x 09 viên (Uống 1v x 3 lần/ngày - Sáng - Trưa - Tối)\n2. Nexium 40mg x 05 viên (Uống 1v x 1 lần/ngày - Sáng sau ăn)`, advice: "Súc miệng Kin nhẹ nhàng, chườm lạnh 24h đầu." },
+      pulpitis: { drugs: `1. Ibuprofen 400mg x 09 viên (Uống 1v x 3 lần/ngày - Sáng - Trưa - Tối)\n2. Prednisone 5mg x 09 viên (Uống 3v x 1 lần/ngày - Sáng sau ăn)\n3. Nexium 40mg x 03 viên (Uống 1v x 1 lần/ngày - Sáng sau ăn)`, advice: "Uống thuốc theo toa sau ăn no. Tái khám theo đúng lịch hẹn để hoàn tất chữa tủy." },
+      pulp_capping: { drugs: `1. Ibuprofen 400mg x 09 viên (Uống 1v x 3 lần/ngày - Sáng - Trưa - Tối)\n2. Nexium 40mg x 03 viên (Uống 1v x 1 lần/ngày - Sáng sau ăn)`, advice: "Tránh ăn nhai đồ quá cứng/nóng lạnh trực tiếp lên vị trí che tủy." },
+      pedo_abscess: { drugs: `1. Augmentin 500mg x 10 gói (Uống 1/2 gói x 2 lần/ngày - Sáng - Tối)\n2. Prednisone 5mg x 02 viên (Uống 1v x 1 lần/ngày - Sáng sau ăn)\n3. Hapacol 250mg x 06 gói (Uống 1 gói x 2 lần/ngày - Sáng - Tối)`, advice: "Cho bé uống thuốc sau ăn no. Ngừng thuốc giảm đau khi bé hết sốt/đau." }
     };
 
     function applyRxTemplate() {
@@ -1895,7 +2050,7 @@
         patient_id: String(currentPatient.id),
         patient_name: currentPatient.full_name,
         doctor_name: document.getElementById("rxDoctor").value,
-        diagnosis: document.getElementById("examDiagnosis").value.trim() || "Bệnh lý răng hàm mặt",
+        diagnosis: document.getElementById("examDiagnosis").value.trim() || "Bệnh lý Răng Hàm Mặt",
         drugs_list: document.getElementById("rxDrugsList").value.trim(),
         advice: document.getElementById("rxAdvice").value.trim()
       };
@@ -1954,7 +2109,23 @@
       `).join('');
     }
 
-    // THANH TOÁN VÀ TRẢ GÓP
+    function printPrescription(rx) {
+      if (!currentPatient) return;
+      document.getElementById("printRxPatientName").innerText = currentPatient.full_name;
+      document.getElementById("printRxAge").innerText = currentPatient.dob ? (new Date().getFullYear() - new Date(currentPatient.dob).getFullYear()) : "--";
+      document.getElementById("printRxGender").innerText = currentPatient.gender || "Nam";
+      document.getElementById("printRxAddress").innerText = currentPatient.address || "--";
+      document.getElementById("printRxDiagnosis").innerText = rx.diagnosis;
+      document.getElementById("printRxDoctorName").innerText = rx.doctor_name;
+      document.getElementById("printRxDrugsList").innerText = rx.drugs_list;
+      document.getElementById("printRxAdvice").innerText = "📌 Lời dặn Bác sĩ: " + (rx.advice || "Uống thuốc sau ăn no.");
+
+      document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-rx";
+      window.print();
+      document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
+    }
+
+    // 8. THANH TOÁN VÀ TRẢ GÓP
     async function loadPatientPayments(patientId) {
       const tbody = document.getElementById("patientPaymentsTableBody");
       const summaryEl = document.getElementById("patientDebtSummary");
@@ -2058,7 +2229,7 @@
       } catch(e) { alert("Lỗi xóa: " + e.message); }
     }
 
-    // 8. QUẢN LÝ PHIẾU CHI & KẾ TOÁN
+    // 9. QUẢN LÝ PHIẾU CHI & BÁO CÁO
     document.getElementById("expenseForm")?.addEventListener("submit", async (e) => {
       e.preventDefault();
       const payload = {
@@ -2165,7 +2336,7 @@
       }
     }
 
-    // 9. FORM SUBMIT CÁC PHÂN HỆ KHÁC
+    // 10. FORM SUBMIT CÁC PHÂN HỆ KHÁC
     document.getElementById("inventoryItemForm")?.addEventListener("submit", async (e) => {
       e.preventDefault();
       const payload = {
@@ -2232,7 +2403,7 @@
       } catch(err) { alert("Lỗi: " + err.message); }
     });
 
-    // 10. ĐIỀU HƯỚNG TAB
+    // 11. ĐIỀU HƯỚNG TAB
     function switchTab(tab) {
       const tabs = ['clinical', 'labo', 'pricing', 'inventory', 'schedule', 'crm', 'analytics', 'finance'];
       tabs.forEach(t => {
@@ -2257,28 +2428,39 @@
 
     async function loadServiceCatalog() {
       const tbody = document.getElementById("serviceCatalogBody");
-      let data = [];
+      let data = MASTER_PRICE_LIST;
       try {
         if (supabaseClient) {
           const res = await supabaseClient.from('services').select('*').order('name', { ascending: true });
-          if (res.data) data = res.data;
+          if (res.data && res.data.length) data = res.data;
         } else {
           const res = await fetch(`${SUPABASE_URL}/rest/v1/services?select=*&order=name.asc`, { headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` } });
-          if (res.ok) data = await res.json();
+          if (res.ok) {
+            const list = await res.json();
+            if (list && list.length) data = list;
+          }
         }
       } catch(e){}
 
       if (tbody) {
-        tbody.innerHTML = (!data || data.length === 0)
-          ? `<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">Chưa có dịch vụ niêm yết nào.</td></tr>`
-          : data.map(s => `
-            <tr class="hover:bg-slate-50">
-              <td class="py-2.5 px-3 font-bold">${s.name}</td>
-              <td class="py-2.5 px-3">${s.category === 'specialized' ? 'Chuyên sâu' : 'Tổng quát'}</td>
-              <td class="py-2.5 px-3 text-right font-bold text-teal-800">${Number(s.price).toLocaleString('vi-VN')} đ</td>
-            </tr>
-          `).join('');
+        tbody.innerHTML = data.map(s => `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-50 text-teal-800">${s.category || 'Tổng quát'}</span></td>
+            <td class="py-2.5 px-3 font-bold text-slate-800">${s.name}</td>
+            <td class="py-2.5 px-3 text-center text-slate-600">${s.unit || 'Lần'}</td>
+            <td class="py-2.5 px-3 text-right font-bold text-teal-800">${Number(s.price).toLocaleString('vi-VN')} đ</td>
+          </tr>
+        `).join('');
       }
+    }
+
+    function filterPricingTable() {
+      const query = document.getElementById("pricingSearchInput")?.value.toLowerCase().trim();
+      const rows = document.querySelectorAll("#serviceCatalogBody tr");
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? "" : "none";
+      });
     }
 
     async function loadInventoryItems() {
@@ -2441,3 +2623,4 @@
   </script>
 </body>
 </html>
+```

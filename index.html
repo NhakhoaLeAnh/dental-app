@@ -176,6 +176,16 @@
                 <label class="block text-xs text-slate-600 mb-1">Tiền sử toàn thân & Cảnh báo</label>
                 <input type="text" id="medicalHistory" placeholder="Dị ứng thuốc, cao HA, ĐTĐ..." class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-teal-500 outline-none text-rose-700" />
               </div>
+
+              <!-- PHẦN THÊM MỚI: GHI CHÚ / LƯU Ý CSKH NỔI BẬT -->
+              <div class="bg-amber-50/80 p-3 rounded-xl border-2 border-amber-300 shadow-xs">
+                <label class="block text-xs font-bold text-amber-900 mb-1 flex items-center gap-1">
+                  <span>📌 Ghi Chú / Lưu Ý CSKH (Đặc biệt)</span>
+                </label>
+                <textarea id="patientNotes" rows="2" placeholder="Ví dụ: Đau chân không lên cầu thang, sợ đau, khách kỹ tính..." class="w-full p-2 border border-amber-200 bg-white rounded-lg text-xs outline-none font-medium text-slate-800 focus:ring-2 focus:ring-amber-500"></textarea>
+                <span class="block text-[10px] text-amber-800 mt-1">* Lưu ý đặc thù giúp nhân sự chăm sóc tốt hơn, tự động ẩn khi in phiếu.</span>
+              </div>
+
               <button type="submit" id="btnSavePatient" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 rounded-lg text-sm transition-colors shadow">
                 + Tiếp Nhận Bệnh Nhân
               </button>
@@ -198,6 +208,13 @@
           <!-- KHÁM LÂM SÀNG BYT -->
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Thông Tin Khám Ngoại Trú (Chuẩn BYT)</h2>
+            
+            <!-- KHU VỰC HIỂN THỊ NỔI BẬT GHI CHÚ CSKH KHI ĐANG CHỌN BỆNH NHÂN -->
+            <div id="activePatientNotesBanner" class="hidden bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-xl text-xs text-amber-900 shadow-xs">
+              <span class="font-bold block mb-0.5">⚠️ Lưu ý đặc biệt từ CSKH / Lễ tân:</span>
+              <p id="bannerNotesText" class="font-semibold italic"></p>
+            </div>
+
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
               <div>
                 <label class="block text-slate-600 mb-1">Mạch (lần/p)</label>
@@ -240,11 +257,11 @@
                 </select>
               </div>
               
-              <!-- THÊM MỚI: PHẦN NHẬP TÊN TRỢ THỦ PHỤ CA (CÓ CLASS no-print ĐỂ TỰ ĐỘNG ẨN KHI IN) -->
+              <!-- PHẦN NHẬP TÊN TRỢ THỦ PHỤ CA (CÓ CLASS no-print) -->
               <div class="no-print">
                 <label class="block font-semibold text-purple-800 mb-1">👤 Trợ Thủ Phụ Ca (Nội bộ)</label>
                 <input type="text" id="examAssistantNames" placeholder="Nhập tên trợ thủ (vd: Lan, Mai...)" class="w-full p-2 border border-purple-200 bg-purple-50/40 rounded-lg outline-none font-medium text-purple-900" />
-                <span class="block text-[10px] text-slate-400 mt-0.5">* Chỉ dùng để rà soát nội bộ, tự động ẩn khi in phiếu.</span>
+                <span class="block text-[10px] text-slate-400 mt-0.5">* Chỉ dùng rà soát nội bộ, tự động ẩn khi in phiếu.</span>
               </div>
             </div>
           </div>
@@ -1054,6 +1071,7 @@
                class="p-3 hover:bg-teal-50 cursor-pointer transition-colors ${String(currentPatient?.id) === String(p.id) ? 'bg-teal-50 border-l-4 border-teal-600' : ''}">
             <div class="font-semibold text-slate-800 text-xs sm:text-sm uppercase">${p.full_name}</div>
             <div class="text-[11px] text-slate-500">${p.phone || 'Chưa có SĐT'}</div>
+            ${p.notes ? `<div class="text-[10px] text-amber-700 font-semibold mt-0.5 truncate">📌 Lưu ý: ${p.notes}</div>` : ''}
           </div>
         `).join('');
       } catch (err) {
@@ -1073,7 +1091,8 @@
         dob: document.getElementById("dob").value || null,
         gender: document.getElementById("gender").value,
         address: document.getElementById("address").value.trim() || null,
-        medical_history: document.getElementById("medicalHistory").value.trim() || null
+        medical_history: document.getElementById("medicalHistory").value.trim() || null,
+        notes: document.getElementById("patientNotes").value.trim() || null
       };
 
       try {
@@ -1123,6 +1142,16 @@
       document.getElementById("activePatientBanner").innerHTML = `
         <span>Đang khám: <strong class="text-teal-800 uppercase">${patient.full_name}</strong> (${patient.phone})</span>
       `;
+
+      // Hiển thị khung ghi chú nổi bật ngay khu vực khám nếu bệnh nhân có lưu ý
+      const noteBanner = document.getElementById("activePatientNotesBanner");
+      const noteText = document.getElementById("bannerNotesText");
+      if (patient.notes) {
+        noteText.innerText = patient.notes;
+        noteBanner.classList.remove("hidden");
+      } else {
+        noteBanner.classList.add("hidden");
+      }
 
       if(document.getElementById("laboPatientName")) document.getElementById("laboPatientName").value = patient.full_name;
       if(document.getElementById("laboPatientId")) document.getElementById("laboPatientId").value = patient.id;
@@ -1577,7 +1606,7 @@
       } catch(e){}
       if (tbody) {
         tbody.innerHTML = (!data || data.length === 0)
-          ? `<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">Kho hiện chưa có vật tư.</td></tr>`
+          ? `<tr><td colspan="4" class="text-center py-6 text-slate-400 text-xs">Kho hiện chưa có vật tư.</td></tr>`
           : data.map(i => `
             <tr class="hover:bg-slate-50">
               <td class="py-2.5 px-3 font-bold">${i.item_name}</td>

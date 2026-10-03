@@ -3,40 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phần Mềm Quản Lý Nha Khoa - Lịch Khám & Trợ Thủ</title>
-    <!-- Tailwind CSS CDN cho giao diện đẹp, hiện đại -->
+    <title>Phần Mềm Quản Lý Nha Khoa - Đồng Bộ Cloud</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Thư viện Supabase JS client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* CSS tự động ẩn các phần tử có class 'no-print' khi bấm In phiếu */
         @media print {
-            .no-print {
-                display: none !important;
-            }
-            body {
-                background: white !important;
-            }
+            .no-print { display: none !important; }
+            body { background: white !important; }
         }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen p-4 md:p-8">
 
     <div class="max-w-6xl mx-auto">
-        <!-- Tiêu đề ứng dụng -->
         <header class="bg-white shadow-sm rounded-xl p-6 mb-6 flex flex-col md:flex-row justify-between items-center">
             <div>
                 <h1 class="text-2xl font-bold text-blue-600">🦷 Nha Khoa Lê Anh</h1>
-                <p class="text-sm text-gray-500">Hệ thống quản lý lịch khám và phân công trợ thủ nội bộ</p>
+                <p class="text-sm text-gray-500">Hệ thống quản lý lịch khám & Phân công trợ thủ (Đám mây Cloud)</p>
             </div>
-            <div class="mt-4 md:mt-0">
+            <div class="mt-4 md:mt-0 flex items-center gap-3">
+                <span id="syncStatus" class="text-xs bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Đang kết nối Cloud...</span>
                 <button onclick="window.print()" class="no-print bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-                    🖨️ In Danh Sách Ca Khám
+                    🖨️ In Danh Sách
                 </button>
             </div>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- CỘT TRÁI: FORM THÊM CA KHÁM & TRỢ THỦ -->
+            <!-- FORM THÊM CA KHÁM -->
             <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-1 h-fit">
                 <h2 class="text-lg font-semibold mb-4 text-gray-700 border-b pb-2">Thêm Ca Khám Mới</h2>
                 
@@ -59,28 +56,27 @@
                             class="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
                     </div>
 
-                    <!-- PHẦN THÊM TRỢ THỦ THEO YÊU CẦU -->
                     <div class="bg-blue-50/50 p-3 rounded-lg border border-blue-100">
                         <label class="block text-sm font-medium text-blue-900 mb-1">
                             Trợ Thủ Phụ Ca <span class="text-xs font-normal text-blue-600">(Chỉ dùng nội bộ)</span>
                         </label>
-                        <input type="text" id="assistantNames" placeholder="Nhập tên các trợ thủ (vd: Lan, Mai...)" 
+                        <input type="text" id="assistantNames" placeholder="Nhập tên trợ thủ (vd: Lan, Mai...)" 
                             class="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
                         <p class="text-[11px] text-gray-500 mt-1">
-                            * Thông tin này phục vụ rà soát nội bộ, sẽ <b>tự động ẩn</b> khi in phiếu cho bệnh nhân.
+                            * Tự động ẩn đi khi in phiếu cho bệnh nhân.
                         </p>
                     </div>
 
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition text-sm">
-                        Lưu Ca Khám
+                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition text-sm">
+                        Lưu Lên Cloud
                     </button>
                 </form>
             </div>
 
-            <!-- CỘT PHẢI: DANH SÁCH QUẢN LÝ CA KHÁM -->
+            <!-- DANH SÁCH CA KHÁM -->
             <div class="bg-white rounded-xl shadow-sm p-6 lg:col-span-2">
                 <div class="flex justify-between items-center mb-4 border-b pb-2">
-                    <h2 class="text-lg font-semibold text-gray-700">Danh Sách Ca Khám & Phân Công</h2>
+                    <h2 class="text-lg font-semibold text-gray-700">Danh Sách Ca Khám Trên Cloud</h2>
                     <span id="totalCount" class="text-xs bg-blue-100 text-blue-800 font-medium px-2.5 py-1 rounded-full">0 ca</span>
                 </div>
 
@@ -91,13 +87,12 @@
                                 <th class="p-3">Thời Gian</th>
                                 <th class="p-3">Bệnh Nhân</th>
                                 <th class="p-3">Dịch Vụ</th>
-                                <!-- Cột trợ thủ nội bộ (sẽ bị ẩn khi bấm in nhờ class no-print) -->
                                 <th class="p-3 no-print">Trợ Thủ Phụ Ca</th>
                                 <th class="p-3 text-center">Thao Tác</th>
                             </tr>
                         </thead>
                         <tbody id="appointmentList" class="divide-y divide-gray-100 text-sm">
-                            <!-- Dữ liệu sẽ được chèn tự động bằng JavaScript -->
+                            <tr><td colspan="5" class="p-6 text-center text-gray-400">Đang tải dữ liệu từ Cloud...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -106,14 +101,41 @@
         </div>
     </div>
 
-    <!-- Script xử lý dữ liệu đơn giản trên trình duyệt -->
+    <!-- KẾT NỐI VÀ XỬ LÝ SUPABASE -->
     <script>
-        // Lấy danh sách từ localStorage hoặc mảng rỗng nếu chưa có
-        let appointments = JSON.parse(localStorage.getItem('dental_appointments')) || [
-            { id: 1, time: '2026-10-03T09:00', patient: 'Nguyễn Văn A', treatment: 'Khám tổng quát & Tư vấn Implant', assistants: 'Thanh Lan' },
-            { id: 2, time: '2026-10-03T10:30', patient: 'Trần Thị B', treatment: 'Cạo vôi răng', assistants: 'Thu Hoài' }
-        ];
+        // === 1. THÔNG SỐ KẾT NỐI SUPABASE CỦA ANH ===
+        const SUPABASE_URL = 'ĐIỀN_SUPABASE_URL_VÀO_ĐÂY';
+        const SUPABASE_ANON_KEY = 'ĐIỀN_SUPABASE_ANON_KEY_VÀO_ĐÂY';
 
+        // Khởi tạo Supabase client
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let appointments = [];
+
+        // === 2. HÀM TẢI DỮ LIỆU TỪ CLOUD ===
+        async function fetchAppointments() {
+            const statusBadge = document.getElementById('syncStatus');
+            try {
+                const { data, error } = await _supabase
+                    .from('dental_appointments')
+                    .select('*')
+                    .order('appt_time', { ascending: true });
+
+                if (error) throw error;
+
+                appointments = data || [];
+                renderAppointments();
+                statusBadge.className = "text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full";
+                statusBadge.innerText = "Đã kết nối Cloud ✅";
+            } catch (error) {
+                console.error('Lỗi tải dữ liệu:', error.message);
+                statusBadge.className = "text-xs bg-red-100 text-red-800 px-3 py-1 rounded-full";
+                statusBadge.innerText = "Lỗi kết nối Cloud ❌";
+            }
+        }
+
+        // === 3. HÀM HIỂN THỊ LÊN BẢNG ===
         function renderAppointments() {
             const tbody = document.getElementById('appointmentList');
             const totalCount = document.getElementById('totalCount');
@@ -122,24 +144,24 @@
             totalCount.innerText = `${appointments.length} ca`;
 
             if (appointments.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-gray-400">Chưa có ca khám nào được ghi nhận.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-gray-400">Chưa có ca khám nào trên hệ thống.</td></tr>`;
                 return;
             }
 
-            appointments.forEach((item, index) => {
+            appointments.forEach((item) => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-gray-50/50 transition";
                 tr.innerHTML = `
-                    <td class="p-3 text-gray-600 whitespace-nowrap">${formatDate(item.time)}</td>
+                    <td class="p-3 text-gray-600 whitespace-nowrap">${formatDate(item.appt_time)}</td>
                     <td class="p-3 font-medium text-gray-900">${escapeHtml(item.patient)}</td>
                     <td class="p-3 text-gray-600">${escapeHtml(item.treatment)}</td>
                     <td class="p-3 no-print">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-100">
-                            👤 ${escapeHtml(item.assistants || 'Chưa phân công')}
+                            👤 ${escapeHtml(item.assistans || 'Chưa phân công')}
                         </span>
                     </td>
                     <td class="p-3 text-center whitespace-nowrap">
-                        <button onclick="deleteAppointment(${index})" class="text-red-500 hover:text-red-700 text-xs font-medium px-2 py-1 rounded bg-red-50 hover:bg-red-100 transition">
+                        <button onclick="deleteAppointment('${item.id}')" class="text-red-500 hover:text-red-700 text-xs font-medium px-2 py-1 rounded bg-red-50 hover:bg-red-100 transition">
                             Xóa
                         </button>
                     </td>
@@ -148,34 +170,51 @@
             });
         }
 
-        function handleAddAppointment(e) {
+        // === 4. HÀM THÊM CA KHÁM LÊN CLOUD ===
+        async function handleAddAppointment(e) {
             e.preventDefault();
-            const patient = document.getElementById('patientName').value;
-            const treatment = document.getElementById('treatment').value;
-            const time = document.getElementById('apptTime').value;
-            const assistants = document.getElementById('assistantNames').value;
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Đang lưu lên Cloud...";
 
             const newAppt = {
-                id: Date.now(),
-                time,
-                patient,
-                treatment,
-                assistants
+                patient: document.getElementById('patientName').value,
+                treatment: document.getElementById('treatment').value,
+                appt_time: document.getElementById('apptTime').value,
+                assistans: document.getElementById('assistantNames').value
             };
 
-            appointments.push(newAppt);
-            localStorage.setItem('dental_appointments', JSON.stringify(appointments));
-            
-            // Reset form
-            document.getElementById('appointmentForm').reset();
-            renderAppointments();
+            try {
+                const { error } = await _supabase
+                    .from('dental_appointments')
+                    .insert([newAppt]);
+
+                if (error) throw error;
+
+                document.getElementById('appointmentForm').reset();
+                await fetchAppointments(); // Tải lại dữ liệu mới nhất từ cloud
+            } catch (error) {
+                alert('Lỗi khi lưu dữ liệu: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Lưu Lên Cloud";
+            }
         }
 
-        function deleteAppointment(index) {
-            if (confirm('Bạn có chắc muốn xóa ca khám này không?')) {
-                appointments.splice(index, 1);
-                localStorage.setItem('dental_appointments', JSON.stringify(appointments));
-                renderAppointments();
+        // === 5. HÀM XÓA DỮ LIỆU TRÊN CLOUD ===
+        async function deleteAppointment(id) {
+            if (confirm('Bạn có chắc muốn xóa ca khám này khỏi hệ thống chung không?')) {
+                try {
+                    const { error } = await _supabase
+                        .from('dental_appointments')
+                        .delete()
+                        .eq('id', id);
+
+                    if (error) throw error;
+                    await fetchAppointments();
+                } catch (error) {
+                    alert('Lỗi khi xóa: ' + error.message);
+                }
             }
         }
 
@@ -190,8 +229,8 @@
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
 
-        // Chạy lần đầu khi mở trang
-        renderAppointments();
+        // Tự động tải dữ liệu khi mở trang
+        fetchAppointments();
     </script>
 </body>
 </html>

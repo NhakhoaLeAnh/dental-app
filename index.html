@@ -17,7 +17,6 @@
 
     .print-document { display: none; }
 
-    /* THIẾT LẬP ẨN TOÀN BỘ CÁC THÀNH PHẦN NỘI BỘ (CLASS no-print) KHI IN ẤN */
     @media print {
       body * { visibility: hidden !important; }
       .no-print, .no-print * { display: none !important; }
@@ -328,13 +327,13 @@
             <form id="prescriptionForm" class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label class="block font-semibold text-slate-700 mb-1">⚡ Đơn Thuốc Mẫu:</label>
+                  <label class="block font-semibold text-slate-700 mb-1">⚡ Đơn Thuốc Mẫu (Chọn là tự điền):</label>
                   <select id="rxTemplateSelect" onchange="applyRxTemplate()" class="w-full p-2 border rounded-lg bg-white font-bold text-teal-800 outline-none">
                     <option value="">-- Chọn đơn thuốc mẫu --</option>
-                    <option value="post_surgery">1. Sau Tiểu Phẫu (Augmentin 1g, Medrol 16, Efferalgan Codein, Nexium 40)</option>
-                    <option value="occlusal_trauma">2. Chấn thương khớp cắn (Medrol 16, Ibuprofen 400, Nexium 40)</option>
+                    <option value="post_surgery">1. Sau Tiểu Phẫu (Augmentin, Medrol, Efferalgan, Nexium)</option>
+                    <option value="occlusal_trauma">2. Chấn thương khớp cắn (Medrol, Ibuprofen, Nexium)</option>
                     <option value="pulpitis">3. Viêm tủy cấp (Dorogyne + Ibuprofen)</option>
-                    <option value="gingivitis">4. Viêm nướu (Dorogyne, Vitamin C, Nước súc Kin)</option>
+                    <option value="gingivitis">4. Viêm nướu (Dorogyne, Vitamin C, Kin)</option>
                   </select>
                 </div>
                 <div>
@@ -349,21 +348,26 @@
                 </div>
               </div>
 
+              <!-- NÚT THÊM NHANH TỪNG TÊN THUỐC MẪU (ĐÃ BỔ SUNG ĐẦY ĐỦ CÁC THUỐC THƯỜNG DÙNG) -->
               <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-1.5">
-                <span class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider">Thêm nhanh từng thuốc vào toa:</span>
+                <span class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider">Thêm nhanh tên thuốc mẫu vào toa (Bấm là tự thêm):</span>
                 <div class="flex flex-wrap gap-1.5">
-                  <button type="button" onclick="appendDrug('Augmentin 500mg (gói)', '12 gói', 'Uống 1 gói x 2-3 lần/ngày sau ăn')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Augmentin 500mg gói</button>
-                  <button type="button" onclick="appendDrug('Hapacol 250mg (gói)', '10 gói', 'Uống 1 gói khi đau/sốt')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Hapacol 250mg gói</button>
-                  <button type="button" onclick="appendDrug('Prednisone 5mg', '10 viên', 'Uống 2 viên sáng sau ăn no')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Prednisone 5mg</button>
-                  <button type="button" onclick="appendDrug('Ultracet', '10 viên', 'Uống 1 viên khi đau nhiều')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Ultracet</button>
-                  <button type="button" onclick="appendDrug('Vitamin 3B', '20 viên', 'Uống 1 viên x 2 lần/ngày')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Vitamin 3B</button>
-                  <button type="button" onclick="appendDrug('Nước súc miệng Kin 0.12%', '1 chai', 'Súc 15ml x 2 lần/ngày')" class="px-2.5 py-1 bg-slate-100 hover:bg-teal-50 hover:text-teal-800 border rounded text-[11px]">+ Kin 0.12%</button>
+                  <button type="button" onclick="appendDrug('Augmentin 1g', '14 viên', 'Uống 1v x 2 lần/ngày sau ăn')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded text-[11px] font-semibold">+ Augmentin 1g</button>
+                  <button type="button" onclick="appendDrug('Augmentin 625mg', '14 viên', 'Uống 1v x 2 lần/ngày sau ăn')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded text-[11px] font-semibold">+ Augmentin 625mg</button>
+                  <button type="button" onclick="appendDrug('Medrol 16mg', '4 viên', 'Uống 1v sáng sau ăn no')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded text-[11px] font-semibold">+ Medrol 16mg</button>
+                  <button type="button" onclick="appendDrug('Ibuprofen 400mg', '12 viên', 'Uống 1v x 3 lần/ngày sau ăn')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded text-[11px] font-semibold">+ Ibuprofen 400mg</button>
+                  <button type="button" onclick="appendDrug('Efferalgan Codein', '10 viên', 'Uống 1v khi đau nhiều')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded text-[11px] font-semibold">+ Efferalgan Codein</button>
+                  <button type="button" onclick="appendDrug('Hapacol 500mg', '10 viên', 'Uống 1v khi sốt/đau')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded text-[11px] font-semibold">+ Hapacol 500mg</button>
+                  <button type="button" onclick="appendDrug('Nexium 40mg', '4 viên', 'Uống 1v trước ăn sáng 30p')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded text-[11px] font-semibold">+ Nexium 40mg</button>
+                  <button type="button" onclick="appendDrug('Dorogyne', '16 viên', 'Uống 2v x 2 lần/ngày sau ăn')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded text-[11px] font-semibold">+ Dorogyne</button>
+                  <button type="button" onclick="appendDrug('Alphachymotrypsin', '20 ngậm', 'Ngậm dưới lưỡi 4v/ngày')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded text-[11px] font-semibold">+ Alphachymotrypsin</button>
+                  <button type="button" onclick="appendDrug('Nước súc miệng Kin 0.12%', '1 chai', 'Súc 15ml x 2 lần/ngày')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded text-[11px] font-semibold">+ Nước súc Kin</button>
                 </div>
               </div>
 
               <div>
                 <label class="block font-semibold text-slate-700 mb-1">Toa thuốc chi tiết *</label>
-                <textarea id="rxDrugsList" rows="5" required placeholder="Danh sách thuốc..." class="w-full p-2.5 border rounded-lg bg-white font-mono text-xs leading-relaxed outline-none"></textarea>
+                <textarea id="rxDrugsList" rows="6" required placeholder="Danh sách thuốc sẽ hiển thị ở đây..." class="w-full p-2.5 border rounded-lg bg-white font-mono text-xs leading-relaxed outline-none"></textarea>
               </div>
 
               <div>
@@ -937,7 +941,7 @@
       }
     }
 
-    // 2. TẢI BỆNH NHÂN (TỐI ƯU HIỂN THỊ TỨC THÌ)
+    // 2. TẢI BỆNH NHÂN
     async function loadPatients(search = "") {
       const listEl = document.getElementById("patientList");
       if (!listEl) return;
@@ -977,7 +981,7 @@
       }
     }
 
-    // 3. TIẾP NHẬN BỆNH NHÂN (ĐÃ FIX LỖI ĐỂ HIỂN THỊ NGAY LẬP TỨC)
+    // 3. TIẾP NHẬN BỆNH NHÂN
     document.getElementById("patientForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("btnSavePatient");
@@ -1013,13 +1017,13 @@
         }
 
         document.getElementById("patientForm").reset();
-        await loadPatients(); // Tải lại danh sách ngay lập tức
+        await loadPatients();
         
         if (inserted) {
-          selectPatient(inserted.id); // Tự động chọn bệnh nhân vừa nhập
+          selectPatient(inserted.id);
         }
       } catch (err) {
-        alert("Lỗi khi lưu bệnh nhân: " + err.message + "\n(Vui lòng kiểm tra lại cấu hình bảng 'patients' trên Supabase xem đã đủ cột 'notes' chưa).");
+        alert("Lỗi khi lưu bệnh nhân: " + err.message);
       } finally {
         btn.disabled = false; btn.innerText = "+ Tiếp Nhận Bệnh Nhân";
       }
@@ -1061,9 +1065,113 @@
       loadPatients(document.getElementById("searchInput")?.value || "");
       await loadDentalChart(patient.id);
       await loadPatientPayments(patient.id, patient.full_name);
+      await loadPatientPrescriptions(patient.id);
     }
 
-    // 5. TẢI LỊCH SỬ THANH TOÁN & TÍNH CÔNG NỢ TRẢ GÓP
+    // 5. XỬ LÝ ĐƠN THUỐC MẪU VÀ THÊM NHANH THUỐC
+    const RX_TEMPLATES = {
+      post_surgery: { 
+        drugs: `1. Augmentin 1g x 14 viên (Uống 1v x 2 lần/ngày sau ăn)\n2. Medrol 16mg x 4 viên (Uống 1v sáng sau ăn no)\n3. Efferalgan Codein x 10 viên (Uống 1v khi đau nhiều)\n4. Nexium 40mg x 4 viên (Uống 1v trước ăn sáng 30p)`, 
+        advice: "Uống thuốc đúng cữ; cắn chặt gạc 60-90p; chườm lạnh 24h đầu." 
+      },
+      occlusal_trauma: { 
+        drugs: `1. Medrol 16mg x 4 viên (Uống 1v sáng sau ăn no)\n2. Ibuprofen 400mg x 12 viên (Uống 1v x 3 lần/ngày sau ăn)\n3. Nexium 40mg x 4 viên (Uống 1v trước ăn sáng 30p)`, 
+        advice: "Ăn thức ăn mềm, tránh nhai đồ cứng; tái khám mài chỉnh khớp cắn." 
+      },
+      pulpitis: { 
+        drugs: `1. Dorogyne x 16 viên (Uống 2v x 2 lần/ngày sau ăn)\n2. Ibuprofen 400mg x 12 viên (Uống 1v x 3 lần/ngày sau ăn)`, 
+        advice: "Tái khám theo hẹn để điều trị tủy dứt điểm." 
+      },
+      gingivitis: { 
+        drugs: `1. Dorogyne x 14 viên (Uống 2v x 2 lần/ngày sau ăn)\n2. Nước súc miệng Kin 0.12% x 1 chai (Súc 15ml x 2 lần/ngày)`, 
+        advice: "Dùng chỉ nha khoa sau ăn; chải răng đúng cách." 
+      }
+    };
+
+    function applyRxTemplate() {
+      const key = document.getElementById("rxTemplateSelect").value;
+      if (!key || !RX_TEMPLATES[key]) return;
+      document.getElementById("rxDrugsList").value = RX_TEMPLATES[key].drugs;
+      document.getElementById("rxAdvice").value = RX_TEMPLATES[key].advice;
+    }
+
+    function appendDrug(drugName, qty, usage) {
+      const textarea = document.getElementById("rxDrugsList");
+      const current = textarea.value.trim();
+      let nextNum = 1;
+      const numMatches = current.match(/^\d+\./gm);
+      if (numMatches) nextNum = numMatches.length + 1;
+      const drugEntry = `${nextNum}. ${drugName} x ${qty}\n   ${usage}`;
+      textarea.value = current ? `${current}\n${drugEntry}` : drugEntry;
+    }
+
+    // LƯU ĐƠN THUỐC VÀO HỒ SƠ
+    document.getElementById("prescriptionForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentPatient) {
+        alert("Vui lòng chọn bệnh nhân trước khi lưu đơn thuốc!");
+        return;
+      }
+      const payload = {
+        patient_id: String(currentPatient.id),
+        patient_name: currentPatient.full_name,
+        doctor_name: document.getElementById("rxDoctor").value,
+        diagnosis: document.getElementById("examDiagnosis").value.trim() || "Bệnh lý răng hàm mặt",
+        drugs_list: document.getElementById("rxDrugsList").value.trim(),
+        advice: document.getElementById("rxAdvice").value.trim()
+      };
+
+      try {
+        if (supabaseClient) {
+          await supabaseClient.from('prescriptions').insert([payload]);
+        } else {
+          await fetch(`${SUPABASE_URL}/rest/v1/prescriptions`, {
+            method: "POST",
+            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        }
+        alert("Đã lưu đơn thuốc vào hồ sơ bệnh nhân thành công!");
+        await loadPatientPrescriptions(currentPatient.id);
+      } catch (err) {
+        alert("Lỗi lưu đơn thuốc: " + err.message);
+      }
+    });
+
+    async function loadPatientPrescriptions(patientId) {
+      const container = document.getElementById("rxHistoryContainer");
+      if (!container) return;
+      let rxList = [];
+      try {
+        if (supabaseClient) {
+          const { data } = await supabaseClient.from('prescriptions').select('*').eq('patient_id', String(patientId)).order('created_at', { ascending: false });
+          if (data) rxList = data;
+        } else {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/prescriptions?patient_id=eq.${patientId}&select=*&order=created_at.desc`, {
+            headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+          });
+          if (res.ok) rxList = await res.json();
+        }
+      } catch(e) {}
+
+      if (rxList.length === 0) {
+        container.innerHTML = `<div class="text-center py-4 text-slate-400 text-xs">Chưa có đơn thuốc nào được lưu.</div>`;
+        return;
+      }
+
+      container.innerHTML = rxList.map(rx => `
+        <div class="p-3 bg-slate-50 border rounded-lg space-y-1">
+          <div class="flex justify-between font-bold text-teal-800">
+            <span>${rx.doctor_name} • Chẩn đoán: ${rx.diagnosis}</span>
+            <span class="text-[10px] text-slate-400">${new Date(rx.created_at).toLocaleDateString('vi-VN')}</span>
+          </div>
+          <p class="font-mono text-xs whitespace-pre-wrap text-slate-700">${rx.drugs_list}</p>
+          ${rx.advice ? `<p class="text-[11px] italic text-rose-700">Lời dặn: ${rx.advice}</p>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // 6. TẢI LỊCH SỬ THANH TOÁN & TRẢ GÓP
     async function loadPatientPayments(patientId, patientName) {
       const tbody = document.getElementById("patientPaymentsTableBody");
       const summaryEl = document.getElementById("patientDebtSummary");
@@ -1113,7 +1221,6 @@
       `).join('');
     }
 
-    // XỬ LÝ LƯU PHIẾU THU & TRẢ GÓP
     document.getElementById("paymentForm")?.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!currentPatient) {
@@ -1170,7 +1277,7 @@
       }
     }
 
-    // 6. TẢI SƠ ĐỒ RĂNG
+    // 7. TẢI SƠ ĐỒ RĂNG
     async function loadDentalChart(patientId) {
       document.querySelectorAll('.tooth-box').forEach(el => {
         el.className = "tooth-box w-8 h-10 sm:w-10 sm:h-12 border-2 border-slate-200 rounded-lg flex flex-col items-center justify-center bg-white text-slate-700 font-semibold text-xs shadow-xs";

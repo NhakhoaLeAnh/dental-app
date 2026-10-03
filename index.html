@@ -21,46 +21,23 @@
       body * { visibility: hidden !important; }
       .no-print, .no-print * { display: none !important; }
       
-      body.print-mode-record #medicalRecordPrintPage, 
-      body.print-mode-record #medicalRecordPrintPage * { visibility: visible !important; }
-      body.print-mode-record #medicalRecordPrintPage {
-        display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px 30px;
-        background: white !important; font-family: "Times New Roman", Times, serif; font-size: 13pt; line-height: 1.4; color: #000 !important;
-      }
-
-      body.print-mode-rx #prescriptionPrintPage, 
-      body.print-mode-rx #prescriptionPrintPage * { visibility: visible !important; }
-      body.print-mode-rx #prescriptionPrintPage {
-        display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 25px 35px;
-        background: white !important; font-family: "Times New Roman", Times, serif; font-size: 12.5pt; line-height: 1.45; color: #000 !important;
-      }
-
       body.print-mode-quote #quotePrintPage, 
       body.print-mode-quote #quotePrintPage * { visibility: visible !important; }
       body.print-mode-quote #quotePrintPage {
         display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 25px 35px;
         background: white !important; font-family: "Times New Roman", Times, serif; font-size: 12.5pt; line-height: 1.4; color: #000 !important;
       }
-
       body.print-mode-consent #consentPrintPage, 
       body.print-mode-consent #consentPrintPage * { visibility: visible !important; }
       body.print-mode-consent #consentPrintPage {
         display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px 30px;
         background: white !important; font-family: "Times New Roman", Times, serif; font-size: 11pt; line-height: 1.35; color: #000 !important;
       }
-
-      body.print-mode-ortho #orthoContractPrintPage, 
-      body.print-mode-ortho #orthoContractPrintPage * { visibility: visible !important; }
-      body.print-mode-ortho #orthoContractPrintPage {
+      body.print-mode-rx #prescriptionPrintPage, 
+      body.print-mode-rx #prescriptionPrintPage * { visibility: visible !important; }
+      body.print-mode-rx #prescriptionPrintPage {
         display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 25px 35px;
-        background: white !important; font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.4; color: #000 !important;
-      }
-
-      body.print-mode-installment #installmentContractPrintPage, 
-      body.print-mode-installment #installmentContractPrintPage * { visibility: visible !important; }
-      body.print-mode-installment #installmentContractPrintPage {
-        display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 25px 35px;
-        background: white !important; font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.4; color: #000 !important;
+        background: white !important; font-family: "Times New Roman", Times, serif; font-size: 12.5pt; line-height: 1.45; color: #000 !important;
       }
     }
   </style>
@@ -1064,7 +1041,6 @@
                class="p-3 hover:bg-teal-50 cursor-pointer transition-colors ${String(currentPatient?.id) === String(p.id) ? 'bg-teal-50 border-l-4 border-teal-600' : ''}">
             <div class="font-semibold text-slate-800 text-xs sm:text-sm uppercase">${p.full_name}</div>
             <div class="text-[11px] text-slate-500">${p.phone || 'Chưa có SĐT'}</div>
-            ${p.notes ? `<div class="text-[10px] text-amber-700 font-semibold mt-0.5 truncate">📌 Lưu ý: ${p.notes}</div>` : ''}
           </div>
         `).join('');
       } catch (err) {
@@ -1436,7 +1412,7 @@
       } catch(e){}
     }
 
-    // 7. IN VĂN BẢN & ĐƠN THUỐC (ĐÃ KẾT NỐI TOÀN BỘ)
+    // 7. IN VĂN BẢN & ĐƠN THUỐC
     function triggerPrintDoc(docType) {
       if (!docType) return;
       if (!currentPatient) {
@@ -1496,7 +1472,8 @@
       } else if (docType === 'prescription') {
         document.getElementById("printRxPatientName").innerText = currentPatient.full_name;
         document.getElementById("printRxDiagnosis").innerText = diag;
-        document.getElementById("printRxDrugsList").innerText = document.getElementById("rxDrugsList")?.value.trim() || "Chưa có thuốc trong toa";
+        document.getElementById("printRxDrugsList").innerText = document.getElementById("rxDrugsList")?.value.trim() || "Chưa có thuốc";
+
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-rx";
         window.print();
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
@@ -1504,6 +1481,7 @@
       } else if (docType === 'record') {
         document.getElementById("pFullName").innerText = currentPatient.full_name;
         document.getElementById("pPhone").innerText = currentPatient.phone || "--";
+
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen print-mode-record";
         window.print();
         document.body.className = "bg-slate-100 text-slate-800 min-h-screen";
@@ -1731,6 +1709,7 @@
       else if (tab === 'finance') loadFinancialData();
     }
 
+    // CÁC HÀM NẠP PHỤ TRỢ (DỊCH VỤ, KHO, LỊCH, TÀI CHÍNH)
     async function loadServiceCatalog() {
       const tbody = document.getElementById("serviceCatalogBody");
       let data = [];
@@ -1887,6 +1866,7 @@
       if(document.getElementById("kpiTotalRevenue")) document.getElementById("kpiTotalRevenue").innerText = totalRev.toLocaleString('vi-VN') + " đ";
     }
 
+    // XUẤT CSV CHO KẾ TOÁN
     async function exportPaymentsToCSV() {
       let payments = [];
       try {
@@ -1922,6 +1902,10 @@
     // KHỞI CHẠY TỰ ĐỘNG
     renderOdontogramUI();
     loadPatients();
+
+    document.getElementById("searchInput")?.addEventListener("input", (e) => {
+      loadPatients(e.target.value);
+    });
   </script>
 </body>
 </html>

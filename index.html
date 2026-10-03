@@ -17,8 +17,10 @@
 
     .print-document { display: none; }
 
+    /* THIẾT LẬP ẨN TOÀN BỘ CÁC THÀNH PHẦN NỘI BỘ (CLASS no-print) KHI IN ẤN */
     @media print {
       body * { visibility: hidden !important; }
+      .no-print, .no-print * { display: none !important; }
       
       body.print-mode-record #medicalRecordPrintPage, 
       body.print-mode-record #medicalRecordPrintPage * { visibility: visible !important; }
@@ -226,15 +228,24 @@
               </div>
             </div>
 
-            <div>
-              <label class="block font-semibold text-slate-700 mb-1">Bác sĩ điều trị phụ trách *</label>
-              <select id="examDoctor" class="w-full p-2 border rounded-lg bg-white font-semibold text-slate-800">
-                <option value="BS. Nguyễn Thị Kim Oanh">BS. Nguyễn Thị Kim Oanh (Giám đốc - Chỉnh nha)</option>
-                <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh (CEO - Phẫu thuật)</option>
-                <option value="BS. Âu Hồng Linh Đa">BS. Âu Hồng Linh Đa (Tổng quát)</option>
-                <option value="BS. Lưu Minh Thanh">BS. Lưu Minh Thanh (Tổng quát)</option>
-                <option value="BS. Trương Ngọc Tuyền">BS. Trương Ngọc Tuyền (Tổng quát)</option>
-              </select>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Bác sĩ điều trị phụ trách *</label>
+                <select id="examDoctor" class="w-full p-2 border rounded-lg bg-white font-semibold text-slate-800">
+                  <option value="BS. Nguyễn Thị Kim Oanh">BS. Nguyễn Thị Kim Oanh (Giám đốc - Chỉnh nha)</option>
+                  <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh (CEO - Phẫu thuật)</option>
+                  <option value="BS. Âu Hồng Linh Đa">BS. Âu Hồng Linh Đa (Tổng quát)</option>
+                  <option value="BS. Lưu Minh Thanh">BS. Lưu Minh Thanh (Tổng quát)</option>
+                  <option value="BS. Trương Ngọc Tuyền">BS. Trương Ngọc Tuyền (Tổng quát)</option>
+                </select>
+              </div>
+              
+              <!-- THÊM MỚI: PHẦN NHẬP TÊN TRỢ THỦ PHỤ CA (CÓ CLASS no-print ĐỂ TỰ ĐỘNG ẨN KHI IN) -->
+              <div class="no-print">
+                <label class="block font-semibold text-purple-800 mb-1">👤 Trợ Thủ Phụ Ca (Nội bộ)</label>
+                <input type="text" id="examAssistantNames" placeholder="Nhập tên trợ thủ (vd: Lan, Mai...)" class="w-full p-2 border border-purple-200 bg-purple-50/40 rounded-lg outline-none font-medium text-purple-900" />
+                <span class="block text-[10px] text-slate-400 mt-0.5">* Chỉ dùng để rà soát nội bộ, tự động ẩn khi in phiếu.</span>
+              </div>
             </div>
           </div>
 
@@ -874,6 +885,45 @@
       </div>
     </main>
 
+  </div>
+
+  <!-- MODAL CẬP NHẬT RĂNG -->
+  <div id="toothModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center hidden z-50 p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-lg text-slate-900">Cập Nhật Răng Số <span id="modalToothNumber" class="text-teal-700">--</span></h3>
+        <button onclick="closeToothModal()" class="text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Tình trạng / Bệnh lý</label>
+          <select id="modalCondition" class="w-full p-2 border rounded-lg bg-white font-medium">
+            <option value="Bình thường">Bình thường</option>
+            <option value="Sâu răng / Viêm tủy">Sâu răng / Viêm tủy</option>
+            <option value="Mất răng">Mất răng</option>
+            <option value="Răng cần cấy Implant">Răng cần cấy Implant</option>
+            <option value="Răng cần bọc mão/cầu sứ">Răng cần bọc mão/cầu sứ</option>
+            <option value="Đã điều trị / Đã trám">Đã điều trị / Đã trám</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Kế hoạch điều trị chi tiết</label>
+          <input type="text" id="modalPlan" placeholder="VD: Điều trị tủy, Chụp sứ Zirconia..." class="w-full p-2 border rounded-lg outline-none font-medium" />
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Trạng thái thực hiện</label>
+          <select id="modalStatus" class="w-full p-2 border rounded-lg bg-white font-semibold">
+            <option value="Chưa làm">Chưa làm</option>
+            <option value="Đang thực hiện">Đang thực hiện</option>
+            <option value="Đã hoàn thành">Đã hoàn thành</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeToothModal()" class="px-4 py-2 border rounded-lg text-xs font-semibold hover:bg-slate-50">Hủy</button>
+        <button onclick="saveToothData()" class="px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white rounded-lg text-xs font-bold shadow">Lưu Thay Đổi</button>
+      </div>
+    </div>
   </div>
 
   <!-- PHÔI IN VĂN BẢN (ẨN KHI KHÔNG IN) -->

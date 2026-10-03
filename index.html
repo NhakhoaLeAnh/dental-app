@@ -17,6 +17,7 @@
 
     .print-document { display: none; }
 
+    /* CƠ CHẾ IN ẤN CHUẨN XÁC CHO TỪNG LOẠI VĂN BẢN */
     @media print {
       body * { visibility: hidden !important; }
       .no-print, .no-print * { display: none !important; }
@@ -65,7 +66,9 @@
       </div>
     </header>
 
-    <!-- TAB 1: LÂM SÀNG -->
+    <!-- ============================================== -->
+    <!-- TAB 1: LÂM SÀNG & ĐƠN THUỐC & TRẢ GÓP          -->
+    <!-- ============================================== -->
     <main id="clinicalTab" class="space-y-6">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div id="activePatientBanner" class="px-4 py-2 bg-white rounded-xl text-xs md:text-sm text-slate-600 font-medium border border-slate-200 shadow-sm flex items-center gap-2 flex-wrap">
@@ -76,13 +79,13 @@
             <option value="">🖨️ In Văn Bản / Hợp Đồng...</option>
             <option value="quote">1. Bảng Báo Giá & Kế Hoạch Điều Trị</option>
             <option value="consent">2. Giấy Cam Kết Phẫu Thuật (MS: 01/BV2)</option>
-            <option value="prescription">3. Đơn Thuốc Bệnh Nhân</option>
+            <option value="prescription">3. In Đơn Thuốc Đang Soạn</option>
           </select>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <!-- Cột Trái: Tiếp nhận & Danh sách -->
+        <!-- Cột Trái: Tiếp nhận -->
         <div class="lg:col-span-4 space-y-4">
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
             <h2 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">Tiếp Nhận Bệnh Nhân</h2>
@@ -124,7 +127,7 @@
           </div>
         </div>
 
-        <!-- Cột Phải: Lâm sàng, Sơ đồ răng, Kê đơn, Lịch sử, Viện phí -->
+        <!-- Cột Phải: Lâm sàng, Sơ đồ răng, Đơn thuốc, Trả góp -->
         <div class="lg:col-span-8 space-y-6">
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Thông Tin Khám Ngoại Trú</h2>
@@ -187,7 +190,7 @@
                 </div>
               </div>
 
-              <!-- CÁC NÚT THÊM NHANH TÊN THUỐC MẪU -->
+              <!-- CÁC NÚT THÊM NHANH TÊN THUỐC -->
               <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-1.5">
                 <span class="block text-[11px] font-bold text-slate-600 uppercase">Thêm nhanh tên thuốc mẫu vào toa:</span>
                 <div class="flex flex-wrap gap-1.5">
@@ -215,7 +218,6 @@
               </div>
             </form>
 
-            <!-- Lịch sử đơn thuốc cũ của bệnh nhân -->
             <div class="space-y-2 pt-2 border-t">
               <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">📜 Lịch Sử Đơn Thuốc Cũ Của Bệnh Nhân:</h3>
               <div id="rxHistoryContainer" class="space-y-2 text-xs">
@@ -224,7 +226,7 @@
             </div>
           </div>
 
-          <!-- LẬP PHIẾU THU & LỊCH SỬ THANH TOÁN CŨ / TRẢ GÓP -->
+          <!-- LẬP PHIẾU THU & TRẢ GÓP -->
           <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Lập Phiếu Thu & Theo Dõi Trả Góp Viện Phí</h2>
             <form id="paymentForm" class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
@@ -274,10 +276,9 @@
               </div>
             </form>
 
-            <!-- Lịch sử thanh toán cũ / Trả góp -->
             <div class="space-y-2 pt-3 border-t">
               <div class="flex justify-between items-center">
-                <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">📊 Lịch Sử Thanh Toán & Công Nợ Cũ Của Bệnh Nhân:</h3>
+                <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">📊 Lịch Sử Thanh Toán & Công Nợ Của Bệnh Nhân:</h3>
                 <span id="patientDebtSummary" class="text-xs font-bold text-rose-700 bg-rose-50 px-2 py-1 rounded border border-rose-100">Đang chọn BN</span>
               </div>
               <div class="overflow-x-auto">
@@ -303,16 +304,58 @@
       </div>
     </main>
 
-    <!-- CÁC PHÂN HỆ KHÁC -->
-    <main id="laboTab" class="hidden space-y-6"><div class="bg-white p-5 rounded-2xl shadow-sm border"><h2>Quản lý Labo</h2></div></main>
-    <main id="pricingTab" class="hidden space-y-6"><div class="bg-white p-5 rounded-2xl shadow-sm border"><h2>Bảng giá dịch vụ</h2></div></main>
-    <main id="inventoryTab" class="hidden space-y-6"><div class="bg-white p-5 rounded-2xl shadow-sm border"><h2>Quản lý kho vật tư</h2></div></main>
-    <main id="scheduleTab" class="hidden space-y-6"><div class="bg-white p-5 rounded-2xl shadow-sm border"><h2>Lịch hẹn & Ca trực</h2></div></main>
-    <main id="crmTab" class="hidden space-y-6"><div class="bg-white p-5 rounded-2xl shadow-sm border"><h2>Chăm sóc khách hàng (CRM)</h2></div></main>
-    <main id="analyticsTab" class="hidden space-y-6"><div class="bg-white p-5 rounded-2xl shadow-sm border"><h2>Báo cáo chiến lược</h2></div></main>
+    <!-- TAB 2: LABO -->
+    <main id="laboTab" class="hidden space-y-6">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 uppercase">🔬 Quản Lý Giao Nhận Labo Phục Hình</h2>
+        <p class="text-xs text-slate-500">Theo dõi tiến độ chế tác răng sứ, máng hướng dẫn phẫu thuật tại các xưởng Labo.</p>
+      </div>
+    </main>
+
+    <!-- TAB 3: BẢNG GIÁ -->
+    <main id="pricingTab" class="hidden space-y-6">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 uppercase">📋 Bảng Giá Dịch Vụ Niêm Yết</h2>
+        <p class="text-xs text-slate-500">Danh mục dịch vụ kỹ thuật chuyên khoa Răng Hàm Mặt.</p>
+      </div>
+    </main>
+
+    <!-- TAB 4: KHO VẬT TƯ -->
+    <main id="inventoryTab" class="hidden space-y-6">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 uppercase">📦 Quản Lý Kho Vật Tư & Thiết Bị</h2>
+        <p class="text-xs text-slate-500">Kiểm soát xuất nhập tồn trụ Implant, vật liệu tiêu hao.</p>
+      </div>
+    </main>
+
+    <!-- TAB 5: LỊCH HẸN -->
+    <main id="scheduleTab" class="hidden space-y-6">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 uppercase">📅 Lịch Khám & Ca Trực Nhân Sự</h2>
+        <p class="text-xs text-slate-500">Sắp xếp lịch hẹn theo ghế máy và phân công ca trực bác sĩ/trợ thủ.</p>
+      </div>
+    </main>
+
+    <!-- TAB 6: CSKH -->
+    <main id="crmTab" class="hidden space-y-6">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 uppercase">🤝 Chăm Sóc Khách Hàng (CRM)</h2>
+        <p class="text-xs text-slate-500">Lịch gọi hậu phẫu 24h-48h và nhắc tái khám định kỳ.</p>
+      </div>
+    </main>
+
+    <!-- TAB 7: BÁO CÁO -->
+    <main id="analyticsTab" class="hidden space-y-6">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 uppercase">📈 Báo Cáo Doanh Thu & Chiến Lược</h2>
+        <p class="text-xs text-slate-500">Thống kê hiệu suất nguồn khách và phân tích dòng tiền.</p>
+      </div>
+    </main>
+
+    <!-- TAB 8: KẾ TOÁN -->
     <main id="financeTab" class="hidden space-y-6">
       <div class="bg-white p-5 rounded-2xl shadow-sm border space-y-4">
-        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Doanh Thu & Dòng Tiền Phòng Khám</h2>
+        <h2 class="text-sm font-bold text-slate-900 uppercase">📊 Doanh Thu & Dòng Tiền Phòng Khám</h2>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
           <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
             <span class="text-[11px] font-bold uppercase text-emerald-700 block">Tổng Thu Thực Tế</span>
@@ -360,7 +403,7 @@
     </div>
   </div>
 
-  <!-- PHÔI IN -->
+  <!-- PHÔI IN VĂN BẢN (IN ĐƠN THUỐC, BÁO GIÁ, CAM KẾT) -->
   <div id="quotePrintPage" class="print-document">
     <div style="font-weight:bold; font-size:14pt; color:#0f766e;">NHA KHOA LÊ ANH</div>
     <div style="text-align:center; margin:15px 0;"><div style="font-size:16pt; font-weight:bold;">BẢNG BÁO GIÁ & KẾ HOẠCH ĐIỀU TRỊ</div></div>
@@ -372,9 +415,9 @@
     <div style="margin-top:15px;">Người bệnh: <strong id="cPatientName">--</strong></div>
   </div>
   <div id="prescriptionPrintPage" class="print-document">
-    <div style="text-align:center; font-weight:bold; font-size:16pt; color:#0f766e;">ĐƠN THUỐC BỆNH NHÂN</div>
-    <div style="margin:10px 0;">Họ tên: <strong id="printRxPatientName">--</strong></div>
-    <div id="printRxDrugsList" style="white-space:pre-wrap; font-size:11pt; line-height:1.6;"></div>
+    <div style="text-align:center; font-weight:bold; font-size:16pt; color:#0f766e;">NHA KHOA LÊ ANH • ĐƠN THUỐC ĐIỀU TRỊ</div>
+    <div style="margin:10px 0;">Họ tên bệnh nhân: <strong id="printRxPatientName">--</strong></div>
+    <div id="printRxDrugsList" style="white-space:pre-wrap; font-size:11pt; line-height:1.6; margin-top:15px;"></div>
   </div>
 
   <!-- SCRIPT HỆ THỐNG -->
@@ -410,7 +453,7 @@
       if(document.getElementById("payDate")) document.getElementById("payDate").valueAsDate = new Date();
     }
 
-    // TẢI BỆNH NHÂN (KẾT HỢP CLOUD & LOCALSTORAGE DỰ PHÒNG AN TOÀN)
+    // 1. TẢI BỆNH NHÂN (KẾT HỢP CLOUD & LOCALSTORAGE DỰ PHÒNG AN TOÀN)
     async function loadPatients(search = "") {
       const listEl = document.getElementById("patientList");
       if (!listEl) return;
@@ -424,7 +467,6 @@
         }
         
         let localPatients = JSON.parse(localStorage.getItem('dental_local_patients')) || [];
-        // Gộp dữ liệu local vào nếu cloud chưa có
         localPatients.forEach(lp => {
           if (!patients.some(p => String(p.id) === String(lp.id))) {
             patients.push(lp);
@@ -449,7 +491,7 @@
       }
     }
 
-    // TIẾP NHẬN BỆNH NHÂN (LƯU ĐỆM KÉP CHỐNG MẤT DỮ LIỆU)
+    // 2. TIẾP NHẬN BỆNH NHÂN
     document.getElementById("patientForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const payload = {
@@ -479,6 +521,7 @@
       }
     });
 
+    // 3. CHỌN BỆNH NHÂN
     async function selectPatient(id) {
       let patient = null;
       if (supabaseClient) {
@@ -511,6 +554,7 @@
       await loadPatientPrescriptions(patient.id);
     }
 
+    // 4. HÀM IN VĂN BẢN (ĐÃ FIX LỖI IN ĐƠN THUỐC)
     function triggerPrintDoc(docType) {
       if (!docType) return;
       if (!currentPatient) { alert("Vui lòng chọn bệnh nhân trước khi in!"); return; }
@@ -525,24 +569,38 @@
         document.body.className = "print-mode-consent";
       } else if (docType === 'prescription') {
         document.getElementById("printRxPatientName").innerText = currentPatient.full_name;
-        document.getElementById("printRxDrugsList").innerText = document.getElementById("rxDrugsList")?.value.trim() || "Chưa có thuốc";
+        document.getElementById("printRxDrugsList").innerText = document.getElementById("rxDrugsList")?.value.trim() || "Chưa có thuốc trong toa";
         document.body.className = "print-mode-rx";
       }
       window.print();
       document.body.className = "";
     }
 
+    // 5. ĐƠN THUỐC MẪU VÀ THÊM NHANH THUỐC
     const RX_TEMPLATES = {
-      post_surgery: { drugs: `1. Augmentin 1g x 14 viên (Uống 1v x 2 lần/ngày)\n2. Medrol 16mg x 4 viên (Uống 1v sáng sau ăn no)\n3. Efferalgan Codein x 10 viên (Uống 1v khi đau nhiều)\n4. Nexium 40mg x 4 viên (Uống 1v trước ăn sáng 30p)`, advice: "Cắn chặt gạc 60-90p; chườm lạnh." },
-      occlusal_trauma: { drugs: `1. Medrol 16mg x 4 viên\n2. Ibuprofen 400mg x 12 viên\n3. Nexium 40mg x 4 viên`, advice: "Tránh nhai đồ cứng." },
-      pulpitis: { drugs: `1. Dorogyne x 16 viên\n2. Ibuprofen 400mg x 12 viên`, advice: "Tái khám điều trị tủy." },
-      gingivitis: { drugs: `1. Dorogyne x 14 viên\n2. Nước súc Kin 0.12% x 1 chai`, advice: "Dùng chỉ nha khoa." }
+      post_surgery: { 
+        drugs: `1. Augmentin 1g x 14 viên (Uống 1v x 2 lần/ngày sau ăn)\n2. Medrol 16mg x 4 viên (Uống 1v sáng sau ăn no)\n3. Efferalgan Codein x 10 viên (Uống 1v khi đau nhiều)\n4. Nexium 40mg x 4 viên (Uống 1v trước ăn sáng 30p)`, 
+        advice: "Cắn chặt gạc 60-90p; chườm lạnh 24h đầu." 
+      },
+      occlusal_trauma: { 
+        drugs: `1. Medrol 16mg x 4 viên (Uống 1v sáng sau ăn no)\n2. Ibuprofen 400mg x 12 viên (Uống 1v x 3 lần/ngày sau ăn)\n3. Nexium 40mg x 4 viên (Uống 1v trước ăn sáng 30p)`, 
+        advice: "Tránh nhai đồ cứng; tái khám mài chỉnh khớp cắn." 
+      },
+      pulpitis: { 
+        drugs: `1. Dorogyne x 16 viên (Uống 2v x 2 lần/ngày sau ăn)\n2. Ibuprofen 400mg x 12 viên (Uống 1v x 3 lần/ngày sau ăn)`, 
+        advice: "Tái khám theo hẹn để điều trị tủy dứt điểm." 
+      },
+      gingivitis: { 
+        drugs: `1. Dorogyne x 14 viên (Uống 2v x 2 lần/ngày sau ăn)\n2. Nước súc miệng Kin 0.12% x 1 chai (Súc 15ml x 2 lần/ngày)`, 
+        advice: "Dùng chỉ nha khoa sau ăn; chải răng đúng cách." 
+      }
     };
 
     function applyRxTemplate() {
       const key = document.getElementById("rxTemplateSelect").value;
       if (!key || !RX_TEMPLATES[key]) return;
       document.getElementById("rxDrugsList").value = RX_TEMPLATES[key].drugs;
+      document.getElementById("rxAdvice").value = RX_TEMPLATES[key].advice;
     }
 
     function appendDrug(drugName, qty, usage) {
@@ -565,7 +623,7 @@
     function closeToothModal() { document.getElementById("toothModal").classList.add("hidden"); }
     async function saveToothData() { closeToothModal(); }
 
-    // THANH TOÁN & TRẢ GÓP CŨ
+    // 6. THANH TOÁN & TRẢ GÓP
     async function loadPatientPayments(patientId) {
       const tbody = document.getElementById("patientPaymentsTableBody");
       const summaryEl = document.getElementById("patientDebtSummary");
@@ -617,7 +675,7 @@
         installment_note: document.getElementById("payInstallmentNote").value.trim() || null
       };
       if (supabaseClient) { await supabaseClient.from('payments').insert([payload]); }
-      alert("Đã lưu phiếu thu!");
+      alert("Đã lưu phiếu thu thành công!");
       loadPatientPayments(currentPatient.id);
     });
 
@@ -626,7 +684,7 @@
       if (currentPatient) loadPatientPayments(currentPatient.id);
     }
 
-    // ĐƠN THUỐC CŨ
+    // 7. LỊCH SỬ ĐƠN THUỐC CŨ
     async function loadPatientPrescriptions(patientId) {
       const container = document.getElementById("rxHistoryContainer");
       if (!container) return;
@@ -643,6 +701,7 @@
         <div class="p-3 bg-slate-50 border rounded-lg space-y-1">
           <div class="font-bold text-teal-800">${rx.doctor_name} • ${rx.diagnosis}</div>
           <p class="font-mono text-xs whitespace-pre-wrap">${rx.drugs_list}</p>
+          ${rx.advice ? `<p class="text-[11px] italic text-rose-700">Lời dặn: ${rx.advice}</p>` : ''}
         </div>
       `).join('');
     }
@@ -655,13 +714,15 @@
         patient_name: currentPatient.full_name,
         doctor_name: document.getElementById("rxDoctor").value,
         diagnosis: document.getElementById("examDiagnosis").value.trim() || "Bệnh lý răng hàm mặt",
-        drugs_list: document.getElementById("rxDrugsList").value.trim()
+        drugs_list: document.getElementById("rxDrugsList").value.trim(),
+        advice: document.getElementById("rxAdvice").value.trim()
       };
       if (supabaseClient) { await supabaseClient.from('prescriptions').insert([payload]); }
-      alert("Đã lưu đơn thuốc thành công!");
+      alert("Đã lưu đơn thuốc vào hồ sơ thành công!");
       loadPatientPrescriptions(currentPatient.id);
     });
 
+    // 8. ĐIỀU HƯỚNG TAB
     function switchTab(tab) {
       const tabs = ['clinical', 'labo', 'pricing', 'inventory', 'schedule', 'crm', 'analytics', 'finance'];
       tabs.forEach(t => {

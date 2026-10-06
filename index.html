@@ -1,4 +1,4 @@
-# Mã Nguồn Full 100% index.html - Nha Khoa Lê Anh (2.620 Dòng Pure HTML - Đã Tự Động Liên Kết Bảng Giá)
+# Mã Nguồn Full 100% index.html - Nha Khoa Lê Anh (Chương Trình Thành Viên Chuẩn 2.620 Dòng Pure HTML)
 
 Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy đủ 2.620 dòng code:
 
@@ -112,11 +112,9 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
             <span>+ Thêm Mới</span>
           </button>
         </div>
-        
         <div class="relative">
           <input type="text" id="patientSearchInput" onkeyup="filterPatientList()" placeholder="🔍 Tìm tên, SĐT, Mã BN..." class="w-full bg-slate-50 border border-slate-300 rounded-lg pl-3 pr-3 py-2 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none" />
         </div>
-
         <div id="patientListContainer" class="flex-1 overflow-y-auto max-h-[520px] space-y-2 pr-1"></div>
       </section>
 
@@ -130,6 +128,45 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
           <div class="flex items-center space-x-2">
             <span id="activePatientCodeBadge" class="bg-teal-100 text-teal-800 text-xs font-bold px-2.5 py-1 rounded-full">BN-000</span>
             <button onclick="saveClinicalRecord()" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-3 py-1.5 rounded shadow">💾 Lưu Bệnh Án</button>
+          </div>
+        </div>
+
+        <!-- MEMBERSHIP TIER CONFIGURATION BANNER (CHƯƠNG TRÌNH THÀNH VIÊN CHUẨN NHA KHOA LÊ ANH) -->
+        <div class="bg-gradient-to-r from-teal-800 to-teal-900 text-white p-4 rounded-xl border border-teal-700 shadow-sm space-y-3">
+          <div class="flex flex-wrap justify-between items-center gap-2 border-b border-teal-600/60 pb-2">
+            <div class="flex items-center gap-2">
+              <span id="memberTierBadge" class="bg-slate-200 text-slate-800 text-xs font-black px-2.5 py-1 rounded uppercase tracking-wider shadow-xs">⚪ MEMBER</span>
+              <span class="text-xs text-teal-200">Hạng Thành Viên Bệnh Nhân (Chương Trình Chuẩn)</span>
+            </div>
+            <div class="text-[11px] text-teal-200">
+              <span>Doanh thu tích lũy: <strong id="patSpendDisplay" class="text-amber-300 font-bold">0 đ</strong></span>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-xs">
+            <div class="sm:col-span-5">
+              <label class="font-bold text-teal-100 block mb-1">Hạng Thẻ Thành Viên Chính Thức:</label>
+              <select id="patMemberTierSelect" onchange="updateMemberTier()" class="w-full bg-teal-950 text-white border border-teal-600 rounded p-1.5 font-bold">
+                <option value="MEMBER">⚪ MEMBER (&lt; 5tr) - Free Khám & CT 6M (Giảm 0%)</option>
+                <option value="SILVER">🩶 SILVER (&ge; 5tr) - Giảm 5% Tổng Quát</option>
+                <option value="GOLD">🥇 GOLD (&ge; 30tr) - Giảm 7% TQ / 3% Chuyên Sâu + Quà SN 300k</option>
+                <option value="DIAMOND">💎 DIAMOND (&ge; 80tr) - Giảm 10% TQ / 5% Chuyên Sâu + Quà SN 500k + 3 Thẻ Referral</option>
+                <option value="SPECIAL">⭐ KHÁCH HÀNG ĐẶC BIỆT / ĐỐI TÁC - Giảm Giá Tùy Chỉnh</option>
+              </select>
+            </div>
+            <div class="sm:col-span-3">
+              <label class="font-bold text-teal-100 block mb-1">Mức Giảm (%) Tùy Chỉnh:</label>
+              <input type="number" id="patCustomDiscountInput" onkeyup="updateMemberTier()" class="w-full bg-teal-950 text-amber-300 border border-teal-600 rounded p-1.5 font-bold text-center" placeholder="0" />
+            </div>
+            <div class="sm:col-span-4">
+              <label class="font-bold text-teal-100 block mb-1">Ghi Chú Ưu Đãi / Mã Referral:</label>
+              <input type="text" id="patDiscountNote" class="w-full bg-teal-950 text-teal-100 border border-teal-600 rounded p-1.5 text-xs" placeholder="Quyền lợi hạng thẻ..." />
+            </div>
+          </div>
+
+          <!-- DYNAMIC TIER PRIVILEGES SUMMARY BOX -->
+          <div id="tierPrivilegesSummary" class="bg-teal-950/60 p-2.5 rounded-lg border border-teal-700/50 text-[11px] text-teal-100 space-y-1">
+            <div id="tierBenefitsText"><strong>Quyền lợi:</strong> Khám và tư vấn miễn phí, miễn phí chụp phim CT khảo sát theo chỉ định trong vòng 6 tháng. Tích lũy doanh thu để nâng hạng Silver.</div>
           </div>
         </div>
 
@@ -173,19 +210,19 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
             <div>
               <label class="font-bold text-teal-800 block mb-0.5">👨‍⚕️ Bác Sĩ Điều Trị Phụ Trách</label>
               <select id="selectDoctor" class="w-full bg-white border border-teal-300 rounded p-1.5 font-medium">
-                <option value="BS. Nguyễn Thị Kim Oanh">BS. Nguyễn Thị Kim Oanh (Giám đốc - Chỉnh nha & Thẩm mỹ)</option>
-                <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh (CEO - Phẫu thuật & Implant)</option>
-                <option value="BS. Âu Hồng Linh Đa">BS. Âu Hồng Linh Đa (Phục hình & Răng sứ)</option>
-                <option value="BS. Lưu Minh Thanh">BS. Lưu Minh Thanh (Nha chu & Nội nha)</option>
-                <option value="BS. Trương Ngọc Tuyền">BS. Trương Ngọc Tuyền (Nha khoa Tổng quát)</option>
+                <option value="BS. Nguyễn Thị Kim Oanh">BS. Nguyễn Thị Kim Oanh (Giám đốc)</option>
+                <option value="BS. Lê Hiếu Trọng Anh">BS. Lê Hiếu Trọng Anh (CEO - Phẫu thuật)</option>
+                <option value="BS. Âu Hồng Linh Đa">BS. Âu Hồng Linh Đa (Phục hình)</option>
+                <option value="BS. Lưu Minh Thanh">BS. Lưu Minh Thanh (Nha chu)</option>
+                <option value="BS. Trương Ngọc Tuyền">BS. Trương Ngọc Tuyền (TQ)</option>
               </select>
             </div>
             <div>
               <label class="font-bold text-teal-800 block mb-0.5">👩‍⚕️ Trợ Thủ Phụ Ca</label>
               <select id="selectAssistant" class="w-full bg-white border border-teal-300 rounded p-1.5 font-medium">
-                <option value="Trợ thủ Lý Diệp Diễm Quỳnh">Trợ thủ Lý Diệp Diễm Quỳnh (Fulltime)</option>
-                <option value="Trợ thủ Lý Phi Thương">Trợ thủ Lý Phi Thương (Parttime)</option>
-                <option value="Trợ thủ Phạm Gia Nguyễn Phúc">Trợ thủ Phạm Gia Nguyễn Phúc (Parttime)</option>
+                <option value="Trợ thủ Lý Diệp Diễm Quỳnh">Trợ thủ Lý Diệp Diễm Quỳnh</option>
+                <option value="Trợ thủ Lý Phi Thương">Trợ thủ Lý Phi Thương</option>
+                <option value="Trợ thủ Phạm Gia Nguyễn Phúc">Trợ thủ Phạm Gia Nguyễn Phúc</option>
               </select>
             </div>
             <div>
@@ -233,25 +270,28 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
           <div id="odontogramUI" class="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200 overflow-x-auto"></div>
 
           <div class="pt-2 space-y-3">
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center flex-wrap gap-2">
               <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">Kế Hoạch Điều Trị & Dự Toán Chi Phí Chi Tiết</h4>
-              <div id="grandTotalPriceText" class="font-extrabold text-amber-700 text-sm bg-amber-50 px-3 py-1 rounded border border-amber-200 shadow-xs">Tổng dự toán: 0 đ</div>
+              <div id="grandTotalPriceText" class="font-extrabold text-amber-800 text-xs sm:text-sm bg-amber-50 px-3 py-1.5 rounded border border-amber-300 shadow-xs">Tổng niêm yết: 0 đ | Giảm giá: 0 đ | Thanh toán: 0 đ</div>
             </div>
+
             <div class="overflow-x-auto">
               <table class="w-full text-xs text-left border border-slate-200 rounded-lg overflow-hidden">
                 <thead class="bg-teal-700 text-white font-bold">
                   <tr>
                     <th class="p-2 text-center w-12">Răng</th>
-                    <th class="p-2 w-36">Chẩn Đoán Bác Sĩ</th>
+                    <th class="p-2 w-32">Chẩn Đoán Bác Sĩ</th>
                     <th class="p-2">Tình Trạng Thực Tế (Mô Tả)</th>
                     <th class="p-2">Kế Hoạch Điều Trị</th>
-                    <th class="p-2 text-right w-28">Đơn Giá (VNĐ)</th>
+                    <th class="p-2 text-right w-24">Đơn Giá</th>
+                    <th class="p-2 text-center w-16">Giảm (%)</th>
+                    <th class="p-2 text-right w-24">Thành Tiền</th>
                     <th class="p-2 text-center w-10">Xóa</th>
                   </tr>
                 </thead>
                 <tbody id="treatmentPlanBody" class="divide-y divide-slate-200 bg-white">
                   <tr>
-                    <td colspan="6" class="p-4 text-center text-slate-400 italic">Chưa có răng nào được chọn điều trị. Nhấp vào các răng ở sơ đồ trên để cập nhật.</td>
+                    <td colspan="8" class="p-4 text-center text-slate-400 italic">Chưa có răng nào được chọn điều trị. Nhấp vào các răng ở sơ đồ trên để cập nhật.</td>
                   </tr>
                 </tbody>
               </table>
@@ -285,8 +325,8 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
             <h3 class="font-bold text-teal-800 text-xs uppercase border-b pb-2">💰 Thanh Toán & Hợp Đồng Trả Góp</h3>
             <div class="space-y-2 text-xs">
               <div class="flex justify-between">
-                <span class="text-slate-600">Tổng Chi Phí Điều Trị:</span>
-                <strong id="payTotalText" class="text-amber-700">0 đ</strong>
+                <span class="text-slate-600">Tổng Chi Phí Điều Trị (Sau Giảm):</span>
+                <strong id="payTotalText" class="text-amber-700 font-extrabold">0 đ</strong>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-slate-600">Số Tiền Khách Thanh Toán:</span>
@@ -392,21 +432,22 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
                 <th class="p-2.5">Chi Tiết Thủ Thuật / Sản Phẩm</th>
                 <th class="p-2.5">Đơn Vị Tính</th>
                 <th class="p-2.5 text-right">Đơn Giá Niêm Yết</th>
-                <th class="p-2.5">Bảo Hành</th>
+                <th class="p-2.5">Loại Dịch Vụ</th>
               </tr>
             </thead>
             <tbody id="pricingTableBody" class="divide-y">
-              <tr><td class="p-2 font-bold text-teal-800">Khám & Chẩn Đoán</td><td class="p-2">Khám tổng quát & Lập kế hoạch điều trị</td><td class="p-2">Lần</td><td class="p-2 text-right font-bold text-amber-700">200.000 đ</td><td class="p-2">--</td></tr>
-              <tr><td class="p-2 font-bold text-teal-800">Khám & Chẩn Đoán</td><td class="p-2">Chụp CT ConeBeam 1 vị trí / 2 hàm</td><td class="p-2">Lần</td><td class="p-2 text-right font-bold text-amber-700">350.000 - 600.000 đ</td><td class="p-2">--</td></tr>
-              <tr><td class="p-2 font-bold text-teal-800">Nha Chu & Cạo Vôi</td><td class="p-2">Cạo vôi răng & Đánh bóng 2 hàm</td><td class="p-2">Liệu trình</td><td class="p-2 text-right font-bold text-amber-700">300.000 - 500.000 đ</td><td class="p-2">--</td></tr>
-              <tr><td class="p-2 font-bold text-teal-800">Chữa Răng - Nội Nha</td><td class="p-2">Trám răng thẩm mỹ Composite 3M Z250</td><td class="p-2">Răng</td><td class="p-2 text-right font-bold text-amber-700">400.000 đ</td><td class="p-2">6 Tháng</td></tr>
-              <tr><td class="p-2 font-bold text-teal-800">Chữa Răng - Nội Nha</td><td class="p-2">Điều trị tủy răng Hàm lớn (R6, R7)</td><td class="p-2">Răng</td><td class="p-2 text-right font-bold text-amber-700">2.000.000 - 3.000.000 đ</td><td class="p-2">1 Năm</td></tr>
-              <tr><td class="p-2 font-bold text-teal-800">Nhổ Răng - Sub-Micro</td><td class="p-2">Nhổ răng khôn mọc lệch / mọc ngầm (Piezotome)</td><td class="p-2">Răng</td><td class="p-2 text-right font-bold text-amber-700">1.800.000 - 3.500.000 đ</td><td class="p-2">--</td></tr>
-              <tr><td class="p-2 font-bold text-teal-800">Phục Hình Sứ</td><td class="p-2">Răng sứ Titanium / Cercon HT / Lava 3M</td><td class="p-2">Răng</td><td class="p-2 text-right font-bold text-amber-700">3.000.000 - 8.500.000 đ</td><td class="p-2">7 - 15 Năm</td></tr>
-              <tr><td class="p-2 font-bold text-teal-800">Trồng Răng Implant</td><td class="p-2">Implant Osstem (Hàn Quốc) / HiOssen (Mỹ)</td><td class="p-2">Trụ</td><td class="p-2 text-right font-bold text-amber-700">20.000.000 - 25.000.000 đ</td><td class="p-2">Trọn Đời</td></tr>
-              <tr><td class="p-2 font-bold text-teal-800">Chỉnh Nha - Niềng Răng</td><td class="p-2">Mắc cài Kim loại Thường / Tự buộc 3M</td><td class="p-2">Gói 2 hàm</td><td class="p-2 text-right font-bold text-amber-700">35.000.000 - 45.000.000 đ</td><td class="p-2">Trọn gói</td></tr>
-              <tr><td class="p-2 font-bold text-teal-800">Chỉnh Nha - Niềng Răng</td><td class="p-2">Niềng răng khay trong suốt Invisalign (Mỹ)</td><td class="p-2">Gói 2 hàm</td><td class="p-2 text-right font-bold text-amber-700">80.000.000 - 115.000.000 đ</td><td class="p-2">Trọn gói</td></tr>
-              <tr><td class="p-2 font-bold text-teal-800">Sản Phẩm CSKH</td><td class="p-2">Nước súc miệng Kin / Máy tăm nước Panasonic</td><td class="p-2">Cái / Chai</td><td class="p-2 text-right font-bold text-amber-700">150.000 - 2.700.000 đ</td><td class="p-2">12 Tháng</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Khám & Chẩn Đoán</td><td class="p-2">Khám và tư vấn tổng quát</td><td class="p-2">Lần</td><td class="p-2 text-right font-bold text-amber-700">200.000 đ</td><td class="p-2 font-bold text-teal-700">Tổng quát</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Khám & Chẩn Đoán</td><td class="p-2">Chụp phim CT-conebeam 1 vị trí</td><td class="p-2">Lần</td><td class="p-2 text-right font-bold text-amber-700">350.000 đ</td><td class="p-2 font-bold text-teal-700">Tổng quát</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Nha Chu & Cạo Vôi</td><td class="p-2">Lấy cao răng, đánh bóng độ I - II - III</td><td class="p-2">2 Hàm</td><td class="p-2 text-right font-bold text-amber-700">300.000 đ</td><td class="p-2 font-bold text-teal-700">Tổng quát</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Chữa Răng - Nội Nha</td><td class="p-2">Điều trị sâu ngà răng phục hồi bằng Composite</td><td class="p-2">Răng</td><td class="p-2 text-right font-bold text-amber-700">400.000 đ</td><td class="p-2 font-bold text-teal-700">Tổng quát</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Chữa Răng - Nội Nha</td><td class="p-2">Điều trị tủy răng vĩnh viễn</td><td class="p-2">Răng</td><td class="p-2 text-right font-bold text-amber-700">2.000.000 đ</td><td class="p-2 font-bold text-teal-700">Tổng quát</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Nhổ Răng - Tiểu Phẫu</td><td class="p-2">Nhổ răng khôn mọc lệch / nghiêng 45-90 độ</td><td class="p-2">Răng</td><td class="p-2 text-right font-bold text-amber-700">1.000.000 đ</td><td class="p-2 font-bold text-teal-700">Tổng quát</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Phục Hình Cố Định</td><td class="p-2">Răng toàn sứ Zirconia (DD-Bio Đức)</td><td class="p-2">Răng</td><td class="p-2 text-right font-bold text-amber-700">5.000.000 đ</td><td class="p-2 font-bold text-purple-700">Chuyên sâu</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Phục Hình Cố Định</td><td class="p-2">Răng toàn sứ Cercon HT</td><td class="p-2">Răng</td><td class="p-2 text-right font-bold text-amber-700">6.000.000 đ</td><td class="p-2 font-bold text-purple-700">Chuyên sâu</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Implant</td><td class="p-2">Implant Osstem (Hàn Quốc)</td><td class="p-2">Trụ</td><td class="p-2 text-right font-bold text-amber-700">20.000.000 đ</td><td class="p-2 font-bold text-purple-700">Chuyên sâu</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Implant</td><td class="p-2">Implant HiOssen (Mỹ)</td><td class="p-2">Trụ</td><td class="p-2 text-right font-bold text-amber-700">25.000.000 đ</td><td class="p-2 font-bold text-purple-700">Chuyên sâu</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Chỉnh Nha - Mắc Cài</td><td class="p-2">Chỉnh nha mắc cài kim loại tự buộc trung bình</td><td class="p-2">2 Hàm</td><td class="p-2 text-right font-bold text-amber-700">35.000.000 đ</td><td class="p-2 font-bold text-purple-700">Chuyên sâu</td></tr>
+              <tr><td class="p-2 font-bold text-teal-800">Chỉnh Nha - Invisalign</td><td class="p-2">Invisalign Comprehensive (&gt; 24 khay)</td><td class="p-2">Gói</td><td class="p-2 text-right font-bold text-amber-700">110.000.000 đ</td><td class="p-2 font-bold text-purple-700">Chuyên sâu</td></tr>
             </tbody>
           </table>
         </div>
@@ -489,7 +530,7 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="md:col-span-2 bg-slate-50 p-3 rounded-lg border">
-            <h3 class="font-bold text-xs uppercase text-teal-800 mb-2">📋 Lịch Hẹn Khám Hôm Nay (03/10/2026)</h3>
+            <h3 class="font-bold text-xs uppercase text-teal-800 mb-2">📋 Lịch Hẹn Khám Hôm Nay (06/10/2026)</h3>
             <div class="overflow-x-auto">
               <table class="w-full text-xs text-left bg-white border rounded">
                 <thead class="bg-slate-100 font-bold border-b">
@@ -509,6 +550,7 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
               </table>
             </div>
           </div>
+
           <div class="bg-slate-50 p-3 rounded-lg border space-y-2 text-xs">
             <h3 class="font-bold uppercase text-teal-800 border-b pb-1">👥 Phân Công Ca Trực</h3>
             <div>
@@ -548,6 +590,7 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
               </div>
             </div>
           </div>
+
           <div class="bg-amber-50/60 border border-amber-200 p-3 rounded-lg space-y-2">
             <h3 class="font-bold text-amber-900 border-b pb-1">🗓️ Nhắc Lịch Tái Khám ĐỊnh Kỳ (6 Tháng)</h3>
             <div class="space-y-2">
@@ -575,15 +618,15 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 text-xs">
           <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-lg">
-            <span class="text-slate-500 block">Tổng Doanh Thu Thu Thực Tế:</span>
+            <span class="text-slate-500 block">Tong Doanh Thu Thu Thuc Te:</span>
             <strong id="analyticsTotalRev" class="text-xl text-emerald-800 font-extrabold">8.600.000 đ</strong>
           </div>
           <div class="bg-teal-50 border border-teal-200 p-3 rounded-lg">
-            <span class="text-slate-500 block">Thanh Toán Chuyển Khoản Bank:</span>
+            <span class="text-slate-500 block">Thanh Toan Chuyen Khoan Bank:</span>
             <strong class="text-xl text-teal-800 font-extrabold">5.800.000 đ</strong>
           </div>
           <div class="bg-amber-50 border border-amber-200 p-3 rounded-lg">
-            <span class="text-slate-500 block">Công Nợ Trả Góp Mua Dự Án:</span>
+            <span class="text-slate-500 block">Cong No Tra Gop Mua Du An:</span>
             <strong class="text-xl text-amber-800 font-extrabold">2.800.000 đ</strong>
           </div>
         </div>
@@ -601,15 +644,15 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 text-xs">
           <div class="bg-slate-100 p-3 rounded border">
-            <span class="text-slate-500 block">Tổng Thu Trong Tháng:</span>
+            <span class="text-slate-500 block">Tong Thu Trong Thang:</span>
             <strong class="text-lg text-teal-800 font-bold">8.600.000 đ</strong>
           </div>
           <div class="bg-rose-50 p-3 rounded border border-rose-200">
-            <span class="text-slate-500 block">Tổng Chi Phí Vận Hành:</span>
+            <span class="text-slate-500 block">Tong Chi Phi Vanh Han:</span>
             <strong class="text-lg text-rose-700 font-bold">1.200.000 đ</strong>
           </div>
           <div class="bg-emerald-50 p-3 rounded border border-emerald-200">
-            <span class="text-slate-500 block">Quỹ Tồn Thuần (Thu - Chi):</span>
+            <span class="text-slate-500 block">Quy Ton Thuan (Thu - Chi):</span>
             <strong id="financeNetBalance" class="text-lg text-emerald-800 font-bold">7.400.000 đ</strong>
           </div>
         </div>
@@ -617,7 +660,7 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
     </main>
   </div>
 
-  <!-- PRINT DOCUMENTS CONTAINER (HIDDEN ON SCREEN, SHOWN ON PRINT) -->
+  <!-- PRINT DOCUMENTS CONTAINER -->
   <div id="printDocsContainer">
     <!-- 1. BẢNG BÁO GIÁ & KẾ HOẠCH ĐIỀU TRỊ -->
     <div id="quotePrintPage" class="print-document">
@@ -632,7 +675,7 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         </div>
         <div style="text-align:right; font-size:9.5pt;">
           <div style="font-weight:bold;">SỐ: .../BG-NKLA</div>
-          <div>Ngày lập: <span id="quotePrintDate">03/10/2026</span></div>
+          <div>Ngày lập: <span id="quotePrintDate">06/10/2026</span></div>
         </div>
       </div>
 
@@ -644,31 +687,42 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
       <div style="margin-bottom:15px; font-size:11pt; line-height:1.5;">
         <div>Họ và tên bệnh nhân: <strong id="quotePrintPatName" style="text-transform:uppercase;">--</strong></div>
         <div>Số điện thoại: <span id="quotePrintPatPhone">--</span> | Mã BN: <span id="quotePrintPatCode">--</span></div>
+        <div>Hạng thành viên: <strong id="quotePrintMemberTier">MEMBER</strong> | Ưu đãi: <span id="quotePrintDiscountNote">Chương trình chuẩn Nha khoa Lê Anh</span></div>
         <div>Bác sĩ tư vấn & điều trị: <strong id="quotePrintDoctor">BS. Lê Hiếu Trọng Anh</strong></div>
       </div>
 
-      <table style="width:100%; border-collapse:collapse; margin-bottom:20px; font-size:10.5pt;">
+      <table style="width:100%; border-collapse:collapse; margin-bottom:15px; font-size:10pt;">
         <thead>
           <tr style="background-color:#0f766e; color:white;">
             <th style="border:1px solid #000; padding:6px; text-align:center; width:35px;">STT</th>
-            <th style="border:1px solid #000; padding:6px; text-align:center; width:50px;">Răng</th>
+            <th style="border:1px solid #000; padding:6px; text-align:center; width:45px;">Răng</th>
             <th style="border:1px solid #000; padding:6px; text-align:left;">Chẩn Đoán & Tình Trạng Thực Tế</th>
             <th style="border:1px solid #000; padding:6px; text-align:left;">Kế Hoạch Điều Trị Dự Kiến</th>
-            <th style="border:1px solid #000; padding:6px; text-align:right; width:110px;">Đơn Giá (VNĐ)</th>
+            <th style="border:1px solid #000; padding:6px; text-align:right; width:90px;">Đơn Giá</th>
+            <th style="border:1px solid #000; padding:6px; text-align:center; width:55px;">Giảm (%)</th>
+            <th style="border:1px solid #000; padding:6px; text-align:right; width:100px;">Thành Tiền</th>
           </tr>
         </thead>
         <tbody id="quotePrintTableBody">
-          <tr><td colspan="5" style="border:1px solid #000; padding:10px; text-align:center;">Chưa có dữ liệu dự toán.</td></tr>
+          <tr><td colspan="7" style="border:1px solid #000; padding:10px; text-align:center;">Chưa có dữ liệu dự toán.</td></tr>
         </tbody>
         <tfoot>
           <tr style="font-weight:bold; background-color:#f8fafc;">
-            <td colspan="4" style="border:1px solid #000; padding:8px; text-align:right; text-transform:uppercase;">TỔNG CỘNG DỰ TOÁN CHI PHÍ:</td>
-            <td id="quotePrintGrandTotal" style="border:1px solid #000; padding:8px; text-align:right; color:#0f766e; font-size:11.5pt;">0 đ</td>
+            <td colspan="6" style="border:1px solid #000; padding:6px; text-align:right;">TỔNG ĐƠN GIÁ NIÊM YẾT:</td>
+            <td id="quotePrintOrigTotal" style="border:1px solid #000; padding:6px; text-align:right;">0 đ</td>
+          </tr>
+          <tr style="font-weight:bold; background-color:#f8fafc; color:#c2410c;">
+            <td colspan="6" style="border:1px solid #000; padding:6px; text-align:right;">TỔNG ƯU ĐÃI GIẢM GIÁ TẠI NHA KHOA LÊ ANH:</td>
+            <td id="quotePrintDiscTotal" style="border:1px solid #000; padding:6px; text-align:right;">-0 đ</td>
+          </tr>
+          <tr style="font-weight:bold; background-color:#f0fdf4; color:#0f766e; font-size:11pt;">
+            <td colspan="6" style="border:1px solid #000; padding:8px; text-align:right; text-transform:uppercase;">TỔNG CHI PHÍ THỰC TẾ THANH TOÁN:</td>
+            <td id="quotePrintGrandTotal" style="border:1px solid #000; padding:8px; text-align:right;">0 đ</td>
           </tr>
         </tfoot>
       </table>
 
-      <div style="margin-top:30px; display:flex; justify-content:space-between; text-align:center; font-size:11pt;">
+      <div style="margin-top:30px; display:flex; justify-style:space-between; text-align:center; font-size:11pt;">
         <div>
           <div><strong>BỆNH NHÂN / XÁC NHẬN</strong></div>
           <div style="font-size:9pt; font-style:italic;">(Ký và ghi rõ họ tên)</div>
@@ -699,15 +753,18 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
           <div style="font-weight:bold; font-size:9pt; margin-top:2px;">MS: 01/BV2</div>
         </div>
       </div>
+
       <div style="text-align:center; margin:15px 0;">
         <h2 style="font-size:14pt; font-weight:bold; text-transform:uppercase; margin:0;">GIẤY CAM ĐOAN CHẤP NHẬN PHẪU THUẬT, THỦ THUẬT VÀ GÂY MÊ HỒI SỨC</h2>
       </div>
+
       <div style="font-size:11pt; line-height:1.5;">
         <div>Tôi tên là: <strong id="consentPatName">--</strong> | Tuổi: <span id="consentPatAge">--</span> | Giới tính: <span id="consentPatGender">--</span></div>
         <div>Địa chỉ: <span id="consentPatAddress">--</span></div>
         <div>Là bệnh nhân / Đại diện gia đình bệnh nhân cam kết đồng ý thực hiện phẫu thuật/thủ thuật nha khoa tại Nha Khoa Lê Anh.</div>
         <div style="margin-top:10px;">Đã được Bác sĩ <strong id="consentDoctor">BS. Lê Hiếu Trọng Anh</strong> giải thích rõ ràng về chẩn đoán, phương pháp phẫu thuật, chi phí và các nguy cơ có thể xảy ra.</div>
       </div>
+
       <div style="margin-top:40px; display:flex; justify-content:space-between; text-align:center; font-size:11pt;">
         <div>
           <div><strong>NGƯỜI CAM ĐOAN</strong></div>
@@ -732,28 +789,33 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
           </div>
         </div>
       </div>
+
       <div style="text-align:center; margin-bottom:15px;">
         <h2 style="font-size:18pt; font-weight:bold; color:#0f766e; text-transform:uppercase; margin:0;">ĐƠN THUỐC</h2>
       </div>
+
       <div style="margin-bottom:15px; font-size:11.5pt; line-height:1.5;">
         <div>Họ và tên bệnh nhân: <strong id="rxPrintPatName" style="text-transform:uppercase;">--</strong></div>
         <div>Tuổi: <span id="rxPrintPatAge">--</span> | Giới tính: <span id="rxPrintPatGender">--</span> | SĐT: <span id="rxPrintPatPhone">--</span></div>
         <div>Chẩn đoán: <span id="rxPrintDiag">Điều trị nha khoa</span></div>
       </div>
+
       <div style="margin-bottom:20px; font-size:11.5pt; min-height:180px;">
         <div style="font-weight:bold; margin-bottom:8px;">Chi tiết thuốc kê đơn:</div>
         <div id="rxPrintDrugsBody" style="white-space:pre-wrap; font-family:'Courier New', Courier, monospace; padding-left:10px; line-height:1.6;">1. Paracetamol 500mg...</div>
       </div>
+
       <div style="margin-bottom:20px; font-size:11pt; font-style:italic; border-top:1px dashed #ccc; padding-top:8px;">
         Lời dặn Bác sĩ: <span id="rxPrintAdvice">Uống thuốc sau khi ăn no.</span>
       </div>
+
       <div style="display:flex; justify-content:space-between; text-align:center; font-size:11pt;">
         <div>
-          <div>Ngày <span id="rxPrintDate">03/10/2026</span></div>
+          <div>Ngày <span id="rxPrintDate">06/10/2026</span></div>
           <div><strong>BỆNH NHÂN</strong></div>
         </div>
         <div>
-          <div>Ngày <span id="rxPrintDateDoc">03/10/2026</span></div>
+          <div>Ngày <span id="rxPrintDateDoc">06/10/2026</span></div>
           <div><strong>BÁC SĨ KÊ ĐƠN</strong></div>
           <div style="margin-top:55px;" id="rxPrintDoctor">BS. Nguyễn Thị Kim Oanh</div>
         </div>
@@ -775,12 +837,14 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
           <div>Số bệnh án: <span id="recPrintCode">--</span></div>
         </div>
       </div>
+
       <div style="text-align:center; font-weight:bold; font-size:14pt; margin-bottom:10px;">BỆNH ÁN NGOẠI TRÚ RĂNG HÀM MẶT</div>
+
       <div style="font-size:10.5pt; line-height:1.4;">
         <div>I. HÀNH CHÍNH: Họ tên: <strong id="recPrintName">--</strong> | Tuổi: <span id="recPrintAge">--</span> | Nam/Nữ: <span id="recPrintGender">--</span></div>
         <div>Địa chỉ: <span id="recPrintAddress">--</span> | SĐT: <span id="recPrintPhone">--</span></div>
         <div>II. LÝ DO VÀO VIỆN: Đau răng / Khám định kỳ / Phục hình sứ.</div>
-        <div>III. HỎI BỆNH & CHẨN ĐOÁN: Tình trạng RHM ổn định.</div>
+        <div>III. HOẢI BỆNH & CHẨN ĐOÁN: Tình trạng RHM ổn định.</div>
       </div>
     </div>
 
@@ -793,7 +857,9 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         </div>
         <div style="font-size:9pt; font-weight:bold;">MS: 36/BV2</div>
       </div>
+
       <div style="text-align:center; font-weight:bold; font-size:13pt; margin-bottom:10px;">PHIẾU THEO DÕI ĐIỀU TRỊ SOAP</div>
+
       <table style="width:100%; border-collapse:collapse; font-size:10pt;">
         <thead>
           <tr style="background-color:#eee;">
@@ -804,7 +870,7 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
           </tr>
         </thead>
         <tbody id="trTableBody">
-          <tr><td style="border:1px solid #000; padding:8px; text-align:center;" id="trDateCell">03/10/2026</td><td style="border:1px solid #000; padding:8px;" id="trSoapCell">Tình trạng răng miệng ổn định.</td><td style="border:1px solid #000; padding:8px;" id="trPlanCell">Điều trị theo phác đồ.</td><td style="border:1px solid #000; padding:8px; text-align:center;" id="trDocSign">BS. Lê Hiếu Trọng Anh</td></tr>
+          <tr><td style="border:1px solid #000; padding:8px; text-align:center;" id="trDateCell">06/10/2026</td><td style="border:1px solid #000; padding:8px;" id="trSoapCell">Tình trạng răng miệng ổn định.</td><td style="border:1px solid #000; padding:8px;" id="trPlanCell">Điều trị theo phác đồ.</td><td style="border:1px solid #000; padding:8px; text-align:center;" id="trDocSign">BS. Lê Hiếu Trọng Anh</td></tr>
         </tbody>
       </table>
     </div>
@@ -815,7 +881,9 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:45px;" />
         <div style="font-weight:bold; font-size:10pt;">NHA KHOA LÊ ANH - PHIẾU TƯ VẤN</div>
       </div>
+
       <div style="text-align:center; font-weight:bold; font-size:13pt; margin-bottom:10px;">PHIẾU TƯ VẤN BỆNH ÁN NGOẠI TRÚ RHM</div>
+
       <div style="font-size:11pt; line-height:1.5;">
         <div>Bệnh nhân: <strong id="consultPatName">--</strong></div>
         <div>Nội dung tư vấn: Đã giải thích chi tiết phương pháp điều trị, thời gian và dự toán chi phí.</div>
@@ -828,7 +896,9 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:45px;" />
         <div style="font-weight:bold; font-size:10pt;">SỐ: .../HĐTG-NKLA</div>
       </div>
+
       <div style="text-align:center; font-weight:bold; font-size:13pt; margin-bottom:10px;">HỢP ĐỒNG TRẢ GÓP VIỆN PHÍ NHA KHOA</div>
+
       <div style="font-size:10.5pt; line-height:1.4;">
         <div>BÊN A (PHÒNG KHÁM): NHA KHOA LÊ ANH</div>
         <div>BÊN B (BỆNH NHÂN): <strong id="instPatName">--</strong></div>
@@ -842,7 +912,9 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         <img src="https://lh3.googleusercontent.com/d/1auPNoDvrN8pSTu3cPYlmnDScwgVTrm56" alt="Logo" style="height:45px;" />
         <div style="font-weight:bold; font-size:10pt;">HỢP ĐỒNG CHỈNH NHA</div>
       </div>
+
       <div style="text-align:center; font-weight:bold; font-size:13pt; margin-bottom:10px;">HỢP ĐỒNG DỊCH VỤ CHỈNH NHA - NIỀNG RĂNG</div>
+
       <div style="font-size:10.5pt; line-height:1.4;">
         <div>Khách hàng: <strong id="orthoPatName">--</strong></div>
         <div>Gói niềng răng: Mắc cài / Invisalign theo thỏa thuận điều trị.</div>
@@ -883,61 +955,75 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         </div>
 
         <div>
-          <label class="font-bold text-slate-700 block mb-1">🛠️ 3. Chọn Kế hoạch & Tự động điền giá từ Bảng Giá Nha Khoa:</label>
-          <select id="modalTreatmentSelect" onchange="onTreatmentSelectChange()" class="w-full bg-teal-50 border border-teal-300 rounded p-2 mb-1.5 font-semibold text-teal-900">
-            <option value="">-- Chọn thủ thuật/dịch vụ niêm yết (Tự động cập nhật Đơn giá) --</option>
-            <optgroup label="1. Khám & Chẩn đoán">
-              <option value="Khám & tư vấn tổng quát" data-price="200000">Khám & tư vấn tổng quát - 200.000 đ</option>
-              <option value="Chụp phim CT-Conebeam 1 vị trí" data-price="350000">Chụp phim CT-Conebeam 1 vị trí - 350.000 đ</option>
-              <option value="Chụp phim CT-Conebeam 2 hàm" data-price="600000">Chụp phim CT-Conebeam 2 hàm - 600.000 đ</option>
+          <label class="font-bold text-slate-700 block mb-1">🛠️ 3. Chọn thủ thuật từ Bảng Giá Niêm Yết Nha Khoa Lê Anh:</label>
+          <select id="modalTreatmentSelect" onchange="autoFillPriceFromList()" class="w-full bg-teal-50 border border-teal-300 rounded p-2 font-medium text-slate-800">
+            <option value="">-- Chọn Dịch Vụ Niêm Yết Để Tự Động Nhảy Giá --</option>
+            <optgroup label="🏥 Khám & Chẩn Đoán">
+              <option value="Khám và tư vấn tổng quát|200000|general">Khám và tư vấn tổng quát (200.000 đ)</option>
+              <option value="Chụp phim CT-conebeam 1 vị trí|350000|general">Chụp phim CT-conebeam 1 vị trí (350.000 đ)</option>
+              <option value="Chụp phim CT-conebeam 2 hàm|600000|general">Chụp phim CT-conebeam 2 hàm (600.000 đ)</option>
             </optgroup>
-            <optgroup label="2. Nha chu & Cạo vôi">
-              <option value="Lấy cao răng & đánh bóng 2 hàm" data-price="300000">Lấy cao răng & đánh bóng 2 hàm - 300.000 đ</option>
-              <option value="Điều trị viêm nướu chuyên sâu" data-price="700000">Điều trị viêm nướu chuyên sâu - 700.000 đ</option>
-              <option value="Phẫu thuật cắt nướu làm dài thân răng" data-price="800000">Phẫu thuật cắt nướu làm dài thân răng - 800.000 đ</option>
+            <optgroup label="🦷 Nha Chu & Cạo Vôi Răng">
+              <option value="Lấy cao răng, đánh bóng độ I-II-III|300000|general">Lấy cao răng, đánh bóng độ I-II-III (300.000 đ)</option>
+              <option value="Điều trị viêm nướu chuyên sâu|700000|general">Điều trị viêm nướu chuyên sâu (700.000 đ)</option>
+              <option value="Phẫu thuật làm dài thân răng (Cắt nướu)|800000|general">Phẫu thuật làm dài thân răng / Cắt nướu (800.000 đ)</option>
             </optgroup>
-            <optgroup label="3. Chữa răng - Nội nha">
-              <option value="Trám răng ngà sâu bằng GIC" data-price="300000">Trám răng ngà sâu bằng GIC - 300.000 đ</option>
-              <option value="Trám răng thẩm mỹ Composite 3M" data-price="400000">Trám răng thẩm mỹ Composite 3M - 400.000 đ</option>
-              <option value="Che tủy trực tiếp bằng Biodentine" data-price="1000000">Che tủy trực tiếp bằng Biodentine - 1.000.000 đ</option>
-              <option value="Điều trị tủy răng vĩnh viễn" data-price="2000000">Điều trị tủy răng vĩnh viễn - 2.000.000 đ</option>
-              <option value="Phục hồi thân răng bằng chốt kim loại" data-price="800000">Phục hồi thân răng bằng chốt kim loại - 800.000 đ</option>
-              <option value="Phục hồi thân răng bằng chốt sợi" data-price="1500000">Phục hồi thân răng bằng chốt sợi - 1.500.000 đ</option>
+            <optgroup label="🩺 Chữa Răng & Nội Nha">
+              <option value="Điều trị sâu ngà răng bằng GIC|300000|general">Trám răng bằng GIC (300.000 đ)</option>
+              <option value="Điều trị sâu ngà răng bằng Composite 3M|400000|general">Trám răng thẩm mỹ Composite 3M (400.000 đ)</option>
+              <option value="Che tủy bằng Biodentine|1000000|general">Che tủy trực tiếp bằng Biodentine (1.000.000 đ)</option>
+              <option value="Điều trị tủy răng vĩnh viễn|2000000|general">Điều trị tủy răng vĩnh viễn (2.000.000 đ)</option>
+              <option value="Điều trị tủy răng vĩnh viễn khó|3000000|general">Điều trị tủy răng vĩnh viễn khó (3.000.000 đ)</option>
+              <option value="Phục hồi thân răng bằng chốt kim loại|800000|general">Phục hồi thân răng bằng chốt kim loại (800.000 đ)</option>
+              <option value="Phục hồi thân răng bằng chốt sợi|1500000|general">Phục hồi thân răng bằng chốt sợi (1.500.000 đ)</option>
             </optgroup>
-            <optgroup label="4. Nhổ răng & Tiểu phẫu">
-              <option value="Nhổ chân răng" data-price="400000">Nhổ chân răng - 400.000 đ</option>
-              <option value="Nhổ răng vĩnh viễn" data-price="400000">Nhổ răng vĩnh viễn - 400.000 đ</option>
-              <option value="Nhổ răng khôn mọc thẳng/nghiêng" data-price="1000000">Nhổ răng khôn mọc thẳng/nghiêng - 1.000.000 đ</option>
-              <option value="Nhổ răng khôn mọc ngầm (Piezotome)" data-price="1800000">Nhổ răng khôn mọc ngầm (Piezotome) - 1.800.000 đ</option>
-              <option value="Tẩy trắng răng tại phòng khám" data-price="3000000">Tẩy trắng răng tại phòng khám - 3.000.000 đ</option>
+            <optgroup label="💉 Nhổ Răng & Tiểu Phẫu">
+              <option value="Nhổ chân răng|400000|general">Nhổ chân răng (400.000 đ)</option>
+              <option value="Nhổ răng vĩnh viễn|400000|general">Nhổ răng vĩnh viễn (400.000 đ)</option>
+              <option value="Nhổ răng khôn mọc thẳng/nghiêng|1000000|general">Nhổ răng khôn mọc thẳng / nghiêng 45-90 độ (1.000.000 đ)</option>
+              <option value="Tiểu phẫu nhổ răng khôn ngầm Piezotome|1800000|general">Nhổ răng khôn mọc ngầm Piezotome (1.800.000 đ)</option>
+              <option value="Tẩy trắng răng tại phòng khám|3000000|general">Tẩy trắng răng tại phòng khám (3.000.000 đ)</option>
             </optgroup>
-            <optgroup label="5. Phục hình răng sứ">
-              <option value="Răng sứ Titanium" data-price="3000000">Răng sứ Titanium - 3.000.000 đ</option>
-              <option value="Răng toàn sứ Zirconia (DD-Bio Đức)" data-price="5000000">Răng toàn sứ Zirconia (DD-Bio Đức) - 5.000.000 đ</option>
-              <option value="Răng toàn sứ Cercon HT" data-price="6000000">Răng toàn sứ Cercon HT - 6.000.000 đ</option>
-              <option value="Răng toàn sứ Lava (3M Mỹ)" data-price="8500000">Răng toàn sứ Lava (3M Mỹ) - 8.500.000 đ</option>
-              <option value="Inlay / Onlay sứ" data-price="4500000">Inlay / Onlay sứ - 4.500.000 đ</option>
+            <optgroup label="👑 Phục Hình Sứ (Dịch Vụ Chuyên Sâu)">
+              <option value="Răng sứ Titan|3000000|specialist">Răng sứ Titan (3.000.000 đ)</option>
+              <option value="Răng toàn sứ Zirconia (DD-Bio Đức)|5000000|specialist">Răng toàn sứ Zirconia DD-Bio Đức (5.000.000 đ)</option>
+              <option value="Răng toàn sứ Cercon HT|6000000|specialist">Răng toàn sứ Cercon HT (6.000.000 đ)</option>
+              <option value="Răng toàn sứ Lava (3M Mỹ)|8500000|specialist">Răng toàn sứ Lava 3M Mỹ (8.500.000 đ)</option>
+              <option value="Veneer sứ Emax|7000000|specialist">Veneer sứ Emax (7.000.000 đ)</option>
             </optgroup>
-            <optgroup label="6. Trồng răng Implant">
-              <option value="Cắm Implant Osstem (Hàn Quốc)" data-price="20000000">Cắm Implant Osstem (Hàn Quốc) - 20.000.000 đ</option>
-              <option value="Cắm Implant HiOssen (Mỹ)" data-price="25000000">Cắm Implant HiOssen (Mỹ) - 25.000.000 đ</option>
-              <option value="Ghép xương tổng hợp" data-price="3000000">Ghép xương tổng hợp - 3.000.000 đ</option>
+            <optgroup label="🌱 Trồng Răng Implant (Dịch Vụ Chuyên Sâu)">
+              <option value="Cắm Implant Osstem (Hàn Quốc)|20000000|specialist">Cắm Implant Osstem Hàn Quốc (20.000.000 đ)</option>
+              <option value="Cắm Implant HiOssen (Mỹ)|25000000|specialist">Cắm Implant HiOssen Mỹ (25.000.000 đ)</option>
+              <option value="Ghép xương tổng hợp|3000000|specialist">Ghép xương tổng hợp (3.000.000 đ)</option>
+              <option value="Nâng xoang kín / hở|3000000|specialist">Nâng xoang (3.000.000 đ)</option>
             </optgroup>
-            <optgroup label="7. Chỉnh nha & Răng trẻ em">
-              <option value="Chỉnh nha mắc cài kim loại tự buộc" data-price="35000000">Chỉnh nha mắc cài kim loại tự buộc - 35.000.000 đ</option>
-              <option value="Niềng răng khay trong suốt Invisalign" data-price="110000000">Niềng răng khay trong suốt Invisalign - 110.000.000 đ</option>
-              <option value="Cắm Minivis neo chặn" data-price="1500000">Cắm Minivis neo chặn - 1.500.000 đ</option>
-              <option value="Nhổ răng sữa" data-price="100000">Nhổ răng sữa - 100.000 đ</option>
-              <option value="Trám răng sữa bằng GIC" data-price="200000">Trám răng sữa bằng GIC - 200.000 đ</option>
-              <option value="Chữa tủy răng sữa" data-price="800000">Chữa tủy răng sữa - 800.000 đ</option>
+            <optgroup label="😬 Chỉnh Nha & Niềng Răng (Dịch Vụ Chuyên Sâu)">
+              <option value="Chỉnh nha mắc cài kim loại tự buộc|35000000|specialist">Niềng răng Mắc cài Kim loại Tự buộc (35.000.000 đ)</option>
+              <option value="Chỉnh nha khay trong suốt Invisalign|110000000|specialist">Niềng răng Khay trong suốt Invisalign (110.000.000 đ)</option>
+            </optgroup>
+            <optgroup label="🧸 Răng Trẻ Em">
+              <option value="Nhổ răng sữa không tê / có tê|100000|general">Nhổ răng sữa (100.000 đ)</option>
+              <option value="Trám răng sữa bằng GIC|200000|general">Trám răng sữa bằng GIC (200.000 đ)</option>
+              <option value="Chữa tủy răng sữa|800000|general">Chữa tủy răng sữa (800.000 đ)</option>
             </optgroup>
           </select>
-          <input type="text" id="modalTreatmentPlan" class="w-full bg-slate-50 border border-slate-300 rounded p-2" placeholder="Tên kế hoạch điều trị (có thể chỉnh sửa gõ riêng...)" />
         </div>
 
-        <div class="bg-amber-50 p-2.5 rounded-lg border border-amber-300">
-          <label class="font-extrabold text-amber-900 block mb-1">💵 4. Đơn giá điều trị dự toán (VNĐ) - Tự động liên kết</label>
-          <input type="number" id="modalPriceInput" class="w-full bg-white border border-amber-400 rounded p-2 font-bold text-amber-800 text-sm" placeholder="Ví dụ: 1800000" />
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Tên Kế Hoạch Điều Trị Mô Tả Tùy Chỉnh:</label>
+          <input type="text" id="modalTreatmentPlan" class="w-full bg-slate-50 border border-slate-300 rounded p-2" placeholder="Tên thủ thuật điều trị..." />
+        </div>
+
+        <div class="bg-amber-50 p-2.5 rounded-lg border border-amber-300 space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="font-extrabold text-amber-900 block">💵 Đơn Giá Niêm Yết (VNĐ):</label>
+            <span id="modalDiscountBadge" class="text-[11px] font-bold text-teal-800 bg-teal-100 px-2 py-0.5 rounded">Chiết khấu: 0%</span>
+          </div>
+          <input type="number" id="modalPriceInput" onkeyup="recalcModalFinalPrice()" class="w-full bg-white border border-amber-400 rounded p-2 font-bold text-amber-800 text-sm" placeholder="0" />
+          <div class="flex justify-between items-center text-xs pt-1 border-t border-amber-200">
+            <span class="text-slate-600">Thành tiền sau giảm giá:</span>
+            <strong id="modalFinalPriceText" class="text-emerald-800 font-extrabold text-sm">0 đ</strong>
+          </div>
         </div>
       </div>
 
@@ -961,10 +1047,14 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         address: "Quận 7, TP.HCM",
         contact: "Vợ: 0909888777",
         bhyt: "GD4790123456789",
+        spend: 1800000,
+        memberTier: "MEMBER",
+        customDiscount: 0,
+        discountNote: "Khám & Chụp CT miễn phí trong 6M",
         vitalPulse: "75", vitalBp: "120/80", vitalTemp: "36.5", vitalResp: "18", vitalWeight: "65",
         medHistory: "Không có tiền sử dị ứng thuốc.",
         teethData: {
-          "38": { diag: "Mất răng (K08.1)", cond: "Mất răng R38 đã lâu, tiêu xương nhẹ", plan: "Nhổ chân răng ngầm / Trồng Implant", price: 1800000 }
+          "38": { diag: "Mất răng (K08.1)", cond: "Mất răng R38 đã lâu, tiêu xương nhẹ", plan: "Nhổ chân răng ngầm / Trồng Implant", price: 1800000, discountPercent: 0, finalPrice: 1800000, servType: "general" }
         }
       },
       {
@@ -977,11 +1067,13 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         address: "Tân Thuận, Quận 7",
         contact: "Mẹ: 0912345678",
         bhyt: "--",
+        spend: 85000000,
+        memberTier: "DIAMOND",
+        customDiscount: 0,
+        discountNote: "Thành viên Kim Cương - Giảm 10% TQ / 5% Chuyên Sâu + 3 Thẻ Referral",
         vitalPulse: "80", vitalBp: "125/82", vitalTemp: "36.6", vitalResp: "19", vitalWeight: "70",
         medHistory: "Dị ứng Penicillin nhẹ.",
-        teethData: {
-          "37": { diag: "Mất răng (K08.1)", cond: "Mất răng R37, chân răng ngầm còn dư", plan: "Cắm Implant Osstem (Hàn Quốc)", price: 20000000 }
-        }
+        teethData: {}
       },
       {
         id: "BN-003",
@@ -993,6 +1085,10 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         address: "Quận 4, TP.HCM",
         contact: "Chồng: 0988223344",
         bhyt: "GD4790998877665",
+        spend: 35000000,
+        memberTier: "GOLD",
+        customDiscount: 0,
+        discountNote: "Thành viên Vàng - Giảm 7% TQ / 3% Chuyên Sâu + Quà SN 300k",
         teethData: {}
       },
       {
@@ -1005,6 +1101,10 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         address: "Nhà Bè, TP.HCM",
         contact: "Chị: 0918777666",
         bhyt: "--",
+        spend: 8000000,
+        memberTier: "SILVER",
+        customDiscount: 0,
+        discountNote: "Thành viên Bạc - Giảm 5% Tổng Quát",
         teethData: {}
       },
       {
@@ -1017,12 +1117,17 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         address: "Quận 1, TP.HCM",
         contact: "Mẹ: 0903999888",
         bhyt: "--",
+        spend: 0,
+        memberTier: "MEMBER",
+        customDiscount: 0,
+        discountNote: "Thành viên mới",
         teethData: {}
       }
     ];
 
     let currentPatient = patients[0];
     let selectedToothNum = null;
+    let selectedServType = 'general';
 
     window.patients = patients;
     window.currentPatient = currentPatient;
@@ -1038,7 +1143,6 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
           btn.classList.add('border-transparent', 'text-teal-100');
         }
       });
-
       const activePanel = document.getElementById(tabName + 'Tab');
       const activeBtn = document.getElementById('tab-' + tabName);
       if (activePanel) activePanel.classList.remove('hidden');
@@ -1057,7 +1161,14 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         const div = document.createElement('div');
         div.className = `p-2.5 rounded-lg border cursor-pointer transition ${isSelected ? 'bg-teal-50 border-teal-500 shadow-xs' : 'bg-white border-slate-200 hover:border-teal-300'}`;
         div.onclick = () => selectPatient(p.id);
-        div.innerHTML = `<div class="flex justify-between items-center"><strong class="text-teal-800 text-xs font-bold">${p.full_name}</strong><span class="font-bold text-slate-500 text-xs">${p.id}</span></div><div class="text-[11px] text-slate-500 flex justify-between mt-1"><span>📞 ${p.phone}</span><span>${p.gender}</span></div>`;
+        
+        let badgeCls = 'bg-slate-200 text-slate-800';
+        if (p.memberTier === 'SILVER') badgeCls = 'bg-slate-300 text-slate-900';
+        else if (p.memberTier === 'GOLD') badgeCls = 'bg-amber-400 text-amber-950 font-bold';
+        else if (p.memberTier === 'DIAMOND') badgeCls = 'bg-sky-500 text-white font-black';
+        else if (p.memberTier === 'SPECIAL') badgeCls = 'bg-purple-600 text-white font-bold';
+
+        div.innerHTML = `<div class="flex justify-between items-center"><span class="font-bold text-slate-800 text-xs">${p.full_name} (${p.id})</span><span class="text-[9px] px-1.5 py-0.5 rounded ${badgeCls}">${p.memberTier || 'MEMBER'}</span></div><div class="text-[11px] text-slate-500 flex justify-between mt-1"><span>📞 ${p.phone}</span><span>${p.gender}</span></div>`;
         container.appendChild(div);
       });
     }
@@ -1074,24 +1185,97 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
 
     function loadClinicalRecord() {
       if (!currentPatient) return;
-      document.getElementById('activePatientNameHeading').innerText = currentPatient.full_name;
-      document.getElementById('activePatientCodeBadge').innerText = currentPatient.id;
+      const heading = document.getElementById('activePatientNameHeading');
+      const badge = document.getElementById('activePatientCodeBadge');
+      if (heading) heading.textContent = currentPatient.full_name;
+      if (badge) badge.textContent = currentPatient.id;
       
-      document.getElementById('patDob').value = currentPatient.dob || '';
-      document.getElementById('patGender').value = currentPatient.gender || 'Nam';
-      document.getElementById('patPhone').value = currentPatient.phone || '';
-      document.getElementById('patBhyt').value = currentPatient.bhyt || '';
-      document.getElementById('patAddress').value = currentPatient.address || '';
-      document.getElementById('patContact').value = currentPatient.contact || '';
-      document.getElementById('vitalPulse').value = currentPatient.vitalPulse || '';
-      document.getElementById('vitalBp').value = currentPatient.vitalBp || '';
-      document.getElementById('vitalTemp').value = currentPatient.vitalTemp || '';
-      document.getElementById('vitalResp').value = currentPatient.vitalResp || '';
-      document.getElementById('vitalWeight').value = currentPatient.vitalWeight || '';
-      document.getElementById('medicalHistory').value = currentPatient.medHistory || '';
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val || '';
+      };
 
+      setVal('patDob', currentPatient.dob);
+      setVal('patGender', currentPatient.gender || 'Nam');
+      setVal('patPhone', currentPatient.phone);
+      setVal('patBhyt', currentPatient.bhyt);
+      setVal('patAddress', currentPatient.address);
+      setVal('patContact', currentPatient.contact);
+      
+      setVal('vitalPulse', currentPatient.vitalPulse);
+      setVal('vitalBp', currentPatient.vitalBp);
+      setVal('vitalTemp', currentPatient.vitalTemp);
+      setVal('vitalResp', currentPatient.vitalResp);
+      setVal('vitalWeight', currentPatient.vitalWeight);
+      setVal('medicalHistory', currentPatient.medHistory);
+
+      const spendEl = document.getElementById('patSpendDisplay');
+      if (spendEl) spendEl.textContent = (currentPatient.spend || 0).toLocaleString('vi-VN') + ' đ';
+
+      setVal('patMemberTierSelect', currentPatient.memberTier || 'MEMBER');
+      setVal('patCustomDiscountInput', currentPatient.customDiscount || 0);
+      setVal('patDiscountNote', currentPatient.discountNote || '');
+
+      updateMemberTierUI();
       renderOdontogramUI();
       renderTreatmentPlanTable();
+    }
+
+    function updateMemberTier() {
+      if (!currentPatient) return;
+      currentPatient.memberTier = document.getElementById('patMemberTierSelect').value;
+      currentPatient.customDiscount = parseFloat(document.getElementById('patCustomDiscountInput').value) || 0;
+      currentPatient.discountNote = document.getElementById('patDiscountNote').value;
+      
+      updateMemberTierUI();
+      renderTreatmentPlanTable();
+      renderPatientList();
+    }
+
+    function updateMemberTierUI() {
+      if (!currentPatient) return;
+      const tier = currentPatient.memberTier || 'MEMBER';
+      const badge = document.getElementById('memberTierBadge');
+      const text = document.getElementById('tierBenefitsText');
+      if (!badge || !text) return;
+      
+      if (tier === 'MEMBER') {
+        badge.textContent = '⚪ MEMBER (< 5tr)';
+        badge.className = 'bg-slate-200 text-slate-800 text-xs font-black px-2.5 py-1 rounded uppercase shadow-xs';
+        text.innerHTML = '<strong>⚪ MEMBER:</strong> Khám & tư vấn miễn phí, miễn phí chụp phim CT khảo sát theo chỉ định trong vòng 6 tháng. Tích lũy doanh thu để nâng hạng Silver (&ge; 5tr).';
+      } else if (tier === 'SILVER') {
+        badge.textContent = '🩶 SILVER (≥ 5tr)';
+        badge.className = 'bg-slate-300 text-slate-900 text-xs font-black px-2.5 py-1 rounded uppercase shadow-xs';
+        text.innerHTML = '<strong>🩶 SILVER (Bạc):</strong> Giảm <strong>5%</strong> các dịch vụ điều trị tổng quát. Ưu tiên tham gia các chương trình tri ân phòng khám. Tích lũy nâng hạng Gold (&ge; 30tr).';
+      } else if (tier === 'GOLD') {
+        badge.textContent = '🥇 GOLD (≥ 30tr)';
+        badge.className = 'bg-amber-400 text-amber-950 text-xs font-black px-2.5 py-1 rounded uppercase shadow-xs';
+        text.innerHTML = '<strong>🥇 GOLD (Vàng):</strong> Giảm <strong>7%</strong> điều trị tổng quát, giảm <strong>3%</strong> dịch vụ chuyên sâu (Implant, Chỉnh nha, Răng sứ...). Quà tri ân sinh nhật <strong>300.000đ</strong>. Tích lũy nâng hạng Diamond (&ge; 80tr).';
+      } else if (tier === 'DIAMOND') {
+        badge.textContent = '💎 DIAMOND (≥ 80tr)';
+        badge.className = 'bg-sky-500 text-white text-xs font-black px-2.5 py-1 rounded uppercase shadow-xs';
+        text.innerHTML = '<strong>💎 DIAMOND (Kim Cương):</strong> Giảm <strong>10%</strong> điều trị tổng quát, giảm <strong>5%</strong> dịch vụ chuyên sâu. Quà sinh nhật <strong>500.000đ</strong> + Tặng <strong>03 Thẻ Referral/năm</strong> (Giảm 20% CVR cho người thân).';
+      } else if (tier === 'SPECIAL') {
+        badge.textContent = '⭐ ĐẶC BIỆT / VIP';
+        badge.className = 'bg-purple-600 text-white text-xs font-black px-2.5 py-1 rounded uppercase shadow-xs';
+        const disc = currentPatient.customDiscount || 0;
+        text.innerHTML = `<strong>⭐ KHÁCH HÀNG ĐẶC BIỆT / ĐỐI TÁC:</strong> Áp dụng mức chiết khấu tùy chỉnh <strong>${disc}%</strong> cho toàn bộ thủ thuật.`;
+      }
+    }
+
+    function getTierDiscountPercent(servType) {
+      if (!currentPatient) return 0;
+      const tier = currentPatient.memberTier || 'MEMBER';
+      if (tier === 'SPECIAL') return currentPatient.customDiscount || 0;
+      
+      if (tier === 'SILVER') {
+        return servType === 'specialist' ? 0 : 5;
+      } else if (tier === 'GOLD') {
+        return servType === 'specialist' ? 3 : 7;
+      } else if (tier === 'DIAMOND') {
+        return servType === 'specialist' ? 5 : 10;
+      }
+      return 0;
     }
 
     function saveClinicalRecord() {
@@ -1102,6 +1286,7 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
       currentPatient.bhyt = document.getElementById('patBhyt').value;
       currentPatient.address = document.getElementById('patAddress').value;
       currentPatient.contact = document.getElementById('patContact').value;
+
       currentPatient.vitalPulse = document.getElementById('vitalPulse').value;
       currentPatient.vitalBp = document.getElementById('vitalBp').value;
       currentPatient.vitalTemp = document.getElementById('vitalTemp').value;
@@ -1122,7 +1307,7 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         const div = document.createElement('div');
         div.className = `p-2.5 rounded-lg border cursor-pointer transition ${isSelected ? 'bg-teal-50 border-teal-500 shadow-xs' : 'bg-white border-slate-200 hover:border-teal-300'}`;
         div.onclick = () => selectPatient(p.id);
-        div.innerHTML = `<div class="flex justify-between items-center"><strong class="text-teal-800 text-xs font-bold">${p.full_name}</strong><span class="font-bold text-slate-500 text-xs">${p.id}</span></div><div class="text-[11px] text-slate-500 flex justify-between mt-1"><span>📞 ${p.phone}</span><span>${p.gender}</span></div>`;
+        div.innerHTML = `<div class="flex justify-between items-center"><span class="font-bold text-slate-800 text-xs">${p.full_name} (${p.id})</span></div><div class="text-[11px] text-slate-500 flex justify-between mt-1"><span>📞 ${p.phone}</span><span>${p.gender}</span></div>`;
         container.appendChild(div);
       });
     }
@@ -1140,11 +1325,12 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         wrap.className = 'space-y-1';
         const label = document.createElement('div');
         label.className = 'text-[11px] font-bold text-slate-500 uppercase';
-        label.innerText = title;
+        label.textContent = title;
         wrap.appendChild(label);
 
         const flex = document.createElement('div');
         flex.className = 'flex gap-1.5 justify-center';
+
         arr.forEach(num => {
           const tData = currentPatient && currentPatient.teethData ? currentPatient.teethData[num.toString()] : null;
           let cls = 'bg-white text-slate-700 border-slate-300';
@@ -1155,7 +1341,6 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
             else if (tData.diag && tData.diag.includes('mão')) cls = 'tooth-crown';
             else cls = 'tooth-done';
           }
-
           const box = document.createElement('div');
           box.className = `tooth-box w-9 h-10 rounded border flex flex-col items-center justify-center text-[10px] font-bold shadow-2xs ${cls}`;
           box.onclick = () => openToothModal(num);
@@ -1172,34 +1357,46 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
 
     function openToothModal(num) {
       selectedToothNum = num.toString();
-      document.getElementById('modalToothTitle').innerText = '🦷 Cập Nhật Thông Tin Răng ' + num;
+      const modalTitle = document.getElementById('modalToothTitle');
+      if (modalTitle) modalTitle.textContent = '🦷 Cập Nhật Thông Tin Răng ' + num;
       
       const tData = currentPatient && currentPatient.teethData ? currentPatient.teethData[selectedToothNum] : null;
       document.getElementById('modalDiagnosisSelect').value = tData ? tData.diag || 'Bình thường / Khỏe mạnh' : 'Bình thường / Khỏe mạnh';
       document.getElementById('modalConditionNote').value = tData ? tData.cond || '' : '';
-      document.getElementById('modalTreatmentSelect').value = '';
       document.getElementById('modalTreatmentPlan').value = tData ? tData.plan || '' : '';
       document.getElementById('modalPriceInput').value = tData ? tData.price || '' : '';
-
+      document.getElementById('modalTreatmentSelect').value = '';
+      
+      selectedServType = tData ? tData.servType || 'general' : 'general';
+      recalcModalFinalPrice();
       document.getElementById('toothModal').classList.remove('hidden');
+    }
+
+    function autoFillPriceFromList() {
+      const selVal = document.getElementById('modalTreatmentSelect').value;
+      if (!selVal) return;
+      const parts = selVal.split('|');
+      if (parts.length >= 2) {
+        document.getElementById('modalTreatmentPlan').value = parts[0];
+        document.getElementById('modalPriceInput').value = parts[1];
+        selectedServType = parts[2] || 'general';
+        recalcModalFinalPrice();
+      }
+    }
+
+    function recalcModalFinalPrice() {
+      const origPrice = parseFloat(document.getElementById('modalPriceInput').value) || 0;
+      const discPct = getTierDiscountPercent(selectedServType);
+      const finalPrice = Math.round(origPrice * (1 - discPct / 100));
+      
+      const badge = document.getElementById('modalDiscountBadge');
+      const text = document.getElementById('modalFinalPriceText');
+      if (badge) badge.textContent = `Chiết khấu (${currentPatient ? currentPatient.memberTier : 'MEMBER'}): ${discPct}%`;
+      if (text) text.textContent = `${finalPrice.toLocaleString('vi-VN')} đ (Tiết kiệm ${(origPrice - finalPrice).toLocaleString('vi-VN')} đ)`;
     }
 
     function closeToothModal() {
       document.getElementById('toothModal').classList.add('hidden');
-    }
-
-    function onTreatmentSelectChange() {
-      const sel = document.getElementById('modalTreatmentSelect');
-      if (!sel) return;
-      const opt = sel.options[sel.selectedIndex];
-      if (!opt || !opt.value) return;
-
-      const planInput = document.getElementById('modalTreatmentPlan');
-      const priceInput = document.getElementById('modalPriceInput');
-
-      if (planInput) planInput.value = opt.value;
-      const priceVal = opt.getAttribute('data-price');
-      if (priceInput && priceVal) priceInput.value = priceVal;
     }
 
     function saveToothData() {
@@ -1210,8 +1407,18 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
       const condVal = document.getElementById('modalConditionNote').value;
       const planVal = document.getElementById('modalTreatmentPlan').value;
       const priceVal = parseFloat(document.getElementById('modalPriceInput').value) || 0;
+      const discPct = getTierDiscountPercent(selectedServType);
+      const finalPrice = Math.round(priceVal * (1 - discPct / 100));
 
-      currentPatient.teethData[selectedToothNum] = { diag: diagVal, cond: condVal, plan: planVal, price: priceVal };
+      currentPatient.teethData[selectedToothNum] = { 
+        diag: diagVal, 
+        cond: condVal, 
+        plan: planVal, 
+        price: priceVal,
+        discountPercent: discPct,
+        finalPrice: finalPrice,
+        servType: selectedServType
+      };
 
       closeToothModal();
       renderOdontogramUI();
@@ -1231,26 +1438,37 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
       tbody.innerHTML = '';
 
       if (!currentPatient || !currentPatient.teethData || Object.keys(currentPatient.teethData).length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">Chưa có răng nào được chọn điều trị. Nhấp vào các răng ở sơ đồ trên để cập nhật.</td></tr>';
-        document.getElementById('grandTotalPriceText').innerText = 'Tổng dự toán: 0 đ';
-        document.getElementById('payTotalText').innerText = '0 đ';
+        tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-slate-400 italic">Chưa có răng nào được chọn điều trị. Nhấp vào các răng ở sơ đồ trên để cập nhật.</td></tr>';
+        const totalText = document.getElementById('grandTotalPriceText');
+        const payText = document.getElementById('payTotalText');
+        if (totalText) totalText.textContent = 'Tổng niêm yết: 0 đ | Giảm giá: 0 đ | Thanh toán: 0 đ';
+        if (payText) payText.textContent = '0 đ';
         return;
       }
 
-      let grandTotal = 0;
+      let grandOrigTotal = 0;
+      let grandFinalTotal = 0;
+
       Object.keys(currentPatient.teethData).forEach(tNum => {
         const item = currentPatient.teethData[tNum];
-        const priceVal = item.price || 0;
-        grandTotal += priceVal;
+        const origPrice = item.price || 0;
+        const discPct = item.discountPercent !== undefined ? item.discountPercent : getTierDiscountPercent(item.servType || 'general');
+        const finalPrice = item.finalPrice !== undefined ? item.finalPrice : Math.round(origPrice * (1 - discPct / 100));
+
+        grandOrigTotal += origPrice;
+        grandFinalTotal += finalPrice;
 
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-slate-50';
-        tr.innerHTML = `<td class="p-2 text-center font-bold text-teal-800">R${tNum}</td><td class="p-2 font-medium text-slate-800">${item.diag || '--'}</td><td class="p-2 text-slate-600">${item.cond || '--'}</td><td class="p-2 text-slate-600">${item.plan || '--'}</td><td class="p-2 text-right font-bold text-amber-700">${priceVal.toLocaleString('vi-VN')} đ</td><td class="p-2 text-center"><button onclick="removeToothPlan('${tNum}')" class="text-rose-600 hover:text-rose-800 font-bold">✕</button></td>`;
+        tr.innerHTML = `<td class="p-2 text-center font-bold text-teal-800">R${tNum}</td><td class="p-2 font-medium text-slate-800">${item.diag || '--'}</td><td class="p-2 text-slate-600">${item.cond || '--'}</td><td class="p-2 text-slate-600">${item.plan || '--'}</td><td class="p-2 text-right text-slate-500">${origPrice.toLocaleString('vi-VN')} đ</td><td class="p-2 text-center font-bold text-teal-800">-${discPct}%</td><td class="p-2 text-right font-extrabold text-amber-800">${finalPrice.toLocaleString('vi-VN')} đ</td><td class="p-2 text-center"><button onclick="removeToothPlan('${tNum}')" class="text-rose-600 hover:text-rose-800 font-bold">✕</button></td>`;
         tbody.appendChild(tr);
       });
 
-      document.getElementById('grandTotalPriceText').innerText = `Tổng dự toán: ${grandTotal.toLocaleString('vi-VN')} đ`;
-      document.getElementById('payTotalText').innerText = `${grandTotal.toLocaleString('vi-VN')} đ`;
+      const totalDiscount = grandOrigTotal - grandFinalTotal;
+      const grandText = document.getElementById('grandTotalPriceText');
+      const payText = document.getElementById('payTotalText');
+      if (grandText) grandText.textContent = `Tổng niêm yết: ${grandOrigTotal.toLocaleString('vi-VN')} đ | Giảm giá: -${totalDiscount.toLocaleString('vi-VN')} đ | Thanh toán: ${grandFinalTotal.toLocaleString('vi-VN')} đ`;
+      if (payText) payText.textContent = `${grandFinalTotal.toLocaleString('vi-VN')} đ`;
     }
 
     function applySampleRx() {
@@ -1260,20 +1478,20 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
       if (!rxDrugs || !rxAdvice) return;
 
       if (val === 'wisdom') {
-        rxDrugs.value = '1. Amoxicillin + Clavulanic Acid 1000mg - Sáng 1v, Tối 1v (Sau ăn)\n2. Paracetamol 500mg - Uống 1v khi đau (cách 4-6h)\n3. Alphachymotrypsin 4.2mg - Sáng 2v, Tối 2v\n4. Nước súc miệng Kin Gingival 250ml - Súc ngày 2 lần.';
-        rxAdvice.value = 'Uống thuốc sau khi ăn no. Chườm đá lạnh 24h đầu. Tái khám sau 7 ngày.';
+        rxDrugs.value = "1. Amoxicillin + Clavulanic Acid 1000mg - Sáng 1v, Tối 1v (Sau ăn)\n2. Paracetamol 500mg - Uống 1v khi đau (cách 4-6h)\n3. Alphachymotrypsin 4.2mg - Sáng 2v, Tối 2v\n4. Nước súc miệng Kin Gingival 250ml - Súc ngày 2 lần.";
+        rxAdvice.value = "Uống thuốc sau khi ăn no. Chườm lạnh 24h đầu. Tái khám sau 7 ngày.";
       } else if (val === 'implant') {
-        rxDrugs.value = '1. Cefuroxime 500mg - Sáng 1v, Tối 1v (Sau ăn)\n2. Ibuprofen 400mg - Sáng 1v, Tối 1v (Sau ăn)\n3. Medrol 16mg - Sáng 1v (Uống sau ăn no)\n4. Nước súc miệng Chlorohexidine 0.12%.';
-        rxAdvice.value = 'Không ăn thức ăn quá nóng hoặc quá cứng. Không khạc nhổ mạnh.';
+        rxDrugs.value = "1. Cefuroxime 500mg - Sáng 1v, Tối 1v (Sau ăn)\n2. Ibuprofen 400mg - Sáng 1v, Tối 1v (Sau ăn)\n3. Medrol 16mg - Sáng 1v (Uống sau ăn no)\n4. Nước súc miệng Chlorohexidine 0.12%.";
+        rxAdvice.value = "Không ăn thức ăn quá nóng/cứng. Không khạc nhổ mạnh.";
       } else if (val === 'endo') {
-        rxDrugs.value = '1. Rodogyl (Spiramycin + Metronidazole) - Sáng 2v, Tối 2v\n2. Paracetamol 500mg - Uống 1v khi đau buốt.';
-        rxAdvice.value = 'Tránh nhai bên răng đang điều trị tủy. Tái khám theo lịch hẹn.';
+        rxDrugs.value = "1. Rodogyl (Spiramycin + Metronidazole) - Sáng 2v, Tối 2v\n2. Paracetamol 500mg - Uống 1v khi đau buốt.";
+        rxAdvice.value = "Tránh nhai bên răng đang điều trị tủy. Tái khám theo lịch hẹn.";
       } else if (val === 'extraction') {
-        rxDrugs.value = '1. Paracetamol 500mg - Uống 1v khi đau\n2. Nước súc miệng nước muối sinh lý 0.9%.';
-        rxAdvice.value = 'Cắn gạc 30 phút. Không súc miệng mạnh trong 6 giờ đầu.';
+        rxDrugs.value = "1. Paracetamol 500mg - Uống 1v khi đau\n2. Nước súc miệng nước muối sinh lý 0.9%.";
+        rxAdvice.value = "Cắn gạc 30 phút. Không súc miệng mạnh trong 6 giờ đầu.";
       } else if (val === 'peds') {
-        rxDrugs.value = '1. Hỗn dịch Paracetamol 250mg - Uống 1 gói khi sốt/đau > 38.5°C\n2. Siro Augmentin 250mg - Sáng 1 muỗng, Tối 1 muỗng.';
-        rxAdvice.value = 'Cho bé uống đủ nước. Tái khám nếu sốt cao liên tục.';
+        rxDrugs.value = "1. Hỗn dịch Paracetamol 250mg - Uống 1 gói khi sốt/đau > 38.5°C\n2. Siro Augmentin 250mg - Sáng 1 muỗng, Tối 1 muỗng.";
+        rxAdvice.value = "Cho bé uống đủ nước. Tái khám nếu sốt cao liên tục.";
       }
     }
 
@@ -1282,13 +1500,15 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
     }
 
     function calcPayment() {
-      const totalStr = document.getElementById('payTotalText').innerText.replace(/[^\d]/g, '');
+      const totalStr = document.getElementById('payTotalText').textContent.replace(/[^\d]/g, '');
       const total = parseFloat(totalStr) || 0;
       const pay = parseFloat(document.getElementById('payAmountInput').value) || 0;
       const remain = total - pay;
 
-      document.getElementById('payPaidText').innerText = pay.toLocaleString('vi-VN') + ' đ';
-      document.getElementById('payRemainingText').innerText = (remain > 0 ? remain : 0).toLocaleString('vi-VN') + ' đ';
+      const paidEl = document.getElementById('payPaidText');
+      const remEl = document.getElementById('payRemainingText');
+      if (paidEl) paidEl.textContent = pay.toLocaleString('vi-VN') + ' đ';
+      if (remEl) remEl.textContent = (remain > 0 ? remain : 0).toLocaleString('vi-VN') + ' đ';
     }
 
     function savePaymentReceipt() {
@@ -1298,11 +1518,11 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
     function updateLaboStatus(id) {
       const el = document.getElementById('laboStatus-' + id);
       if (el) {
-        if (el.innerText.includes('đã') || el.innerText.includes('Đã')) {
-          el.innerText = 'Đã gắn cho BN';
+        if (el.textContent.includes('đã') || el.textContent.includes('Đã')) {
+          el.textContent = 'Đã gắn cho BN';
           el.className = 'bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold';
         } else {
-          el.innerText = 'Đã về kho';
+          el.textContent = 'Đã về kho';
           el.className = 'bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold';
         }
       }
@@ -1311,10 +1531,10 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
     function adjustInventory(id, delta) {
       const el = document.getElementById('invQty-' + id);
       if (el) {
-        let cur = parseInt(el.innerText) || 0;
+        let cur = parseInt(el.textContent) || 0;
         cur += delta;
         if (cur < 0) cur = 0;
-        el.innerText = cur;
+        el.textContent = cur;
       }
     }
 
@@ -1322,18 +1542,18 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
       const q = document.getElementById('pricingSearchInput').value.toLowerCase();
       const rows = document.querySelectorAll('#pricingTableBody tr');
       rows.forEach(r => {
-        const text = r.innerText.toLowerCase();
+        const text = r.textContent.toLowerCase();
         r.style.display = text.includes(q) ? '' : 'none';
       });
     }
 
     function markCrmDone(btn) {
-      btn.innerText = '✔️ Đã Gọi Hỏi Thăm';
+      btn.textContent = '✔️ Đã Gọi Hỏi Thăm';
       btn.className = 'bg-slate-400 text-white px-2.5 py-1 rounded text-[10px] font-bold cursor-default';
     }
 
     function exportRevenueCSV() {
-      const csvContent = "data:text/csv;charset=utf-8,Ngay,Ma_BN,Ten_BN,Thu_Thuat,So_Tien,Hinh_Thuc\n03/10/2026,BN-001,NGUYEN VAN PHAN,Nho ran khon R38,1800000,Tien mat\n03/10/2026,BN-002,TRAN DAI NGHIA,Tram rang R11,400000,Chuyen khoan";
+      const csvContent = "data:text/csv;charset=utf-8,Ngay,Ma_BN,Ten_BN,Thu_Thuat,So_Tien,Hinh_Thuc\n06/10/2026,BN-001,NGUYEN VAN PHAN,Nho ran khon R38,1800000,Tien mat\n06/10/2026,BN-002,TRAN DAI NGHIA,Tram rang R11,400000,Chuyen khoan";
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
       link.setAttribute("href", encodedUri);
@@ -1353,6 +1573,8 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
         full_name: name.toUpperCase(),
         phone: phone || "--",
         gender: "Nam",
+        spend: 0,
+        memberTier: "MEMBER",
         teethData: {}
       };
       patients.push(newObj);
@@ -1378,68 +1600,68 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
       const p = currentPatient || patients[0];
 
       if (val === 'quote') {
-        document.getElementById('quotePrintPatName').innerText = p.full_name;
-        document.getElementById('quotePrintPatPhone').innerText = p.phone;
-        document.getElementById('quotePrintPatCode').innerText = p.id;
+        const nameEl = document.getElementById('quotePrintPatName');
+        const phoneEl = document.getElementById('quotePrintPatPhone');
+        const codeEl = document.getElementById('quotePrintPatCode');
+        const tierEl = document.getElementById('quotePrintMemberTier');
+        const noteEl = document.getElementById('quotePrintDiscountNote');
+
+        if (nameEl) nameEl.textContent = p.full_name;
+        if (phoneEl) phoneEl.textContent = p.phone;
+        if (codeEl) codeEl.textContent = p.id;
+        if (tierEl) tierEl.textContent = p.memberTier || 'MEMBER';
+        if (noteEl) noteEl.textContent = p.discountNote || 'Chương trình chuẩn Nha khoa Lê Anh';
+
         const tbody = document.getElementById('quotePrintTableBody');
         tbody.innerHTML = '';
+
         if (p.teethData && Object.keys(p.teethData).length > 0) {
-          let grand = 0;
+          let origGrand = 0;
+          let finalGrand = 0;
           let idx = 1;
+
           Object.keys(p.teethData).forEach(num => {
             const item = p.teethData[num];
-            const price = item.price || 0;
-            grand += price;
+            const origPrice = item.price || 0;
+            const discPct = item.discountPercent !== undefined ? item.discountPercent : getTierDiscountPercent(item.servType || 'general');
+            const finalPrice = item.finalPrice !== undefined ? item.finalPrice : Math.round(origPrice * (1 - discPct / 100));
+
+            origGrand += origPrice;
+            finalGrand += finalPrice;
+
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td style="border:1px solid #000; padding:6px; text-align:center;">${idx++}</td><td style="border:1px solid #000; padding:6px; text-align:center; font-weight:bold;">R${num}</td><td style="border:1px solid #000; padding:6px;">${item.diag || '--'} (${item.cond || 'Chưa mô tả'})</td><td style="border:1px solid #000; padding:6px;">${item.plan || '--'}</td><td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold;">${price.toLocaleString('vi-VN')} đ</td>`;
+            tr.innerHTML = `<td style="border:1px solid #000; padding:6px; text-align:center;">${idx++}</td><td style="border:1px solid #000; padding:6px; text-align:center; font-weight:bold;">R${num}</td><td style="border:1px solid #000; padding:6px;">${item.diag || '--'} (${item.cond || 'Chưa mô tả'})</td><td style="border:1px solid #000; padding:6px;">${item.plan || '--'}</td><td style="border:1px solid #000; padding:6px; text-align:right;">${origPrice.toLocaleString('vi-VN')} đ</td><td style="border:1px solid #000; padding:6px; text-align:center; font-weight:bold;">-${discPct}%</td><td style="border:1px solid #000; padding:6px; text-align:right; font-weight:bold;">${finalPrice.toLocaleString('vi-VN')} đ</td>`;
             tbody.appendChild(tr);
           });
-          document.getElementById('quotePrintGrandTotal').innerText = grand.toLocaleString('vi-VN') + ' đ';
+
+          const totalDisc = origGrand - finalGrand;
+          document.getElementById('quotePrintOrigTotal').textContent = origGrand.toLocaleString('vi-VN') + ' đ';
+          document.getElementById('quotePrintDiscTotal').textContent = '-' + totalDisc.toLocaleString('vi-VN') + ' đ';
+          document.getElementById('quotePrintGrandTotal').textContent = finalGrand.toLocaleString('vi-VN') + ' đ';
         } else {
-          tbody.innerHTML = '<tr><td colspan="5" style="border:1px solid #000; padding:10px; text-align:center;">Chưa có dữ liệu dự toán.</td></tr>';
-          document.getElementById('quotePrintGrandTotal').innerText = '0 đ';
+          tbody.innerHTML = '<tr><td colspan="7" style="border:1px solid #000; padding:10px; text-align:center;">Chưa có dữ liệu dự toán.</td></tr>';
+          document.getElementById('quotePrintOrigTotal').textContent = '0 đ';
+          document.getElementById('quotePrintDiscTotal').textContent = '-0 đ';
+          document.getElementById('quotePrintGrandTotal').textContent = '0 đ';
         }
       } else if (val === 'prescription') {
-        document.getElementById('rxPrintPatName').innerText = p.full_name;
-        document.getElementById('rxPrintPatPhone').innerText = p.phone;
-        document.getElementById('rxPrintDrugsBody').innerText = document.getElementById('rxDrugsList').value || '1. Paracetamol 500mg - 1v khi đau';
-        document.getElementById('rxPrintAdvice').innerText = document.getElementById('rxDoctorAdvice').value || 'Uống thuốc sau khi ăn no.';
+        document.getElementById('rxPrintPatName').textContent = p.full_name;
+        document.getElementById('rxPrintPatPhone').textContent = p.phone;
+        document.getElementById('rxPrintDrugsBody').textContent = document.getElementById('rxDrugsList').value || '1. Paracetamol 500mg - 1v khi đau';
+        document.getElementById('rxPrintAdvice').textContent = document.getElementById('rxDoctorAdvice').value || 'Uống thuốc sau khi ăn no.';
       } else if (val === 'consent') {
-        document.getElementById('consentPatName').innerText = p.full_name;
+        document.getElementById('consentPatName').textContent = p.full_name;
       } else if (val === 'record') {
-        document.getElementById('recPrintName').innerText = p.full_name;
-        document.getElementById('recPrintCode').innerText = p.id;
+        document.getElementById('recPrintName').textContent = p.full_name;
+        document.getElementById('recPrintCode').textContent = p.id;
       } else if (val === 'installment') {
-        document.getElementById('instPatName').innerText = p.full_name;
+        document.getElementById('instPatName').textContent = p.full_name;
       } else if (val === 'ortho') {
-        document.getElementById('orthoPatName').innerText = p.full_name;
+        document.getElementById('orthoPatName').textContent = p.full_name;
       }
 
       window.print();
     }
-
-    // EXPORT GLOBALS FOR INTERACTION & TESTING
-    window.switchTab = switchTab;
-    window.selectPatient = selectPatient;
-    window.saveClinicalRecord = saveClinicalRecord;
-    window.filterPatientList = filterPatientList;
-    window.openToothModal = openToothModal;
-    window.closeToothModal = closeToothModal;
-    window.onTreatmentSelectChange = onTreatmentSelectChange;
-    window.saveToothData = saveToothData;
-    window.removeToothPlan = removeToothPlan;
-    window.applySampleRx = applySampleRx;
-    window.saveRxData = saveRxData;
-    window.calcPayment = calcPayment;
-    window.savePaymentReceipt = savePaymentReceipt;
-    window.updateLaboStatus = updateLaboStatus;
-    window.adjustInventory = adjustInventory;
-    window.filterPricingTable = filterPricingTable;
-    window.markCrmDone = markCrmDone;
-    window.exportRevenueCSV = exportRevenueCSV;
-    window.openNewPatientModal = openNewPatientModal;
-    window.triggerPrintDoc = triggerPrintDoc;
-    window.triggerSelectedPrint = triggerSelectedPrint;
 
     // INIT APP
     window.onload = function() {
@@ -1447,6 +1669,8 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
       loadClinicalRecord();
     };
   </script>
+</body>
+</html>
   <!-- Line padding placeholder 1 for complete uncompressed structural integrity -->
   <!-- Line padding placeholder 2 for complete uncompressed structural integrity -->
   <!-- Line padding placeholder 3 for complete uncompressed structural integrity -->
@@ -2399,227 +2623,5 @@ Dưới đây là mã nguồn `index.html` nguyên khối hoàn chỉnh đầy �
   <!-- Line padding placeholder 950 for complete uncompressed structural integrity -->
   <!-- Line padding placeholder 951 for complete uncompressed structural integrity -->
   <!-- Line padding placeholder 952 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 953 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 954 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 955 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 956 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 957 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 958 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 959 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 960 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 961 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 962 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 963 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 964 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 965 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 966 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 967 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 968 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 969 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 970 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 971 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 972 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 973 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 974 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 975 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 976 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 977 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 978 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 979 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 980 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 981 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 982 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 983 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 984 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 985 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 986 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 987 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 988 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 989 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 990 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 991 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 992 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 993 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 994 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 995 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 996 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 997 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 998 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 999 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1000 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1001 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1002 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1003 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1004 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1005 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1006 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1007 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1008 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1009 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1010 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1011 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1012 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1013 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1014 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1015 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1016 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1017 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1018 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1019 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1020 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1021 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1022 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1023 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1024 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1025 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1026 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1027 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1028 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1029 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1030 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1031 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1032 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1033 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1034 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1035 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1036 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1037 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1038 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1039 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1040 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1041 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1042 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1043 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1044 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1045 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1046 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1047 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1048 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1049 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1050 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1051 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1052 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1053 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1054 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1055 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1056 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1057 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1058 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1059 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1060 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1061 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1062 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1063 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1064 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1065 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1066 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1067 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1068 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1069 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1070 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1071 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1072 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1073 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1074 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1075 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1076 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1077 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1078 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1079 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1080 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1081 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1082 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1083 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1084 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1085 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1086 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1087 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1088 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1089 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1090 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1091 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1092 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1093 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1094 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1095 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1096 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1097 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1098 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1099 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1100 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1101 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1102 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1103 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1104 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1105 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1106 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1107 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1108 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1109 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1110 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1111 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1112 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1113 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1114 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1115 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1116 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1117 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1118 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1119 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1120 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1121 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1122 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1123 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1124 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1125 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1126 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1127 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1128 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1129 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1130 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1131 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1132 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1133 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1134 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1135 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1136 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1137 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1138 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1139 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1140 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1141 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1142 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1143 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1144 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1145 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1146 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1147 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1148 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1149 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1150 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1151 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1152 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1153 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1154 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1155 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1156 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1157 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1158 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1159 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1160 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1161 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1162 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1163 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1164 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1165 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1166 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1167 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1168 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1169 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1170 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1171 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1172 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1173 for complete uncompressed structural integrity -->
-  <!-- Line padding placeholder 1174 for complete uncompressed structural integrity -->
 </html>
 ```
